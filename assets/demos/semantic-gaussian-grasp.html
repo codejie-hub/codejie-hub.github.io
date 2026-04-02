@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>语义高斯与抓取意图 — 示意演示</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", sans-serif;
+      background: #0d1117;
+      color: #c9d1d9;
+    }
+    .layout { display: flex; flex-wrap: wrap; min-height: 100%; align-items: stretch; }
+    .panel {
+      width: 300px;
+      flex-shrink: 0;
+      padding: 14px 16px;
+      background: #161b22;
+      border-right: 1px solid #30363d;
+      overflow-y: auto;
+      max-height: 100vh;
+    }
+    .panel h3 { margin: 0 0 6px; font-size: 14px; font-weight: 600; color: #58a6ff; }
+    .panel .note {
+      font-size: 11px; line-height: 1.5; color: #8b949e; margin: 0 0 14px;
+    }
+    .field { margin-bottom: 14px; }
+    .field label { display: block; font-size: 12px; color: #8b949e; margin-bottom: 6px; }
+    select, button {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1px solid #30363d;
+      background: #21262d;
+      color: #c9d1d9;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    button { margin-top: 8px; background: #238636; border-color: #238636; font-weight: 600; }
+    button:hover { filter: brightness(1.08); }
+    button:disabled { opacity: 0.5; cursor: not-allowed; filter: none; }
+    #viewport { flex: 1; min-width: 0; min-height: 340px; position: relative; }
+    #viewport canvas { display: block; width: 100%; height: 100%; }
+    .legend { font-size: 11px; color: #6e7681; margin-top: 10px; line-height: 1.45; }
+    @media (max-width: 700px) {
+      .panel { width: 100%; border-right: 0; border-bottom: 1px solid #30363d; max-height: none; }
+    }
+  </style>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="panel">
+      <h3>可视化模式</h3>
+      <p class="note">示意：将「高斯/粒子」附上语义后，抓取规划可优先对齐高可供性区域（如杯柄）。非真实机器人控制。</p>
+      <div class="field">
+        <label for="mode">视觉模式</label>
+        <select id="mode">
+          <option value="rgb">RGB 外观（视图相关颜色的简化示意）</option>
+          <option value="semantic">语义分割（部件标签）</option>
+          <option value="grasp">抓取热力图（柄部 ≈ 高权重）</option>
+        </select>
+      </div>
+      <button type="button" id="graspBtn">执行抓取（目标：杯柄）</button>
+      <p class="legend">
+        · 画布：按住拖拽旋转视角。<br />
+        · RGB：简化外观示意。<br />
+        · 语义：杯身 / 杯柄分区着色。<br />
+        · 热力：高亮高可供性区域；点击按钮后夹爪靠近柄部并闭合。
+      </p>
+    </aside>
+    <div id="viewport"></div>
+  </div>
+  <script type="module">
+    import * as THREE from "three";
+    import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+    const viewport = document.getElementById("viewport");
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0d1117);
+
+    const camera = new THREE.PerspectiveCamera(
+      48,
+      viewport.clientWidth / Math.max(viewport.clientHeight, 1),
+      0.05,
+      200
+    );
+    camera.position.set(1.85, 1.2, 1.85);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(viewport.clientWidth, viewport.clientHeight);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    viewport.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.target.set(0, 0.35, 0);
+
+    scene.add(new THREE.AmbientLight(0xffffff, 0.45));
+    const L = new THREE.DirectionalLight(0xffffff, 0.85);
+    L.position.set(2, 4, 3);
+    scene.add(L);
+
+    scene.add(new THREE.GridHelper(3, 24, 0x30363d, 0x21262d));
+
+    /** 生成杯子状粒子：杯身 + 杯柄，返回 { positions, bodyMask } */
+    function buildCupParticles() {
+      const positions = [];
+      const body = [];
+
+      const R = 0.32;
+      const h = 0.55;
+      const nAng = 48;
+      const nH = 22;
+
+      for (let j = 0; j < nH; j++) {
+        const t = j / (nH - 1);
+        const y = t * h;
+        for (let i = 0; i < nAng; i++) {
+          const a = (i / nAng) * Math.PI * 2;
+          const x = Math.cos(a) * R;
+          const z = Math.sin(a) * R;
+          for (let k = 0; k < 3; k++) {
+            const jx = (Math.random() - 0.5) * 0.02;
+            const jy = (Math.random() - 0.5) * 0.02;
+            const jz = (Math.random() - 0.5) * 0.02;
+            positions.push(x + jx, y + jy, z + jz);
+            body.push(true);
+          }
+        }
+      }
+
+      const bottomN = 400;
+      for (let i = 0; i < bottomN; i++) {
+        const a = Math.random() * Math.PI * 2;
+        const rr = Math.sqrt(Math.random()) * R * 0.98;
+        positions.push(Math.cos(a) * rr, 0.01, Math.sin(a) * rr);
+        body.push(true);
+      }
+
+      const handleN = 700;
+      for (let i = 0; i < handleN; i++) {
+        const u = i / handleN;
+        const ang = u * Math.PI * 1.05 + Math.PI * 0.35;
+        const hr = 0.38;
+        const hx = Math.cos(ang) * hr + 0.02;
+        const hz = Math.sin(ang) * hr;
+        const hy = 0.22 + Math.sin(u * Math.PI) * 0.12 + (Math.random() - 0.5) * 0.03;
+        positions.push(
+          hx + (Math.random() - 0.5) * 0.018,
+          hy,
+          hz + (Math.random() - 0.5) * 0.018
+        );
+        body.push(false);
+      }
+
+      let hx = 0,
+        hy = 0,
+        hz = 0,
+        hn = 0;
+      for (let i = 0; i < body.length; i++) {
+        if (!body[i]) {
+          const o = i * 3;
+          hx += positions[o];
+          hy += positions[o + 1];
+          hz += positions[o + 2];
+          hn++;
+        }
+      }
+      if (hn > 0) {
+        hx /= hn;
+        hy /= hn;
+        hz /= hn;
+      }
+
+      return {
+        positions: new Float32Array(positions),
+        bodyMask: body,
+        count: body.length,
+        handleCenter: new THREE.Vector3(hx, hy, hz),
+      };
+    }
+
+    const cup = buildCupParticles();
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute("position", new THREE.BufferAttribute(cup.positions, 3));
+
+    const colAttr = new Float32Array(cup.count * 3);
+    geo.setAttribute("color", new THREE.BufferAttribute(colAttr, 3));
+
+    function setMode(mode) {
+      const bodyColorRgb = new THREE.Color(0xd4c4b0);
+      const handleColorRgb = new THREE.Color(0xc4b8a8);
+      const bodySem = new THREE.Color(0x3fb950);
+      const handleSem = new THREE.Color(0xa371f7);
+      const cold = new THREE.Color(0x21262d);
+      const hot = new THREE.Color(0xff7b72);
+
+      for (let i = 0; i < cup.count; i++) {
+        const isBody = cup.bodyMask[i];
+        let c;
+        if (mode === "rgb") {
+          c = isBody ? bodyColorRgb : handleColorRgb;
+        } else if (mode === "semantic") {
+          c = isBody ? bodySem : handleSem;
+        } else {
+          c = isBody ? cold : hot;
+        }
+        colAttr[i * 3] = c.r;
+        colAttr[i * 3 + 1] = c.g;
+        colAttr[i * 3 + 2] = c.b;
+      }
+      geo.attributes.color.needsUpdate = true;
+    }
+
+    setMode("rgb");
+
+    const pointsMat = new THREE.PointsMaterial({
+      size: 0.022,
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.92,
+      depthWrite: false,
+      sizeAttenuation: true,
+    });
+    const points = new THREE.Points(geo, pointsMat);
+    scene.add(points);
+
+    const handleCenter = cup.handleCenter;
+
+    const gripper = new THREE.Group();
+    const fingerGeo = new THREE.BoxGeometry(0.06, 0.14, 0.04);
+    const fingerMat = new THREE.MeshStandardMaterial({
+      color: 0x8b949e,
+      metalness: 0.35,
+      roughness: 0.45,
+    });
+    const left = new THREE.Mesh(fingerGeo, fingerMat);
+    left.position.set(-0.045, 0, 0);
+    const right = new THREE.Mesh(fingerGeo, fingerMat);
+    right.position.set(0.045, 0, 0);
+    gripper.add(left, right);
+    gripper.position.set(1.4, 0.9, 1.2);
+    gripper.lookAt(handleCenter);
+    scene.add(gripper);
+
+    let graspAnim = null;
+    const graspBtn = document.getElementById("graspBtn");
+
+    function startGrasp() {
+      graspBtn.disabled = true;
+      const startPos = gripper.position.clone();
+      const startQuat = gripper.quaternion.clone();
+      const endPos = handleCenter.clone().add(new THREE.Vector3(0.12, 0.05, 0.15));
+      const endQuat = new THREE.Quaternion();
+      const m = new THREE.Matrix4();
+      m.lookAt(endPos, handleCenter, new THREE.Vector3(0, 1, 0));
+      endQuat.setFromRotationMatrix(m);
+
+      const openL = -0.045;
+      const openR = 0.045;
+      const t0 = performance.now();
+      const dur = 2200;
+
+      graspAnim = () => {
+        const t = Math.min(1, (performance.now() - t0) / dur);
+        const e = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+        gripper.position.lerpVectors(startPos, endPos, e);
+        gripper.quaternion.slerpQuaternions(startQuat, endQuat, e);
+
+        const closeT = Math.max(0, (t - 0.55) / 0.45);
+        const gap = THREE.MathUtils.lerp(0.09, 0.028, closeT);
+        left.position.x = -gap / 2;
+        right.position.x = gap / 2;
+
+        if (t < 1) requestAnimationFrame(graspAnim);
+        else {
+          graspAnim = null;
+          setTimeout(() => {
+            gripper.position.copy(startPos);
+            gripper.quaternion.copy(startQuat);
+            left.position.x = openL;
+            right.position.x = openR;
+            graspBtn.disabled = false;
+          }, 650);
+        }
+      };
+      requestAnimationFrame(graspAnim);
+    }
+
+    graspBtn.addEventListener("click", () => {
+      if (graspAnim) return;
+      startGrasp();
+    });
+
+    document.getElementById("mode").addEventListener("change", (e) => {
+      setMode(e.target.value);
+    });
+
+    function onResize() {
+      const w = viewport.clientWidth;
+      const h = viewport.clientHeight;
+      camera.aspect = w / Math.max(h, 1);
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    }
+    new ResizeObserver(onResize).observe(viewport);
+    window.addEventListener("resize", onResize);
+
+    function tick() {
+      requestAnimationFrame(tick);
+      controls.update();
+      renderer.render(scene, camera);
+    }
+    tick();
+  </script>
+</body>
+</html>

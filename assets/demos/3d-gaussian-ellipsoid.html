@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>单个 3D 高斯（椭球）参数演示</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", sans-serif;
+      background: #16161e;
+      color: #c0caf5;
+    }
+    .layout {
+      display: flex;
+      flex-wrap: wrap;
+      min-height: 100%;
+      align-items: stretch;
+    }
+    .panel {
+      width: 280px;
+      flex-shrink: 0;
+      padding: 14px 16px 18px;
+      background: #1f2335;
+      border-right: 1px solid #3b4261;
+      overflow-y: auto;
+      max-height: 100vh;
+    }
+    .panel h3 {
+      margin: 0 0 4px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #7aa2f7;
+    }
+    .hint {
+      font-size: 11px;
+      line-height: 1.45;
+      color: #565f89;
+      margin: 0 0 14px;
+    }
+    .row { margin-bottom: 12px; }
+    .row label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 12px;
+      color: #a9b1d6;
+      margin-bottom: 4px;
+    }
+    .row .val { font-variant-numeric: tabular-nums; color: #7dcfff; font-size: 11px; }
+    .row input[type="range"] { width: 100%; accent-color: #7aa2f7; }
+    #viewport {
+      flex: 1;
+      min-width: 0;
+      min-height: 320px;
+      position: relative;
+    }
+    #viewport canvas { display: block; width: 100%; height: 100%; }
+    @media (max-width: 640px) {
+      .panel {
+        width: 100%;
+        max-height: none;
+        border-right: 0;
+        border-bottom: 1px solid #3b4261;
+      }
+      #viewport { min-height: 360px; }
+    }
+  </style>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="panel">
+      <h3>椭球参数（3D 高斯几何示意）</h3>
+      <p class="hint">拖动滑块观察各向异性缩放、欧拉角与不透明度。右侧画布可拖拽旋转视角。</p>
+      <div class="row">
+        <label>X 缩放 <span class="val" id="vx">1.00</span></label>
+        <input type="range" id="sx" min="0.1" max="3" step="0.05" value="1" />
+      </div>
+      <div class="row">
+        <label>Y 缩放 <span class="val" id="vy">1.00</span></label>
+        <input type="range" id="sy" min="0.1" max="3" step="0.05" value="1" />
+      </div>
+      <div class="row">
+        <label>Z 缩放 <span class="val" id="vz">1.00</span></label>
+        <input type="range" id="sz" min="0.1" max="3" step="0.05" value="1" />
+      </div>
+      <div class="row">
+        <label>X 旋转 (°) <span class="val" id="rxv">0</span></label>
+        <input type="range" id="rx" min="0" max="360" step="1" value="0" />
+      </div>
+      <div class="row">
+        <label>Y 旋转 (°) <span class="val" id="ryv">0</span></label>
+        <input type="range" id="ry" min="0" max="360" step="1" value="0" />
+      </div>
+      <div class="row">
+        <label>Z 旋转 (°) <span class="val" id="rzv">0</span></label>
+        <input type="range" id="rz" min="0" max="360" step="1" value="0" />
+      </div>
+      <div class="row">
+        <label>不透明度 <span class="val" id="ov">0.55</span></label>
+        <input type="range" id="op" min="0.1" max="1" step="0.02" value="0.55" />
+      </div>
+    </aside>
+    <div id="viewport"></div>
+  </div>
+  <script type="module">
+    import * as THREE from "three";
+    import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+    const viewport = document.getElementById("viewport");
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x16161e);
+
+    const camera = new THREE.PerspectiveCamera(
+      50,
+      viewport.clientWidth / Math.max(viewport.clientHeight, 1),
+      0.02,
+      200
+    );
+    camera.position.set(2.4, 1.8, 2.8);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(viewport.clientWidth, viewport.clientHeight);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    viewport.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.target.set(0, 0, 0);
+
+    scene.add(new THREE.AmbientLight(0xffffff, 0.4));
+    const key = new THREE.DirectionalLight(0xffffff, 0.95);
+    key.position.set(4, 6, 5);
+    scene.add(key);
+
+    const geom = new THREE.SphereGeometry(0.5, 72, 48);
+    const mat = new THREE.MeshPhysicalMaterial({
+      color: 0x7aa2f7,
+      transparent: true,
+      opacity: 0.55,
+      roughness: 0.38,
+      metalness: 0.12,
+      transmission: 0.12,
+      thickness: 0.6,
+      clearcoat: 0.25,
+      side: THREE.DoubleSide,
+      depthWrite: false,
+    });
+    const mesh = new THREE.Mesh(geom, mat);
+    scene.add(mesh);
+
+    scene.add(new THREE.AxesHelper(1.25));
+    const grid = new THREE.GridHelper(5, 20, 0x3b4261, 0x24283b);
+    grid.position.y = -0.62;
+    scene.add(grid);
+
+    const deg = THREE.MathUtils.degToRad;
+
+    function bindSlider(id, valueId, fn, fmt = (v) => (Number.isInteger(v) ? String(v) : v.toFixed(2))) {
+      const input = document.getElementById(id);
+      const out = document.getElementById(valueId);
+      const apply = () => {
+        const v = parseFloat(input.value, 10);
+        out.textContent = fmt(v);
+        fn(v);
+      };
+      input.addEventListener("input", apply);
+      apply();
+    }
+
+    bindSlider("sx", "vx", (v) => { mesh.scale.x = v; });
+    bindSlider("sy", "vy", (v) => { mesh.scale.y = v; });
+    bindSlider("sz", "vz", (v) => { mesh.scale.z = v; });
+    bindSlider("rx", "rxv", (v) => {
+      mesh.rotation.x = deg(v);
+    }, (v) => String(Math.round(v)));
+    bindSlider("ry", "ryv", (v) => {
+      mesh.rotation.y = deg(v);
+    }, (v) => String(Math.round(v)));
+    bindSlider("rz", "rzv", (v) => {
+      mesh.rotation.z = deg(v);
+    }, (v) => String(Math.round(v)));
+    bindSlider("op", "ov", (v) => {
+      mat.opacity = v;
+      mat.depthWrite = v >= 0.98;
+    });
+
+    function onResize() {
+      const w = viewport.clientWidth;
+      const h = viewport.clientHeight;
+      camera.aspect = w / Math.max(h, 1);
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    }
+
+    new ResizeObserver(onResize).observe(viewport);
+    window.addEventListener("resize", onResize);
+
+    function tick() {
+      requestAnimationFrame(tick);
+      controls.update();
+      renderer.render(scene, camera);
+    }
+    tick();
+  </script>
+</body>
+</html>
