@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>流匹配（OT 直线路径）轨迹可视化</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", sans-serif;
+      background: #0f1419;
+      color: #e6edf3;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 12px 14px 20px;
+    }
+    h1 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 0 0 10px;
+      color: #58a6ff;
+      text-align: center;
+    }
+    .panel {
+      width: 100%;
+      max-width: 560px;
+      margin-bottom: 10px;
+    }
+    .panel label {
+      display: block;
+      font-size: 12px;
+      color: #8b949e;
+      margin-bottom: 6px;
+    }
+    .row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    input[type="range"] {
+      flex: 1;
+      accent-color: #58a6ff;
+    }
+    #tval {
+      font-variant-numeric: tabular-nums;
+      min-width: 3.2rem;
+      font-size: 13px;
+      color: #79c0ff;
+    }
+    .note {
+      font-size: 11px;
+      line-height: 1.5;
+      color: #6e7681;
+      margin: 8px 0 0;
+    }
+    #c {
+      width: 100%;
+      max-width: min(560px, 100vw - 28px);
+      aspect-ratio: 1;
+      max-height: min(72vh, 560px);
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <h1>流匹配（Flow Matching）— 最优传输直线路径示意</h1>
+  <div class="panel">
+    <label for="t">时间进度 <span style="float:right;color:#79c0ff;">t = <span id="tval">0.00</span></span></label>
+    <div class="row">
+      <input type="range" id="t" min="0" max="1" step="0.01" value="0" />
+    </div>
+    <p class="note">
+      每个粒子满足 <strong>x<sub>t</sub> = (1−t) x<sub>0</sub> + t x<sub>1</sub></strong>（与 y 同理）。<strong>x<sub>0</sub></strong> 来自二维高斯噪声，<strong>x<sub>1</sub></strong> 落在「∞」形目标曲线上。拖动滑块观察沿<strong>直线概率路径</strong>的输运（理想化 OT / rectified flow 直觉）。
+    </p>
+  </div>
+  <canvas id="c" width="520" height="520" aria-label="流匹配粒子轨迹"></canvas>
+  <script>
+    (function () {
+      const N = 400;
+      const canvas = document.getElementById("c");
+      const ctx = canvas.getContext("2d");
+      const AX = 5.2;
+      const pad = 24;
+      let cssSize = 520;
+
+      function resize() {
+        const maxW = Math.min(560, window.innerWidth - 28);
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const css = Math.min(maxW, window.innerHeight * 0.65);
+        cssSize = css;
+        canvas.style.width = css + "px";
+        canvas.style.height = css + "px";
+        canvas.width = Math.round(css * dpr);
+        canvas.height = Math.round(css * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        draw(parseFloat(document.getElementById("t").value, 10));
+      }
+
+      function rngNormal() {
+        let u = 0, v = 0;
+        while (u === 0) u = Math.random();
+        while (v === 0) v = Math.random();
+        return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+      }
+
+      const x0 = new Float32Array(N);
+      const y0 = new Float32Array(N);
+      const x1 = new Float32Array(N);
+      const y1 = new Float32Array(N);
+
+      for (let i = 0; i < N; i++) {
+        x0[i] = rngNormal() * 0.55;
+        y0[i] = rngNormal() * 0.55;
+        const u = (i / N) * Math.PI * 2 + Math.random() * 0.15;
+        const scale = 2.8;
+        x1[i] = scale * Math.sin(u);
+        y1[i] = scale * Math.sin(u) * Math.cos(u);
+      }
+
+      function worldToScreen(wx, wy, w, h) {
+        const sx = pad + ((wx + AX) / (2 * AX)) * (w - 2 * pad);
+        const sy = h - pad - ((wy + AX) / (2 * AX)) * (h - 2 * pad);
+        return [sx, sy];
+      }
+
+      function draw(t) {
+        const w = cssSize;
+        const h = cssSize;
+        ctx.fillStyle = "#161b22";
+        ctx.fillRect(0, 0, w, h);
+
+        ctx.strokeStyle = "#30363d";
+        ctx.lineWidth = 1;
+        for (let g = -5; g <= 5; g++) {
+          const [sx1, sy1] = worldToScreen(g, -AX, w, h);
+          const [sx2, sy2] = worldToScreen(g, AX, w, h);
+          ctx.beginPath();
+          ctx.moveTo(sx1, sy1);
+          ctx.lineTo(sx2, sy2);
+          ctx.stroke();
+          const [tx1, ty1] = worldToScreen(-AX, g, w, h);
+          const [tx2, ty2] = worldToScreen(AX, g, w, h);
+          ctx.beginPath();
+          ctx.moveTo(tx1, ty1);
+          ctx.lineTo(tx2, ty2);
+          ctx.stroke();
+        }
+
+        const alpha = 0.35;
+        ctx.strokeStyle = "rgba(88, 166, 255, " + alpha + ")";
+        for (let i = 0; i < N; i += 6) {
+          const [sx0, sy0] = worldToScreen(x0[i], y0[i], w, h);
+          const [sx1p, sy1p] = worldToScreen(x1[i], y1[i], w, h);
+          ctx.beginPath();
+          ctx.moveTo(sx0, sy0);
+          ctx.lineTo(sx1p, sy1p);
+          ctx.stroke();
+        }
+
+        const r = Math.max(1.2, w / 220);
+        for (let i = 0; i < N; i++) {
+          const xt = (1 - t) * x0[i] + t * x1[i];
+          const yt = (1 - t) * y0[i] + t * y1[i];
+          const [px, py] = worldToScreen(xt, yt, w, h);
+          ctx.beginPath();
+          ctx.arc(px, py, r, 0, Math.PI * 2);
+          ctx.fillStyle = t < 0.05 ? "#79c0ff" : t > 0.95 ? "#3fb950" : "#d2a8ff";
+          ctx.fill();
+        }
+
+        ctx.fillStyle = "#8b949e";
+        ctx.font = "11px system-ui, sans-serif";
+        ctx.fillText("−" + AX + " … +" + AX, pad, h - 6);
+      }
+
+      document.getElementById("t").addEventListener("input", function () {
+        const t = parseFloat(this.value, 10);
+        document.getElementById("tval").textContent = t.toFixed(2);
+        draw(t);
+      });
+
+      window.addEventListener("resize", resize);
+      resize();
+      document.getElementById("tval").textContent = "0.00";
+    })();
+  </script>
+</body>
+</html>
