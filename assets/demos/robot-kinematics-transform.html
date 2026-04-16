@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>坐标系变换可视化</title>
+    <style>
+        body { margin: 0; overflow: hidden; font-family: Arial, sans-serif; }
+        #canvas-container { width: 100%; height: 100vh; }
+        #controls {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            max-width: 300px;
+        }
+        .control-group {
+            margin-bottom: 12px;
+        }
+        label {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #333;
+        }
+        input[type="range"] {
+            width: 100%;
+        }
+        .value-display {
+            display: inline-block;
+            min-width: 50px;
+            text-align: right;
+            font-family: monospace;
+            color: #666;
+        }
+        #matrix-display {
+            margin-top: 15px;
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 11px;
+            line-height: 1.4;
+        }
+        h3 {
+            margin: 0 0 10px 0;
+            font-size: 14px;
+            color: #2563EB;
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container"></div>
+    <div id="controls">
+        <h3>🔧 坐标系变换控制</h3>
+
+        <div class="control-group">
+            <label>平移 X: <span class="value-display" id="tx-value">0.0</span></label>
+            <input type="range" id="tx" min="-5" max="5" step="0.1" value="0">
+        </div>
+
+        <div class="control-group">
+            <label>平移 Y: <span class="value-display" id="ty-value">0.0</span></label>
+            <input type="range" id="ty" min="-5" max="5" step="0.1" value="0">
+        </div>
+
+        <div class="control-group">
+            <label>平移 Z: <span class="value-display" id="tz-value">0.0</span></label>
+            <input type="range" id="tz" min="-5" max="5" step="0.1" value="0">
+        </div>
+
+        <div class="control-group">
+            <label>旋转 X (°): <span class="value-display" id="rx-value">0</span></label>
+            <input type="range" id="rx" min="-180" max="180" step="1" value="0">
+        </div>
+
+        <div class="control-group">
+            <label>旋转 Y (°): <span class="value-display" id="ry-value">0</span></label>
+            <input type="range" id="ry" min="-180" max="180" step="1" value="0">
+        </div>
+
+        <div class="control-group">
+            <label>旋转 Z (°): <span class="value-display" id="rz-value">0</span></label>
+            <input type="range" id="rz" min="-180" max="180" step="1" value="0">
+        </div>
+
+        <div id="matrix-display">
+            <strong>齐次变换矩阵 T:</strong>
+            <pre id="matrix-content"></pre>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // 场景设置
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0xf0f0f0);
+
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(8, 6, 8);
+        camera.lookAt(0, 0, 0);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+        // 添加网格
+        const gridHelper = new THREE.GridHelper(20, 20, 0xcccccc, 0xe0e0e0);
+        scene.add(gridHelper);
+
+        // 创建坐标轴辅助函数
+        function createAxes(size = 2) {
+            const axes = new THREE.Group();
+
+            const arrowX = new THREE.ArrowHelper(
+                new THREE.Vector3(1, 0, 0),
+                new THREE.Vector3(0, 0, 0),
+                size, 0xff0000, size * 0.2, size * 0.15
+            );
+            const arrowY = new THREE.ArrowHelper(
+                new THREE.Vector3(0, 1, 0),
+                new THREE.Vector3(0, 0, 0),
+                size, 0x00ff00, size * 0.2, size * 0.15
+            );
+            const arrowZ = new THREE.ArrowHelper(
+                new THREE.Vector3(0, 0, 1),
+                new THREE.Vector3(0, 0, 0),
+                size, 0x0000ff, size * 0.2, size * 0.15
+            );
+
+            axes.add(arrowX, arrowY, arrowZ);
+            return axes;
+        }
+
+        // 世界坐标系（固定）
+        const worldAxes = createAxes(3);
+        scene.add(worldAxes);
+
+        // 子坐标系（可变换）
+        const childAxes = createAxes(2);
+        scene.add(childAxes);
+
+        // 添加立方体以更好地显示变换
+        const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
+        const cubeMaterial = new THREE.MeshPhongMaterial({
+            color: 0x2563EB,
+            transparent: true,
+            opacity: 0.6
+        });
+        const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+        childAxes.add(cube);
+
+        // 添加光照
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        scene.add(ambientLight);
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.4);
+        directionalLight.position.set(5, 10, 5);
+        scene.add(directionalLight);
+
+        // 控制器
+        const controls = {
+            tx: 0, ty: 0, tz: 0,
+            rx: 0, ry: 0, rz: 0
+        };
+
+        // 更新变换矩阵显示
+        function updateMatrixDisplay() {
+            const matrix = childAxes.matrix.clone();
+            const elements = matrix.elements;
+
+            const matrixStr = `[${elements[0].toFixed(2)}  ${elements[4].toFixed(2)}  ${elements[8].toFixed(2)}  ${elements[12].toFixed(2)}]
+[${elements[1].toFixed(2)}  ${elements[5].toFixed(2)}  ${elements[9].toFixed(2)}  ${elements[13].toFixed(2)}]
+[${elements[2].toFixed(2)}  ${elements[6].toFixed(2)}  ${elements[10].toFixed(2)}  ${elements[14].toFixed(2)}]
+[${elements[3].toFixed(2)}  ${elements[7].toFixed(2)}  ${elements[11].toFixed(2)}  ${elements[15].toFixed(2)}]`;
+
+            document.getElementById('matrix-content').textContent = matrixStr;
+        }
+
+        // 更新子坐标系变换
+        function updateTransform() {
+            childAxes.position.set(controls.tx, controls.ty, controls.tz);
+            childAxes.rotation.set(
+                THREE.MathUtils.degToRad(controls.rx),
+                THREE.MathUtils.degToRad(controls.ry),
+                THREE.MathUtils.degToRad(controls.rz)
+            );
+            childAxes.updateMatrix();
+            updateMatrixDisplay();
+        }
+
+        // 绑定控制器
+        ['tx', 'ty', 'tz', 'rx', 'ry', 'rz'].forEach(id => {
+            const slider = document.getElementById(id);
+            const display = document.getElementById(id + '-value');
+
+            slider.addEventListener('input', (e) => {
+                const value = parseFloat(e.target.value);
+                controls[id] = value;
+                display.textContent = id.startsWith('r') ? value.toFixed(0) : value.toFixed(1);
+                updateTransform();
+            });
+        });
+
+        // 初始化显示
+        updateMatrixDisplay();
+
+        // 动画循环
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // 缓慢旋转相机以获得更好的视角
+            const time = Date.now() * 0.0001;
+            camera.position.x = Math.cos(time) * 10;
+            camera.position.z = Math.sin(time) * 10;
+            camera.lookAt(0, 0, 0);
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // 响应窗口大小变化
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>

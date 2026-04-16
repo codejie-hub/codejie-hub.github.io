@@ -1,7 +1,7 @@
 ---
 title: 【生成模型】流匹配 Flow Matching：ODE、向量场与相对扩散
 date: 2026-04-01 16:00:00 +0800
-categories: [paper, ML]
+categories: [论文笔记]
 tags: [flow-matching, diffusion, generative-model, rectified-flow, optimal-transport]
 description: 流匹配用 ODE 与向量场回归描述从噪声到数据的输运；本文整理直线路径（OT）直觉、条件流匹配训练目标，以及与扩散在轨迹与调度上的差异，并附可部署 2D 轨迹演示。
 mermaid: true
