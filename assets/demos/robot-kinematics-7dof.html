@@ -1,405 +1,886 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>7自由度机械臂正运动学</title>
-    <style>
-        body { margin: 0; overflow: hidden; font-family: Arial, sans-serif; }
-        #canvas-container { width: 100%; height: 100vh; }
-        #controls {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            max-width: 320px;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-        .control-group {
-            margin-bottom: 10px;
-        }
-        label {
-            display: block;
-            margin-bottom: 3px;
-            font-size: 11px;
-            font-weight: bold;
-            color: #333;
-        }
-        input[type="range"] {
-            width: 100%;
-        }
-        .value-display {
-            display: inline-block;
-            min-width: 45px;
-            text-align: right;
-            font-family: monospace;
-            font-size: 11px;
-            color: #666;
-        }
-        #pose-display {
-            margin-top: 15px;
-            padding: 10px;
-            background: #f5f5f5;
-            border-radius: 4px;
-            font-size: 10px;
-            line-height: 1.5;
-        }
-        h3 {
-            margin: 0 0 10px 0;
-            font-size: 14px;
-            color: #2563EB;
-        }
-        .preset-buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6px;
-            margin-bottom: 12px;
-        }
-        .preset-btn {
-            padding: 6px;
-            background: #3B82F6;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 11px;
-            transition: background 0.2s;
-        }
-        .preset-btn:hover {
-            background: #2563EB;
-        }
-        .info-section {
-            margin-top: 10px;
-            padding: 8px;
-            background: #EFF6FF;
-            border-radius: 4px;
-            font-size: 10px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>7自由度机械臂正运动学</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; background: #0d1117; }
+    body {
+      overflow: hidden;
+      color: #c9d1d9;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", sans-serif;
+    }
+    button, input { font: inherit; }
+    .layout {
+      display: grid;
+      grid-template-columns: 310px minmax(0, 1fr);
+      width: 100%;
+      height: 100%;
+      background: #0d1117;
+    }
+    .panel {
+      min-height: 0;
+      overflow-y: auto;
+      padding: 14px 16px 16px;
+      background: #161b22;
+      border-right: 1px solid #30363d;
+    }
+    .title {
+      display: grid;
+      gap: 3px;
+      margin-bottom: 12px;
+    }
+    .eyebrow {
+      margin: 0;
+      color: #8b949e;
+      font-size: 11px;
+      line-height: 1.2;
+    }
+    h1 {
+      margin: 0;
+      color: #79c0ff;
+      font-size: 16px;
+      font-weight: 650;
+      line-height: 1.25;
+    }
+    .metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .metric {
+      min-width: 0;
+      padding: 8px;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      background: #0d1117;
+    }
+    .metric.wide { grid-column: 1 / -1; }
+    .metric.wide strong { white-space: normal; }
+    .metric span {
+      display: block;
+      color: #8b949e;
+      font-size: 10px;
+      line-height: 1.2;
+    }
+    .metric strong {
+      display: block;
+      margin-top: 3px;
+      color: #f0f6fc;
+      font-size: 12px;
+      line-height: 1.25;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .section {
+      display: grid;
+      gap: 9px;
+      margin-top: 13px;
+    }
+    .section-title {
+      margin: 0;
+      color: #8b949e;
+      font-size: 11px;
+      font-weight: 650;
+      line-height: 1.2;
+    }
+    .preset-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 7px;
+    }
+    .btn {
+      min-height: 31px;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      background: #21262d;
+      color: #c9d1d9;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 650;
+    }
+    .btn:hover { background: #30363d; }
+    .btn.active, .btn.primary {
+      background: #238636;
+      border-color: #2ea043;
+      color: #fff;
+    }
+    .joint-row {
+      display: grid;
+      gap: 5px;
+      min-width: 0;
+    }
+    .joint-row label {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+      color: #c9d1d9;
+      font-size: 12px;
+      line-height: 1.2;
+    }
+    .joint-row .meta {
+      color: #8b949e;
+      font-weight: 500;
+    }
+    .value-display {
+      color: #7dcfff;
+      font-size: 11px;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    input[type="range"] {
+      width: 100%;
+      min-width: 0;
+      accent-color: #58a6ff;
+    }
+    .toggle-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      min-height: 30px;
+      padding: 0 8px;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      background: #0d1117;
+      color: #8b949e;
+      font-size: 12px;
+    }
+    .toggle input {
+      width: 16px;
+      height: 16px;
+      margin: 0;
+      accent-color: #58a6ff;
+    }
+    .pose-box {
+      display: grid;
+      gap: 5px;
+      padding: 9px 10px;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      background: #0d1117;
+      color: #8b949e;
+      font-size: 11px;
+      line-height: 1.35;
+    }
+    .pose-box code {
+      color: #f0f6fc;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 11px;
+      white-space: pre-wrap;
+    }
+    .formula {
+      margin: 0;
+      padding: 9px 10px;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      background: #0d1117;
+      color: #8b949e;
+      font-size: 11px;
+      line-height: 1.45;
+    }
+    .formula strong { color: #c9d1d9; font-weight: 650; }
+    #viewport {
+      position: relative;
+      min-width: 0;
+      height: 100%;
+      overflow: hidden;
+      background: #0d1117;
+    }
+    #canvas-container {
+      width: 100%;
+      height: 100%;
+    }
+    #canvas-container canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    .hud {
+      position: absolute;
+      right: 14px;
+      bottom: 12px;
+      display: grid;
+      grid-template-columns: auto auto;
+      gap: 6px 10px;
+      max-width: min(340px, calc(100% - 28px));
+      padding: 8px 10px;
+      border: 1px solid rgba(139, 148, 158, 0.28);
+      border-radius: 8px;
+      background: rgba(13, 17, 23, 0.76);
+      color: #8b949e;
+      font-size: 11px;
+      line-height: 1.2;
+      backdrop-filter: blur(8px);
+      font-variant-numeric: tabular-nums;
+      pointer-events: none;
+    }
+    .hud strong {
+      color: #f0f6fc;
+      font-weight: 650;
+    }
+    .legend {
+      position: absolute;
+      left: 14px;
+      bottom: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 12px;
+      max-width: min(460px, calc(100% - 28px));
+      padding: 8px 10px;
+      border: 1px solid rgba(139, 148, 158, 0.24);
+      border-radius: 8px;
+      background: rgba(13, 17, 23, 0.68);
+      color: #8b949e;
+      font-size: 11px;
+      line-height: 1.2;
+      backdrop-filter: blur(8px);
+      pointer-events: none;
+    }
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    .swatch {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+    }
+    .swatch.joint { background: #58a6ff; }
+    .swatch.axis { background: #ffa657; }
+    .swatch.trail { background: #d2a8ff; }
+    .swatch.target { background: #ff7b72; }
+    @media (max-width: 760px) {
+      body {
+        overflow: auto;
+        overflow-x: hidden;
+      }
+      .layout {
+        grid-template-columns: 1fr;
+        height: 100%;
+        min-height: 100%;
+      }
+      .panel {
+        width: 100%;
+        max-height: 42vh;
+        border-right: 0;
+        border-bottom: 1px solid #30363d;
+      }
+      #viewport {
+        height: 58vh;
+        min-height: 350px;
+      }
+      .hud {
+        right: 10px;
+        left: 10px;
+        bottom: 10px;
+        max-width: none;
+        grid-template-columns: auto 1fr;
+      }
+      .legend {
+        display: none;
+      }
+    }
+    @media (max-width: 420px) {
+      .panel { padding: 12px; }
+      .metrics, .toggle-grid {
+        grid-template-columns: 1fr;
+      }
+      .preset-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+  </style>
 </head>
 <body>
-    <div id="canvas-container"></div>
-    <div id="controls">
-        <h3>🦾 7-DOF 机械臂控制</h3>
+  <main class="layout">
+    <aside class="panel">
+      <header class="title">
+        <p class="eyebrow">Forward Kinematics / 7-DOF Redundancy</p>
+        <h1>7 自由度机械臂原理演示</h1>
+      </header>
 
-        <div class="preset-buttons">
-            <button class="preset-btn" data-preset="home">Home</button>
-            <button class="preset-btn" data-preset="reach">Reach</button>
-            <button class="preset-btn" data-preset="grasp">Grasp</button>
-            <button class="preset-btn" data-preset="random">Random</button>
+      <div class="metrics" aria-label="运动学指标">
+        <div class="metric wide"><span>末端位置 p</span><strong id="positionMetric">x 0.000 / y 0.000 / z 0.000</strong></div>
+        <div class="metric"><span>奇异性指标 κ</span><strong id="conditionMetric">--</strong></div>
+        <div class="metric"><span>可操作度 w</span><strong id="manipMetric">--</strong></div>
+        <div class="metric wide"><span>姿态四元数 q</span><strong id="quatMetric">w 1.000 / x 0.000 / y 0.000 / z 0.000</strong></div>
+      </div>
+
+      <section class="section" aria-label="预设姿态">
+        <p class="section-title">姿态预设</p>
+        <div class="preset-grid">
+          <button class="btn active" type="button" data-preset="home">Home</button>
+          <button class="btn" type="button" data-preset="reach">Reach</button>
+          <button class="btn" type="button" data-preset="elbow">Elbow</button>
+          <button class="btn" type="button" data-preset="fold">Fold</button>
+          <button class="btn" type="button" data-preset="singular">Near Sing.</button>
+          <button class="btn" type="button" data-preset="random">Random</button>
         </div>
+      </section>
 
-        <div class="control-group">
-            <label>关节1 (基座): <span class="value-display" id="j1-value">0°</span></label>
-            <input type="range" id="j1" min="-180" max="180" step="1" value="0">
+      <section class="section" aria-label="关节角控制">
+        <p class="section-title">关节角 θ</p>
+        <div class="joint-row">
+          <label for="j1">J1 基座 <span class="meta">yaw</span><span class="value-display" id="j1-value">0°</span></label>
+          <input type="range" id="j1" min="-180" max="180" step="1" value="0">
         </div>
-
-        <div class="control-group">
-            <label>关节2 (肩部1): <span class="value-display" id="j2-value">0°</span></label>
-            <input type="range" id="j2" min="-120" max="120" step="1" value="0">
+        <div class="joint-row">
+          <label for="j2">J2 肩部 <span class="meta">pitch</span><span class="value-display" id="j2-value">-18°</span></label>
+          <input type="range" id="j2" min="-120" max="120" step="1" value="-18">
         </div>
-
-        <div class="control-group">
-            <label>关节3 (肩部2): <span class="value-display" id="j3-value">0°</span></label>
-            <input type="range" id="j3" min="-180" max="180" step="1" value="0">
+        <div class="joint-row">
+          <label for="j3">J3 上臂旋转 <span class="meta">roll</span><span class="value-display" id="j3-value">0°</span></label>
+          <input type="range" id="j3" min="-180" max="180" step="1" value="0">
         </div>
-
-        <div class="control-group">
-            <label>关节4 (肘部): <span class="value-display" id="j4-value">0°</span></label>
-            <input type="range" id="j4" min="-150" max="0" step="1" value="0">
+        <div class="joint-row">
+          <label for="j4">J4 肘部 <span class="meta">bend</span><span class="value-display" id="j4-value">-62°</span></label>
+          <input type="range" id="j4" min="-150" max="0" step="1" value="-62">
         </div>
-
-        <div class="control-group">
-            <label>关节5 (腕部1): <span class="value-display" id="j5-value">0°</span></label>
-            <input type="range" id="j5" min="-180" max="180" step="1" value="0">
+        <div class="joint-row">
+          <label for="j5">J5 腕旋转 <span class="meta">roll</span><span class="value-display" id="j5-value">0°</span></label>
+          <input type="range" id="j5" min="-180" max="180" step="1" value="0">
         </div>
-
-        <div class="control-group">
-            <label>关节6 (腕部2): <span class="value-display" id="j6-value">0°</span></label>
-            <input type="range" id="j6" min="-120" max="120" step="1" value="0">
+        <div class="joint-row">
+          <label for="j6">J6 腕部 <span class="meta">pitch</span><span class="value-display" id="j6-value">42°</span></label>
+          <input type="range" id="j6" min="-120" max="120" step="1" value="42">
         </div>
-
-        <div class="control-group">
-            <label>关节7 (腕部3): <span class="value-display" id="j7-value">0°</span></label>
-            <input type="range" id="j7" min="-180" max="180" step="1" value="0">
+        <div class="joint-row">
+          <label for="j7">J7 工具旋转 <span class="meta">roll</span><span class="value-display" id="j7-value">0°</span></label>
+          <input type="range" id="j7" min="-180" max="180" step="1" value="0">
         </div>
+      </section>
 
-        <div id="pose-display">
-            <strong>末端位姿:</strong>
-            <div id="position-text" style="font-family: monospace; margin-top: 5px;"></div>
-            <div id="orientation-text" style="font-family: monospace; margin-top: 5px;"></div>
+      <section class="section" aria-label="显示层">
+        <p class="section-title">显示层</p>
+        <div class="toggle-grid">
+          <label class="toggle" for="showAxes">关节轴<input id="showAxes" type="checkbox" checked></label>
+          <label class="toggle" for="showFrames">末端坐标<input id="showFrames" type="checkbox" checked></label>
+          <label class="toggle" for="showTrail">末端轨迹<input id="showTrail" type="checkbox" checked></label>
+          <label class="toggle" for="showWorkspace">工作空间<input id="showWorkspace" type="checkbox" checked></label>
+          <label class="toggle" for="showTarget">参考目标<input id="showTarget" type="checkbox" checked></label>
+          <label class="toggle" for="autoDemo">自动演示<input id="autoDemo" type="checkbox"></label>
         </div>
+      </section>
 
-        <div class="info-section">
-            <strong>💡 提示:</strong><br>
-            • 7-DOF 提供冗余自由度<br>
-            • 同一末端位姿有无穷多解<br>
-            • 可优化避障、奇异性等
+      <section class="section">
+        <div class="pose-box">
+          <span>末端位姿 T<sub>E</sub><sup>B</sup></span>
+          <code id="poseText">position and quaternion</code>
         </div>
-    </div>
+        <p class="formula">
+          <strong>T<sub>E</sub><sup>B</sup> = T<sub>1</sub><sup>0</sup> T<sub>2</sub><sup>1</sup> ... T<sub>7</sub><sup>6</sup></strong><br>
+          J<sub>v</sub><sup>i</sup> = z<sub>i-1</sub> × (p<sub>E</sub> − p<sub>i-1</sub>)，κ 越大越接近奇异。
+        </p>
+      </section>
+    </aside>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script>
-        // 场景设置
-        const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0xf0f0f0);
+    <section id="viewport" aria-label="7自由度机械臂三维可视化">
+      <div id="canvas-container"></div>
+      <div class="legend" aria-label="图例">
+        <span class="legend-item"><span class="swatch joint"></span>关节/连杆</span>
+        <span class="legend-item"><span class="swatch axis"></span>旋转轴</span>
+        <span class="legend-item"><span class="swatch trail"></span>末端轨迹</span>
+        <span class="legend-item"><span class="swatch target"></span>参考目标</span>
+      </div>
+      <div class="hud" aria-label="相机与状态">
+        <span>相机</span><strong>拖拽旋转 / 滚轮缩放</strong>
+        <span>冗余</span><strong>7 joints control 6D pose</strong>
+        <span>状态</span><strong id="statusText">Nominal</strong>
+      </div>
+    </section>
+  </main>
 
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(6, 4, 6);
-        camera.lookAt(0, 2, 0);
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    const viewport = document.getElementById("viewport");
+    const canvasContainer = document.getElementById("canvas-container");
+    const positionMetric = document.getElementById("positionMetric");
+    const quatMetric = document.getElementById("quatMetric");
+    const conditionMetric = document.getElementById("conditionMetric");
+    const manipMetric = document.getElementById("manipMetric");
+    const poseText = document.getElementById("poseText");
+    const statusText = document.getElementById("statusText");
+    const showAxes = document.getElementById("showAxes");
+    const showFrames = document.getElementById("showFrames");
+    const showTrail = document.getElementById("showTrail");
+    const showWorkspace = document.getElementById("showWorkspace");
+    const showTarget = document.getElementById("showTarget");
+    const autoDemo = document.getElementById("autoDemo");
 
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.shadowMap.enabled = true;
-        document.getElementById('canvas-container').appendChild(renderer.domElement);
+    const jointConfig = [
+      { id: "j1", axis: "y", label: "J1", color: 0x58a6ff },
+      { id: "j2", axis: "z", label: "J2", color: 0xffa657 },
+      { id: "j3", axis: "y", label: "J3", color: 0xd2a8ff },
+      { id: "j4", axis: "z", label: "J4", color: 0x56d364 },
+      { id: "j5", axis: "y", label: "J5", color: 0xff7b72 },
+      { id: "j6", axis: "z", label: "J6", color: 0xa5d6ff },
+      { id: "j7", axis: "y", label: "J7", color: 0xf2cc60 }
+    ];
+    const linkLengths = [0.55, 0.82, 0.42, 0.82, 0.34, 0.32, 0.24];
+    const presets = {
+      home: [0, -18, 0, -62, 0, 42, 0],
+      reach: [18, -38, 16, -96, 24, 54, -12],
+      elbow: [-42, -28, 82, -86, -44, 36, 58],
+      fold: [28, 48, -34, -132, 76, -62, -48],
+      singular: [0, 0, 0, -4, 0, 0, 0],
+      random: null
+    };
 
-        // 添加网格
-        const gridHelper = new THREE.GridHelper(10, 10, 0xcccccc, 0xe0e0e0);
-        scene.add(gridHelper);
+    const jointAngles = jointConfig.map((cfg) => Number(document.getElementById(cfg.id).value));
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0d1117);
+    scene.fog = new THREE.Fog(0x0d1117, 7, 13);
 
-        // 添加坐标轴
-        const axesHelper = new THREE.AxesHelper(2);
-        scene.add(axesHelper);
+    const camera = new THREE.PerspectiveCamera(50, 1, 0.05, 100);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    canvasContainer.appendChild(renderer.domElement);
 
-        // 光照
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-        scene.add(ambientLight);
+    scene.add(new THREE.HemisphereLight(0xa5d6ff, 0x172033, 1.05));
+    const keyLight = new THREE.DirectionalLight(0xffffff, 1.05);
+    keyLight.position.set(4.5, 6.5, 4.5);
+    keyLight.castShadow = true;
+    keyLight.shadow.mapSize.set(1024, 1024);
+    scene.add(keyLight);
+    const rimLight = new THREE.DirectionalLight(0xffc680, 0.52);
+    rimLight.position.set(-5, 3, -4);
+    scene.add(rimLight);
 
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-        directionalLight.position.set(5, 10, 5);
-        directionalLight.castShadow = true;
-        scene.add(directionalLight);
+    const grid = new THREE.GridHelper(7, 28, 0x30363d, 0x21262d);
+    scene.add(grid);
 
-        // 7-DOF 机械臂参数 (简化的DH参数)
-        const linkLengths = [0.5, 0.8, 0.3, 0.9, 0.3, 0.4, 0.2];
-        const jointAngles = [0, 0, 0, 0, 0, 0, 0];
+    const baseFrame = createAxesFrame(0.72);
+    scene.add(baseFrame);
 
-        // 创建关节和连杆
-        function createJoint(radius = 0.15) {
-            const geometry = new THREE.SphereGeometry(radius, 16, 16);
-            const material = new THREE.MeshPhongMaterial({
-                color: 0x2563EB,
-                shininess: 80
-            });
-            const joint = new THREE.Mesh(geometry, material);
-            joint.castShadow = true;
-            return joint;
+    const workspaceGroup = new THREE.Group();
+    const reachRadius = linkLengths.reduce((sum, value) => sum + value, 0);
+    const reachSphere = new THREE.Mesh(
+      new THREE.SphereGeometry(reachRadius, 48, 24),
+      new THREE.MeshBasicMaterial({ color: 0x58a6ff, transparent: true, opacity: 0.055, wireframe: true })
+    );
+    reachSphere.position.y = 0.25;
+    workspaceGroup.add(reachSphere);
+    workspaceGroup.add(new THREE.GridHelper(reachRadius * 2, 16, 0x1f6feb, 0x1b2d44));
+    scene.add(workspaceGroup);
+
+    const baseGroup = new THREE.Group();
+    baseGroup.position.y = 0.24;
+    scene.add(baseGroup);
+
+    const base = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.36, 0.46, 0.24, 32),
+      new THREE.MeshStandardMaterial({ color: 0x30363d, roughness: 0.58, metalness: 0.28 })
+    );
+    base.position.y = -0.12;
+    base.castShadow = true;
+    base.receiveShadow = true;
+    baseGroup.add(base);
+
+    const armStructure = [];
+    let parentGroup = baseGroup;
+    for (let i = 0; i < jointConfig.length; i++) {
+      const jointGroup = new THREE.Group();
+      parentGroup.add(jointGroup);
+
+      const joint = createJoint(i, jointConfig[i].color);
+      jointGroup.add(joint);
+
+      const link = createLink(linkLengths[i], i);
+      jointGroup.add(link);
+
+      const axis = createJointAxis(jointConfig[i].axis, jointConfig[i].color);
+      jointGroup.add(axis);
+
+      const childGroup = new THREE.Group();
+      childGroup.position.y = linkLengths[i];
+      jointGroup.add(childGroup);
+
+      armStructure.push({ group: jointGroup, child: childGroup, joint, link, axis, axisName: jointConfig[i].axis });
+      parentGroup = childGroup;
+    }
+
+    const endEffector = createEndEffector();
+    endEffector.position.y = 0.12;
+    parentGroup.add(endEffector);
+    const toolFrame = createAxesFrame(0.42);
+    toolFrame.position.y = 0.18;
+    endEffector.add(toolFrame);
+
+    const target = new THREE.Mesh(
+      new THREE.SphereGeometry(0.085, 24, 16),
+      new THREE.MeshStandardMaterial({ color: 0xff7b72, emissive: 0x441111, roughness: 0.38 })
+    );
+    target.position.set(1.65, 1.72, 1.16);
+    scene.add(target);
+    const targetLine = new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3()]),
+      new THREE.LineBasicMaterial({ color: 0xff7b72, transparent: true, opacity: 0.72 })
+    );
+    scene.add(targetLine);
+
+    const trailPoints = [];
+    const trailLine = new THREE.Line(
+      new THREE.BufferGeometry(),
+      new THREE.LineBasicMaterial({ color: 0xd2a8ff, transparent: true, opacity: 0.9 })
+    );
+    scene.add(trailLine);
+
+    const cameraState = { theta: 0.78, height: 2.9, distance: 6.6 };
+    const dragState = { active: false, x: 0, y: 0 };
+    const tempEndPos = new THREE.Vector3();
+    const tempQuat = new THREE.Quaternion();
+    const tempEuler = new THREE.Euler();
+
+    function createJoint(index, color) {
+      const radius = index === 0 ? 0.16 : 0.12;
+      const joint = new THREE.Mesh(
+        new THREE.SphereGeometry(radius, 28, 18),
+        new THREE.MeshStandardMaterial({
+          color,
+          roughness: 0.34,
+          metalness: 0.22,
+          emissive: new THREE.Color(color).multiplyScalar(0.08)
+        })
+      );
+      joint.castShadow = true;
+      return joint;
+    }
+
+    function createLink(length, index) {
+      const link = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.065, 0.082, length, 18),
+        new THREE.MeshStandardMaterial({
+          color: index % 2 === 0 ? 0x8b949e : 0x6e7681,
+          roughness: 0.46,
+          metalness: 0.18
+        })
+      );
+      link.position.y = length / 2;
+      link.castShadow = true;
+      link.receiveShadow = true;
+      return link;
+    }
+
+    function createJointAxis(axisName, color) {
+      const dir = axisVector(axisName);
+      const arrow = new THREE.ArrowHelper(dir, new THREE.Vector3(0, 0, 0), 0.42, color, 0.1, 0.06);
+      arrow.line.material.transparent = true;
+      arrow.line.material.opacity = 0.9;
+      arrow.cone.material.transparent = true;
+      arrow.cone.material.opacity = 0.95;
+      return arrow;
+    }
+
+    function createAxesFrame(size) {
+      const frame = new THREE.Group();
+      frame.add(new THREE.ArrowHelper(new THREE.Vector3(1, 0, 0), new THREE.Vector3(), size, 0xff7b72, size * 0.18, size * 0.08));
+      frame.add(new THREE.ArrowHelper(new THREE.Vector3(0, 1, 0), new THREE.Vector3(), size, 0x56d364, size * 0.18, size * 0.08));
+      frame.add(new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(), size, 0x58a6ff, size * 0.18, size * 0.08));
+      return frame;
+    }
+
+    function createEndEffector() {
+      const group = new THREE.Group();
+      const palm = new THREE.Mesh(
+        new THREE.BoxGeometry(0.24, 0.14, 0.18),
+        new THREE.MeshStandardMaterial({ color: 0xf2cc60, roughness: 0.38, metalness: 0.12 })
+      );
+      palm.position.y = 0.08;
+      palm.castShadow = true;
+
+      const fingerMaterial = new THREE.MeshStandardMaterial({ color: 0xffa657, roughness: 0.42, metalness: 0.08 });
+      const fingerGeometry = new THREE.BoxGeometry(0.052, 0.25, 0.052);
+      const fingerLeft = new THREE.Mesh(fingerGeometry, fingerMaterial);
+      fingerLeft.position.set(-0.085, 0.27, 0.045);
+      fingerLeft.rotation.z = THREE.MathUtils.degToRad(-8);
+      fingerLeft.castShadow = true;
+
+      const fingerRight = fingerLeft.clone();
+      fingerRight.position.x = 0.085;
+      fingerRight.rotation.z = THREE.MathUtils.degToRad(8);
+
+      group.add(palm, fingerLeft, fingerRight);
+      return group;
+    }
+
+    function axisVector(axisName) {
+      if (axisName === "x") return new THREE.Vector3(1, 0, 0);
+      if (axisName === "z") return new THREE.Vector3(0, 0, 1);
+      return new THREE.Vector3(0, 1, 0);
+    }
+
+    function setRotationAxis(group, axisName, radians) {
+      group.rotation.set(0, 0, 0);
+      if (axisName === "x") group.rotation.x = radians;
+      else if (axisName === "z") group.rotation.z = radians;
+      else group.rotation.y = radians;
+    }
+
+    function updateArmPose(options = {}) {
+      armStructure.forEach((segment, index) => {
+        setRotationAxis(segment.group, segment.axisName, THREE.MathUtils.degToRad(jointAngles[index]));
+        segment.axis.visible = showAxes.checked;
+      });
+      toolFrame.visible = showFrames.checked;
+      baseFrame.visible = showFrames.checked;
+      workspaceGroup.visible = showWorkspace.checked;
+      target.visible = showTarget.checked;
+      targetLine.visible = showTarget.checked;
+      trailLine.visible = showTrail.checked;
+
+      scene.updateMatrixWorld(true);
+      updateTargetLine();
+      updateEndEffectorPose(options.forceTrail);
+    }
+
+    function updateTargetLine() {
+      endEffector.getWorldPosition(tempEndPos);
+      targetLine.geometry.setFromPoints([tempEndPos.clone(), target.position.clone()]);
+    }
+
+    function updateEndEffectorPose(forceTrail) {
+      endEffector.getWorldPosition(tempEndPos);
+      endEffector.getWorldQuaternion(tempQuat);
+      tempEuler.setFromQuaternion(tempQuat, "XYZ");
+
+      if (forceTrail || shouldAppendTrail(tempEndPos)) {
+        trailPoints.push(tempEndPos.clone());
+        while (trailPoints.length > 130) trailPoints.shift();
+        trailLine.geometry.setFromPoints(trailPoints);
+      }
+
+      const jacobian = computeJacobian(tempEndPos);
+      const metrics = computeJacobianMetrics(jacobian);
+      const conditionText = metrics.condition > 999 ? ">999" : metrics.condition.toFixed(1);
+      const status = metrics.condition > 120 ? "Near singular" : metrics.condition > 45 ? "Stretched" : "Nominal";
+
+      positionMetric.textContent = `x ${tempEndPos.x.toFixed(3)} / y ${tempEndPos.y.toFixed(3)} / z ${tempEndPos.z.toFixed(3)}`;
+      quatMetric.textContent = `w ${tempQuat.w.toFixed(3)} / x ${tempQuat.x.toFixed(3)} / y ${tempQuat.y.toFixed(3)} / z ${tempQuat.z.toFixed(3)}`;
+      conditionMetric.textContent = conditionText;
+      manipMetric.textContent = metrics.manipulability.toFixed(3);
+      statusText.textContent = status;
+      poseText.textContent =
+        `p = [${tempEndPos.x.toFixed(3)}, ${tempEndPos.y.toFixed(3)}, ${tempEndPos.z.toFixed(3)}] m\n` +
+        `q = [${tempQuat.w.toFixed(3)}, ${tempQuat.x.toFixed(3)}, ${tempQuat.y.toFixed(3)}, ${tempQuat.z.toFixed(3)}]\n` +
+        `rpy = [${radToDeg(tempEuler.x)}, ${radToDeg(tempEuler.y)}, ${radToDeg(tempEuler.z)}] deg`;
+    }
+
+    function shouldAppendTrail(pos) {
+      if (!showTrail.checked) return false;
+      const last = trailPoints[trailPoints.length - 1];
+      return !last || last.distanceTo(pos) > 0.025;
+    }
+
+    function computeJacobian(endPos) {
+      return armStructure.map((segment) => {
+        const origin = new THREE.Vector3();
+        const axis = axisVector(segment.axisName);
+        segment.group.getWorldPosition(origin);
+        axis.transformDirection(segment.group.matrixWorld).normalize();
+        const linear = new THREE.Vector3().subVectors(endPos, origin).cross(axis).multiplyScalar(-1);
+        return { linear, angular: axis };
+      });
+    }
+
+    function computeJacobianMetrics(columns) {
+      const g = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+      columns.forEach((column) => {
+        const v = column.linear;
+        const values = [v.x, v.y, v.z];
+        for (let r = 0; r < 3; r++) {
+          for (let c = 0; c < 3; c++) g[r][c] += values[r] * values[c];
         }
+      });
+      const eig = eigenSymmetric3(g).map((v) => Math.max(v, 0)).sort((a, b) => a - b);
+      const maxEig = Math.max(eig[2], 1e-9);
+      const minEig = Math.max(eig[0], 1e-9);
+      const condition = Math.sqrt(maxEig / minEig);
+      const manipulability = Math.sqrt(Math.max(0, eig[0] * eig[1] * eig[2]));
+      return { condition, manipulability };
+    }
 
-        function createLink(length, radius = 0.08) {
-            const geometry = new THREE.CylinderGeometry(radius, radius, length, 12);
-            const material = new THREE.MeshPhongMaterial({
-                color: 0x94A3B8,
-                shininess: 60
-            });
-            const link = new THREE.Mesh(geometry, material);
-            link.castShadow = true;
-            return link;
+    function eigenSymmetric3(input) {
+      const a = input.map((row) => row.slice());
+      for (let iter = 0; iter < 18; iter++) {
+        let p = 0;
+        let q = 1;
+        let max = Math.abs(a[0][1]);
+        if (Math.abs(a[0][2]) > max) { p = 0; q = 2; max = Math.abs(a[0][2]); }
+        if (Math.abs(a[1][2]) > max) { p = 1; q = 2; max = Math.abs(a[1][2]); }
+        if (max < 1e-10) break;
+
+        const app = a[p][p];
+        const aqq = a[q][q];
+        const apq = a[p][q];
+        const tau = (aqq - app) / (2 * apq);
+        const sign = tau >= 0 ? 1 : -1;
+        const t = sign / (Math.abs(tau) + Math.sqrt(1 + tau * tau));
+        const c = 1 / Math.sqrt(1 + t * t);
+        const s = t * c;
+
+        for (let k = 0; k < 3; k++) {
+          if (k !== p && k !== q) {
+            const akp = a[k][p];
+            const akq = a[k][q];
+            a[k][p] = c * akp - s * akq;
+            a[p][k] = a[k][p];
+            a[k][q] = s * akp + c * akq;
+            a[q][k] = a[k][q];
+          }
         }
+        a[p][p] = c * c * app - 2 * s * c * apq + s * s * aqq;
+        a[q][q] = s * s * app + 2 * s * c * apq + c * c * aqq;
+        a[p][q] = 0;
+        a[q][p] = 0;
+      }
+      return [a[0][0], a[1][1], a[2][2]];
+    }
 
-        // 创建末端执行器（简化的夹爪）
-        function createEndEffector() {
-            const group = new THREE.Group();
+    function radToDeg(value) {
+      return Math.round(THREE.MathUtils.radToDeg(value));
+    }
 
-            // 手掌
-            const palmGeometry = new THREE.BoxGeometry(0.2, 0.1, 0.15);
-            const palmMaterial = new THREE.MeshPhongMaterial({ color: 0xF59E0B });
-            const palm = new THREE.Mesh(palmGeometry, palmMaterial);
-            palm.castShadow = true;
+    function setJointAngles(angles, presetName) {
+      angles.forEach((angle, index) => {
+        jointAngles[index] = Math.round(angle);
+        const slider = document.getElementById(jointConfig[index].id);
+        const display = document.getElementById(`${jointConfig[index].id}-value`);
+        slider.value = String(jointAngles[index]);
+        display.textContent = `${jointAngles[index]}°`;
+      });
+      document.querySelectorAll("[data-preset]").forEach((button) => {
+        button.classList.toggle("active", button.dataset.preset === presetName);
+      });
+      trailPoints.length = 0;
+      trailLine.geometry.setFromPoints([]);
+      updateArmPose({ forceTrail: true });
+    }
 
-            // 手指
-            const fingerGeometry = new THREE.BoxGeometry(0.05, 0.2, 0.05);
-            const fingerMaterial = new THREE.MeshPhongMaterial({ color: 0xFBBF24 });
+    function randomAngles() {
+      return jointConfig.map((cfg) => {
+        const input = document.getElementById(cfg.id);
+        const min = Number(input.min);
+        const max = Number(input.max);
+        return min + Math.random() * (max - min);
+      });
+    }
 
-            const finger1 = new THREE.Mesh(fingerGeometry, fingerMaterial);
-            finger1.position.set(-0.06, -0.15, 0);
-            finger1.castShadow = true;
-
-            const finger2 = new THREE.Mesh(fingerGeometry, fingerMaterial);
-            finger2.position.set(0.06, -0.15, 0);
-            finger2.castShadow = true;
-
-            group.add(palm, finger1, finger2);
-            return group;
-        }
-
-        // 构建机械臂结构
-        const armStructure = [];
-        const baseGroup = new THREE.Group();
-        scene.add(baseGroup);
-
-        // 基座
-        const baseGeometry = new THREE.CylinderGeometry(0.3, 0.4, 0.2, 16);
-        const baseMaterial = new THREE.MeshPhongMaterial({ color: 0x475569 });
-        const base = new THREE.Mesh(baseGeometry, baseMaterial);
-        base.position.y = 0.1;
-        base.castShadow = true;
-        baseGroup.add(base);
-
-        let currentGroup = baseGroup;
-        let currentHeight = 0.2;
-
-        for (let i = 0; i < 7; i++) {
-            const jointGroup = new THREE.Group();
-            const joint = createJoint(i === 0 ? 0.18 : 0.12);
-            const link = createLink(linkLengths[i]);
-
-            joint.position.y = currentHeight;
-            currentGroup.add(joint);
-
-            link.position.y = currentHeight + linkLengths[i] / 2;
-            currentGroup.add(link);
-
-            jointGroup.position.y = currentHeight + linkLengths[i];
-            currentGroup.add(jointGroup);
-
-            armStructure.push({ group: jointGroup, joint: joint, link: link, axis: i % 2 === 0 ? 'y' : 'z' });
-            currentGroup = jointGroup;
-            currentHeight = 0;
-        }
-
-        // 添加末端执行器
-        const endEffector = createEndEffector();
-        endEffector.position.y = 0.1;
-        currentGroup.add(endEffector);
-
-        // 更新机械臂姿态
-        function updateArmPose() {
-            armStructure.forEach((segment, i) => {
-                const angle = THREE.MathUtils.degToRad(jointAngles[i]);
-                if (segment.axis === 'y') {
-                    segment.group.rotation.y = angle;
-                } else {
-                    segment.group.rotation.z = angle;
-                }
-            });
-
-            updateEndEffectorPose();
-        }
-
-        // 计算末端位姿
-        function updateEndEffectorPose() {
-            // 获取末端执行器的世界坐标
-            const worldPos = new THREE.Vector3();
-            endEffector.getWorldPosition(worldPos);
-
-            // 获取末端执行器的世界四元数
-            const worldQuat = new THREE.Quaternion();
-            endEffector.getWorldQuaternion(worldQuat);
-
-            document.getElementById('position-text').textContent =
-                `位置 (m):\n` +
-                `  x: ${worldPos.x.toFixed(3)}\n` +
-                `  y: ${worldPos.y.toFixed(3)}\n` +
-                `  z: ${worldPos.z.toFixed(3)}`;
-
-            document.getElementById('orientation-text').textContent =
-                `姿态 (四元数):\n` +
-                `  w: ${worldQuat.w.toFixed(3)}\n` +
-                `  x: ${worldQuat.x.toFixed(3)}\n` +
-                `  y: ${worldQuat.y.toFixed(3)}\n` +
-                `  z: ${worldQuat.z.toFixed(3)}`;
-        }
-
-        // 绑定滑块
-        for (let i = 1; i <= 7; i++) {
-            const slider = document.getElementById('j' + i);
-            const display = document.getElementById('j' + i + '-value');
-
-            slider.addEventListener('input', (e) => {
-                const value = parseInt(e.target.value);
-                jointAngles[i - 1] = value;
-                display.textContent = value + '°';
-                updateArmPose();
-            });
-        }
-
-        // 预设姿态
-        const presets = {
-            home: [0, 0, 0, 0, 0, 0, 0],
-            reach: [0, -30, 0, -90, 0, -45, 0],
-            grasp: [45, -45, 30, -120, -30, -60, 45],
-            random: () => Array(7).fill(0).map(() => Math.random() * 180 - 90)
-        };
-
-        document.querySelectorAll('.preset-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const preset = e.target.dataset.preset;
-                const angles = preset === 'random' ? presets[preset]() : presets[preset];
-
-                angles.forEach((angle, i) => {
-                    jointAngles[i] = angle;
-                    const slider = document.getElementById('j' + (i + 1));
-                    const display = document.getElementById('j' + (i + 1) + '-value');
-                    slider.value = angle;
-                    display.textContent = Math.round(angle) + '°';
-                });
-
-                updateArmPose();
-            });
-        });
-
-        // 初始化
+    jointConfig.forEach((cfg, index) => {
+      const slider = document.getElementById(cfg.id);
+      const display = document.getElementById(`${cfg.id}-value`);
+      slider.addEventListener("input", (event) => {
+        jointAngles[index] = Number(event.target.value);
+        display.textContent = `${jointAngles[index]}°`;
+        document.querySelectorAll("[data-preset]").forEach((button) => button.classList.remove("active"));
         updateArmPose();
+      });
+    });
 
-        // 相机控制
-        let isDragging = false;
-        let previousMousePosition = { x: 0, y: 0 };
-        let cameraAngle = 0;
-        let cameraHeight = 4;
-        let cameraDistance = 8;
+    document.querySelectorAll("[data-preset]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const preset = button.dataset.preset;
+        setJointAngles(preset === "random" ? randomAngles() : presets[preset], preset);
+      });
+    });
 
-        renderer.domElement.addEventListener('mousedown', (e) => {
-            isDragging = true;
-            previousMousePosition = { x: e.clientX, y: e.clientY };
-        });
+    [showAxes, showFrames, showTrail, showWorkspace, showTarget].forEach((control) => {
+      control.addEventListener("change", () => updateArmPose({ forceTrail: true }));
+    });
 
-        renderer.domElement.addEventListener('mousemove', (e) => {
-            if (isDragging) {
-                const deltaX = e.clientX - previousMousePosition.x;
-                const deltaY = e.clientY - previousMousePosition.y;
+    renderer.domElement.addEventListener("pointerdown", (event) => {
+      dragState.active = true;
+      dragState.x = event.clientX;
+      dragState.y = event.clientY;
+      renderer.domElement.setPointerCapture(event.pointerId);
+    });
 
-                cameraAngle += deltaX * 0.01;
-                cameraHeight = Math.max(1, Math.min(8, cameraHeight - deltaY * 0.02));
+    renderer.domElement.addEventListener("pointermove", (event) => {
+      if (!dragState.active) return;
+      const dx = event.clientX - dragState.x;
+      const dy = event.clientY - dragState.y;
+      cameraState.theta -= dx * 0.008;
+      cameraState.height = Math.max(0.9, Math.min(5.8, cameraState.height + dy * 0.012));
+      dragState.x = event.clientX;
+      dragState.y = event.clientY;
+    });
 
-                previousMousePosition = { x: e.clientX, y: e.clientY };
-            }
-        });
+    renderer.domElement.addEventListener("pointerup", (event) => {
+      dragState.active = false;
+      renderer.domElement.releasePointerCapture(event.pointerId);
+    });
 
-        renderer.domElement.addEventListener('mouseup', () => {
-            isDragging = false;
-        });
+    renderer.domElement.addEventListener("wheel", (event) => {
+      event.preventDefault();
+      cameraState.distance = Math.max(3.3, Math.min(10.8, cameraState.distance + event.deltaY * 0.006));
+    }, { passive: false });
 
-        renderer.domElement.addEventListener('wheel', (e) => {
-            e.preventDefault();
-            cameraDistance = Math.max(3, Math.min(15, cameraDistance + e.deltaY * 0.01));
-        });
+    function updateCamera() {
+      camera.position.set(
+        Math.cos(cameraState.theta) * cameraState.distance,
+        cameraState.height,
+        Math.sin(cameraState.theta) * cameraState.distance
+      );
+      camera.lookAt(0, 1.55, 0);
+    }
 
-        // 动画循环
-        function animate() {
-            requestAnimationFrame(animate);
+    function onResize() {
+      const w = Math.max(1, viewport.clientWidth);
+      const h = Math.max(1, viewport.clientHeight);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer.setSize(w, h, false);
+    }
 
-            // 更新相机位置
-            camera.position.x = Math.cos(cameraAngle) * cameraDistance;
-            camera.position.z = Math.sin(cameraAngle) * cameraDistance;
-            camera.position.y = cameraHeight;
-            camera.lookAt(0, 2, 0);
+    window.addEventListener("resize", onResize);
+    new ResizeObserver(onResize).observe(viewport);
 
-            renderer.render(scene, camera);
+    let lastAuto = 0;
+    function animate(time) {
+      requestAnimationFrame(animate);
+      if (autoDemo.checked) {
+        const t = time * 0.001;
+        if (time - lastAuto > 16) {
+          jointAngles[0] = Math.sin(t * 0.42) * 62;
+          jointAngles[1] = -22 + Math.sin(t * 0.58) * 34;
+          jointAngles[2] = Math.sin(t * 0.5 + 1.1) * 58;
+          jointAngles[3] = -76 + Math.sin(t * 0.64 + 0.8) * 42;
+          jointAngles[4] = Math.sin(t * 0.72) * 72;
+          jointAngles[5] = 36 + Math.sin(t * 0.66 + 1.7) * 44;
+          jointAngles[6] = Math.sin(t * 0.86 + 0.4) * 96;
+          jointConfig.forEach((cfg, index) => {
+            const angle = Math.round(jointAngles[index]);
+            document.getElementById(cfg.id).value = String(angle);
+            document.getElementById(`${cfg.id}-value`).textContent = `${angle}°`;
+          });
+          updateArmPose();
+          lastAuto = time;
         }
+      }
+      updateCamera();
+      renderer.render(scene, camera);
+    }
 
-        animate();
-
-        // 响应窗口大小变化
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
-    </script>
+    setJointAngles(presets.home, "home");
+    onResize();
+    animate(0);
+  </script>
 </body>
 </html>

@@ -6,65 +6,278 @@
   <title>单个 3D 高斯（椭球）参数演示</title>
   <style>
     * { box-sizing: border-box; }
-    html, body { height: 100%; margin: 0; }
+    html, body { height: 100%; margin: 0; background: #0d1117; }
     body {
       font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", sans-serif;
-      background: #16161e;
-      color: #c0caf5;
+      color: #c9d1d9;
+      overflow: hidden;
     }
+    button, input { font: inherit; }
     .layout {
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: 300px minmax(0, 1fr);
       min-height: 100%;
-      align-items: stretch;
+      background: #0d1117;
     }
     .panel {
-      width: 280px;
-      flex-shrink: 0;
-      padding: 14px 16px 18px;
-      background: #1f2335;
-      border-right: 1px solid #3b4261;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 14px 16px 16px;
+      background: #161b22;
+      border-right: 1px solid #30363d;
       overflow-y: auto;
-      max-height: 100vh;
+      min-height: 0;
     }
-    .panel h3 {
-      margin: 0 0 4px;
-      font-size: 14px;
-      font-weight: 600;
-      color: #7aa2f7;
+    .title {
+      display: grid;
+      gap: 3px;
     }
-    .hint {
+    .eyebrow {
+      margin: 0;
+      color: #8b949e;
       font-size: 11px;
-      line-height: 1.45;
-      color: #565f89;
-      margin: 0 0 14px;
+      line-height: 1.2;
     }
-    .row { margin-bottom: 12px; }
+    h1 {
+      margin: 0;
+      color: #79c0ff;
+      font-size: 16px;
+      font-weight: 650;
+      line-height: 1.25;
+    }
+    .readout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      min-width: 0;
+    }
+    .metric {
+      min-width: 0;
+      padding: 8px;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      background: #0d1117;
+    }
+    .metric:first-child { grid-column: 1 / -1; }
+    .metric span {
+      display: block;
+      color: #8b949e;
+      font-size: 10px;
+      line-height: 1.2;
+    }
+    .metric strong {
+      display: block;
+      margin-top: 3px;
+      color: #f0f6fc;
+      font-size: 12px;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .section {
+      display: grid;
+      gap: 9px;
+    }
+    .section-title {
+      margin: 0;
+      color: #8b949e;
+      font-size: 11px;
+      font-weight: 650;
+      letter-spacing: 0;
+      line-height: 1.2;
+    }
+    .row {
+      display: grid;
+      gap: 5px;
+      min-width: 0;
+    }
     .row label {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
+      gap: 8px;
+      color: #c9d1d9;
       font-size: 12px;
-      color: #a9b1d6;
-      margin-bottom: 4px;
+      line-height: 1.2;
     }
-    .row .val { font-variant-numeric: tabular-nums; color: #7dcfff; font-size: 11px; }
-    .row input[type="range"] { width: 100%; accent-color: #7aa2f7; }
-    #viewport {
-      flex: 1;
+    .row .val {
+      color: #7dcfff;
+      font-size: 11px;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    .row input[type="range"] {
+      width: 100%;
       min-width: 0;
-      min-height: 320px;
-      position: relative;
+      accent-color: #58a6ff;
     }
-    #viewport canvas { display: block; width: 100%; height: 100%; }
-    @media (max-width: 640px) {
+    .preset-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 7px;
+    }
+    .btn {
+      min-height: 31px;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      background: #21262d;
+      color: #c9d1d9;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 650;
+    }
+    .btn:hover { background: #30363d; }
+    .btn.primary {
+      background: #238636;
+      border-color: #2ea043;
+      color: #fff;
+    }
+    .toggle-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      min-height: 30px;
+      padding: 0 8px;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      background: #0d1117;
+      color: #8b949e;
+      font-size: 12px;
+    }
+    .toggle input {
+      width: 16px;
+      height: 16px;
+      margin: 0;
+      accent-color: #58a6ff;
+    }
+    .formula {
+      margin: 0;
+      padding: 9px 10px;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      background: #0d1117;
+      color: #8b949e;
+      font-size: 11px;
+      line-height: 1.45;
+    }
+    .formula strong { color: #c9d1d9; font-weight: 650; }
+    .legend {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px 10px;
+      color: #8b949e;
+      font-size: 11px;
+      line-height: 1.2;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 0;
+    }
+    .swatch {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      flex: 0 0 auto;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+    }
+    .swatch.body { background: #79c0ff; }
+    .swatch.axes { background: #ffa657; }
+    .swatch.footprint { background: #a5d6ff; }
+    .swatch.plane { background: #56d364; }
+    #viewport {
+      min-width: 0;
+      min-height: 360px;
+      position: relative;
+      overflow: hidden;
+      background: #0d1117;
+    }
+    #viewport canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    #hud {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+    .badge {
+      position: absolute;
+      right: 14px;
+      bottom: 12px;
+      display: grid;
+      grid-template-columns: auto auto;
+      gap: 6px 10px;
+      max-width: min(320px, calc(100% - 28px));
+      padding: 8px 10px;
+      border: 1px solid rgba(139, 148, 158, 0.28);
+      border-radius: 8px;
+      background: rgba(13, 17, 23, 0.76);
+      color: #8b949e;
+      font-size: 11px;
+      line-height: 1.2;
+      backdrop-filter: blur(8px);
+      font-variant-numeric: tabular-nums;
+    }
+    .badge strong { color: #f0f6fc; font-weight: 650; }
+    @media (max-width: 760px) {
+      body {
+        overflow: auto;
+        overflow-x: hidden;
+      }
+      .layout {
+        grid-template-columns: 1fr;
+        min-height: 100%;
+        width: 100%;
+        max-width: 100vw;
+      }
       .panel {
         width: 100%;
-        max-height: none;
+        max-width: 100vw;
         border-right: 0;
-        border-bottom: 1px solid #3b4261;
+        border-bottom: 1px solid #30363d;
+        max-height: 42vh;
       }
-      #viewport { min-height: 360px; }
+      #viewport {
+        width: 100%;
+        max-width: 100vw;
+        height: 58vh;
+        min-height: 360px;
+      }
+      .badge {
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        max-width: none;
+        grid-template-columns: auto 1fr;
+      }
+    }
+    @media (max-width: 430px) {
+      .panel { padding: 12px; }
+      .readout, .toggle-grid {
+        grid-template-columns: 1fr;
+      }
+      .legend {
+        grid-template-columns: 1fr;
+      }
+      .badge {
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+      }
     }
   </style>
   <script type="importmap">
@@ -77,139 +290,433 @@
   </script>
 </head>
 <body>
-  <div class="layout">
+  <main class="layout">
     <aside class="panel">
-      <h3>椭球参数（3D 高斯几何示意）</h3>
-      <p class="hint">拖动滑块观察各向异性缩放、欧拉角与不透明度。右侧画布可拖拽旋转视角。</p>
-      <div class="row">
-        <label>X 缩放 <span class="val" id="vx">1.00</span></label>
-        <input type="range" id="sx" min="0.1" max="3" step="0.05" value="1" />
+      <header class="title">
+        <p class="eyebrow">3D Gaussian Splatting Primitive</p>
+        <h1>单个 3D 高斯原语</h1>
+      </header>
+
+      <div class="readout" aria-label="当前参数读数">
+        <div class="metric"><span>协方差形状</span><strong id="shapeVal">1.00 × 1.00 × 1.00</strong></div>
+        <div class="metric"><span>屏幕 footprint</span><strong id="footprintVal">-- × -- px</strong></div>
+        <div class="metric"><span>不透明度 alpha</span><strong id="alphaVal">0.55</strong></div>
+        <div class="metric"><span>主轴旋转</span><strong id="rotVal">0 / 0 / 0°</strong></div>
       </div>
-      <div class="row">
-        <label>Y 缩放 <span class="val" id="vy">1.00</span></label>
-        <input type="range" id="sy" min="0.1" max="3" step="0.05" value="1" />
-      </div>
-      <div class="row">
-        <label>Z 缩放 <span class="val" id="vz">1.00</span></label>
-        <input type="range" id="sz" min="0.1" max="3" step="0.05" value="1" />
-      </div>
-      <div class="row">
-        <label>X 旋转 (°) <span class="val" id="rxv">0</span></label>
-        <input type="range" id="rx" min="0" max="360" step="1" value="0" />
-      </div>
-      <div class="row">
-        <label>Y 旋转 (°) <span class="val" id="ryv">0</span></label>
-        <input type="range" id="ry" min="0" max="360" step="1" value="0" />
-      </div>
-      <div class="row">
-        <label>Z 旋转 (°) <span class="val" id="rzv">0</span></label>
-        <input type="range" id="rz" min="0" max="360" step="1" value="0" />
-      </div>
-      <div class="row">
-        <label>不透明度 <span class="val" id="ov">0.55</span></label>
-        <input type="range" id="op" min="0.1" max="1" step="0.02" value="0.55" />
+
+      <section class="section" aria-label="缩放控制">
+        <p class="section-title">尺度 S</p>
+        <div class="row">
+          <label for="sx">X 主轴 <span class="val" id="vx">1.00</span></label>
+          <input type="range" id="sx" min="0.12" max="3.2" step="0.04" value="1.35" />
+        </div>
+        <div class="row">
+          <label for="sy">Y 主轴 <span class="val" id="vy">1.00</span></label>
+          <input type="range" id="sy" min="0.12" max="3.2" step="0.04" value="0.72" />
+        </div>
+        <div class="row">
+          <label for="sz">Z 主轴 <span class="val" id="vz">1.00</span></label>
+          <input type="range" id="sz" min="0.12" max="3.2" step="0.04" value="1.86" />
+        </div>
+      </section>
+
+      <section class="section" aria-label="旋转控制">
+        <p class="section-title">旋转 R</p>
+        <div class="row">
+          <label for="rx">X 旋转 <span class="val" id="rxv">0°</span></label>
+          <input type="range" id="rx" min="-180" max="180" step="1" value="-18" />
+        </div>
+        <div class="row">
+          <label for="ry">Y 旋转 <span class="val" id="ryv">0°</span></label>
+          <input type="range" id="ry" min="-180" max="180" step="1" value="28" />
+        </div>
+        <div class="row">
+          <label for="rz">Z 旋转 <span class="val" id="rzv">0°</span></label>
+          <input type="range" id="rz" min="-180" max="180" step="1" value="34" />
+        </div>
+      </section>
+
+      <section class="section" aria-label="渲染控制">
+        <p class="section-title">Splatting 参数</p>
+        <div class="row">
+          <label for="op">不透明度 alpha <span class="val" id="ov">0.55</span></label>
+          <input type="range" id="op" min="0.08" max="1" step="0.02" value="0.55" />
+        </div>
+        <div class="toggle-grid">
+          <label class="toggle" for="showWire">线框<input id="showWire" type="checkbox" checked /></label>
+          <label class="toggle" for="showAxes">主轴<input id="showAxes" type="checkbox" checked /></label>
+          <label class="toggle" for="showFootprint">投影<input id="showFootprint" type="checkbox" checked /></label>
+          <label class="toggle" for="autoSpin">缓慢旋转<input id="autoSpin" type="checkbox" /></label>
+        </div>
+      </section>
+
+      <section class="section" aria-label="预设">
+        <p class="section-title">形状预设</p>
+        <div class="preset-grid">
+          <button class="btn" type="button" data-preset="round">球形</button>
+          <button class="btn primary" type="button" data-preset="surface">表面片</button>
+          <button class="btn" type="button" data-preset="needle">细长核</button>
+        </div>
+      </section>
+
+      <p class="formula">
+        <strong>Σ = R S² Rᵀ</strong><br />
+        3D 椭球经当前相机投影后，在屏幕上形成 2D Gaussian footprint。
+      </p>
+
+      <div class="legend" aria-label="图例">
+        <div class="legend-item"><span class="swatch body"></span><span>3D 高斯体</span></div>
+        <div class="legend-item"><span class="swatch axes"></span><span>协方差主轴</span></div>
+        <div class="legend-item"><span class="swatch footprint"></span><span>2D footprint</span></div>
+        <div class="legend-item"><span class="swatch plane"></span><span>屏幕 tile</span></div>
       </div>
     </aside>
-    <div id="viewport"></div>
-  </div>
+
+    <section id="viewport" aria-label="3D 高斯与屏幕投影">
+      <canvas id="hud" aria-hidden="true"></canvas>
+      <div class="badge" aria-label="投影状态">
+        <span>major</span><strong id="majorVal">-- px</strong>
+        <span>minor</span><strong id="minorVal">-- px</strong>
+        <span>alpha</span><strong id="blendVal">0.55</strong>
+      </div>
+    </section>
+  </main>
+
   <script type="module">
     import * as THREE from "three";
     import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
+    const BASE_RADIUS = 0.5;
     const viewport = document.getElementById("viewport");
+    const hud = document.getElementById("hud");
+    const hudCtx = hud.getContext("2d");
+    const shapeVal = document.getElementById("shapeVal");
+    const footprintVal = document.getElementById("footprintVal");
+    const alphaVal = document.getElementById("alphaVal");
+    const rotVal = document.getElementById("rotVal");
+    const majorVal = document.getElementById("majorVal");
+    const minorVal = document.getElementById("minorVal");
+    const blendVal = document.getElementById("blendVal");
+    const hudSize = { width: 1, height: 1 };
+
+    const controlsMap = {
+      sx: document.getElementById("sx"),
+      sy: document.getElementById("sy"),
+      sz: document.getElementById("sz"),
+      rx: document.getElementById("rx"),
+      ry: document.getElementById("ry"),
+      rz: document.getElementById("rz"),
+      op: document.getElementById("op")
+    };
+
+    const valueMap = {
+      sx: document.getElementById("vx"),
+      sy: document.getElementById("vy"),
+      sz: document.getElementById("vz"),
+      rx: document.getElementById("rxv"),
+      ry: document.getElementById("ryv"),
+      rz: document.getElementById("rzv"),
+      op: document.getElementById("ov")
+    };
+
+    const showWire = document.getElementById("showWire");
+    const showAxes = document.getElementById("showAxes");
+    const showFootprint = document.getElementById("showFootprint");
+    const autoSpin = document.getElementById("autoSpin");
+
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x16161e);
+    scene.background = new THREE.Color(0x0d1117);
+    scene.fog = new THREE.Fog(0x0d1117, 6, 12);
 
     const camera = new THREE.PerspectiveCamera(
-      50,
+      48,
       viewport.clientWidth / Math.max(viewport.clientHeight, 1),
       0.02,
-      200
+      100
     );
-    camera.position.set(2.4, 1.8, 2.8);
+    camera.position.set(3.05, 2.1, 4.2);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.setSize(viewport.clientWidth, viewport.clientHeight);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
-    viewport.appendChild(renderer.domElement);
+    viewport.prepend(renderer.domElement);
 
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.target.set(0, 0, 0);
+    const orbit = new OrbitControls(camera, renderer.domElement);
+    orbit.enableDamping = true;
+    orbit.target.set(0, 0.05, 0);
+    orbit.minDistance = 2.2;
+    orbit.maxDistance = 8;
 
-    scene.add(new THREE.AmbientLight(0xffffff, 0.4));
-    const key = new THREE.DirectionalLight(0xffffff, 0.95);
-    key.position.set(4, 6, 5);
+    scene.add(new THREE.HemisphereLight(0xa5d6ff, 0x102030, 1.25));
+    const key = new THREE.DirectionalLight(0xffffff, 1.35);
+    key.position.set(3.8, 5.2, 4.4);
     scene.add(key);
+    const rim = new THREE.DirectionalLight(0xffc680, 0.85);
+    rim.position.set(-4, 2, -3);
+    scene.add(rim);
 
-    const geom = new THREE.SphereGeometry(0.5, 72, 48);
+    const gaussianGroup = new THREE.Group();
+    scene.add(gaussianGroup);
+
+    const geom = new THREE.SphereGeometry(BASE_RADIUS, 96, 64);
     const mat = new THREE.MeshPhysicalMaterial({
-      color: 0x7aa2f7,
+      color: 0x79c0ff,
       transparent: true,
       opacity: 0.55,
-      roughness: 0.38,
-      metalness: 0.12,
-      transmission: 0.12,
-      thickness: 0.6,
-      clearcoat: 0.25,
+      roughness: 0.36,
+      metalness: 0.02,
+      transmission: 0.08,
+      thickness: 0.75,
+      clearcoat: 0.22,
       side: THREE.DoubleSide,
-      depthWrite: false,
+      depthWrite: false
     });
     const mesh = new THREE.Mesh(geom, mat);
-    scene.add(mesh);
+    gaussianGroup.add(mesh);
 
-    scene.add(new THREE.AxesHelper(1.25));
-    const grid = new THREE.GridHelper(5, 20, 0x3b4261, 0x24283b);
-    grid.position.y = -0.62;
+    const wire = new THREE.Mesh(
+      geom,
+      new THREE.MeshBasicMaterial({
+        color: 0xf0f6fc,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.16,
+        depthWrite: false
+      })
+    );
+    gaussianGroup.add(wire);
+
+    function makeAxis(color, axis) {
+      const material = new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.94 });
+      const points = [];
+      if (axis === "x") points.push(new THREE.Vector3(-BASE_RADIUS, 0, 0), new THREE.Vector3(BASE_RADIUS, 0, 0));
+      if (axis === "y") points.push(new THREE.Vector3(0, -BASE_RADIUS, 0), new THREE.Vector3(0, BASE_RADIUS, 0));
+      if (axis === "z") points.push(new THREE.Vector3(0, 0, -BASE_RADIUS), new THREE.Vector3(0, 0, BASE_RADIUS));
+      return new THREE.Line(new THREE.BufferGeometry().setFromPoints(points), material);
+    }
+
+    const axesGroup = new THREE.Group();
+    axesGroup.add(makeAxis(0xffa657, "x"));
+    axesGroup.add(makeAxis(0x56d364, "y"));
+    axesGroup.add(makeAxis(0xd2a8ff, "z"));
+    gaussianGroup.add(axesGroup);
+
+    const grid = new THREE.GridHelper(6, 24, 0x30363d, 0x21262d);
+    grid.position.y = -0.9;
     scene.add(grid);
 
-    const deg = THREE.MathUtils.degToRad;
+    const screenGroup = new THREE.Group();
+    screenGroup.position.set(0, 0.02, -1.35);
+    const planeGeom = new THREE.PlaneGeometry(2.35, 1.55, 1, 1);
+    const planeMat = new THREE.MeshBasicMaterial({
+      color: 0x56d364,
+      transparent: true,
+      opacity: 0.085,
+      side: THREE.DoubleSide,
+      depthWrite: false
+    });
+    const plane = new THREE.Mesh(planeGeom, planeMat);
+    screenGroup.add(plane);
+    const planeFrame = new THREE.LineSegments(
+      new THREE.EdgesGeometry(planeGeom),
+      new THREE.LineBasicMaterial({ color: 0x56d364, transparent: true, opacity: 0.55 })
+    );
+    screenGroup.add(planeFrame);
+    scene.add(screenGroup);
 
-    function bindSlider(id, valueId, fn, fmt = (v) => (Number.isInteger(v) ? String(v) : v.toFixed(2))) {
-      const input = document.getElementById(id);
-      const out = document.getElementById(valueId);
-      const apply = () => {
-        const v = parseFloat(input.value, 10);
-        out.textContent = fmt(v);
-        fn(v);
-      };
-      input.addEventListener("input", apply);
-      apply();
+    const deg = THREE.MathUtils.degToRad;
+    const tmpCenter = new THREE.Vector3();
+    const tmpPoint = new THREE.Vector3();
+    const ndc = new THREE.Vector3();
+
+    function readNumber(id) {
+      return parseFloat(controlsMap[id].value);
     }
 
-    bindSlider("sx", "vx", (v) => { mesh.scale.x = v; });
-    bindSlider("sy", "vy", (v) => { mesh.scale.y = v; });
-    bindSlider("sz", "vz", (v) => { mesh.scale.z = v; });
-    bindSlider("rx", "rxv", (v) => {
-      mesh.rotation.x = deg(v);
-    }, (v) => String(Math.round(v)));
-    bindSlider("ry", "ryv", (v) => {
-      mesh.rotation.y = deg(v);
-    }, (v) => String(Math.round(v)));
-    bindSlider("rz", "rzv", (v) => {
-      mesh.rotation.z = deg(v);
-    }, (v) => String(Math.round(v)));
-    bindSlider("op", "ov", (v) => {
-      mat.opacity = v;
-      mat.depthWrite = v >= 0.98;
-    });
+    function setControl(id, value) {
+      controlsMap[id].value = String(value);
+    }
+
+    function applyPreset(name) {
+      const presets = {
+        round: { sx: 1, sy: 1, sz: 1, rx: 0, ry: 0, rz: 0, op: 0.48 },
+        surface: { sx: 2.18, sy: 0.22, sz: 1.1, rx: -22, ry: 30, rz: 38, op: 0.56 },
+        needle: { sx: 0.26, sy: 0.26, sz: 2.82, rx: 44, ry: -24, rz: 16, op: 0.68 }
+      };
+      const preset = presets[name];
+      Object.keys(preset).forEach((id) => setControl(id, preset[id]));
+      updateFromControls();
+    }
+
+    function projectToCanvas(v) {
+      ndc.copy(v).project(camera);
+      return {
+        x: (ndc.x * 0.5 + 0.5) * hudSize.width,
+        y: (-ndc.y * 0.5 + 0.5) * hudSize.height,
+        z: ndc.z
+      };
+    }
+
+    function getProjectedFootprint() {
+      mesh.updateMatrixWorld(true);
+      mesh.getWorldPosition(tmpCenter);
+      const center = projectToCanvas(tmpCenter);
+      const localAxes = [
+        new THREE.Vector3(BASE_RADIUS, 0, 0),
+        new THREE.Vector3(0, BASE_RADIUS, 0),
+        new THREE.Vector3(0, 0, BASE_RADIUS)
+      ];
+
+      let a = 0;
+      let b = 0;
+      let c = 0;
+      localAxes.forEach((axis) => {
+        tmpPoint.copy(axis).applyMatrix4(mesh.matrixWorld);
+        const p = projectToCanvas(tmpPoint);
+        const dx = p.x - center.x;
+        const dy = p.y - center.y;
+        a += dx * dx;
+        b += dx * dy;
+        c += dy * dy;
+      });
+
+      const trace = a + c;
+      const delta = Math.sqrt(Math.max(0, (a - c) * (a - c) + 4 * b * b));
+      const l1 = Math.max(1, (trace + delta) * 0.5);
+      const l2 = Math.max(1, (trace - delta) * 0.5);
+      const angle = Math.atan2(l1 - a, b || 0.0001);
+
+      return {
+        cx: center.x,
+        cy: center.y,
+        major: Math.sqrt(l1) * 1.35,
+        minor: Math.sqrt(l2) * 1.35,
+        angle
+      };
+    }
+
+    function drawHud() {
+      const w = hudSize.width;
+      const h = hudSize.height;
+      hudCtx.clearRect(0, 0, w, h);
+
+      if (!showFootprint.checked) return;
+      const f = getProjectedFootprint();
+      const alpha = readNumber("op");
+
+      hudCtx.save();
+      hudCtx.translate(f.cx, f.cy);
+      hudCtx.rotate(f.angle);
+      hudCtx.fillStyle = `rgba(88, 166, 255, ${0.14 + alpha * 0.16})`;
+      hudCtx.strokeStyle = "rgba(165, 214, 255, 0.88)";
+      hudCtx.lineWidth = 2;
+      hudCtx.beginPath();
+      hudCtx.ellipse(0, 0, f.major, f.minor, 0, 0, Math.PI * 2);
+      hudCtx.fill();
+      hudCtx.stroke();
+      hudCtx.strokeStyle = "rgba(255, 166, 87, 0.72)";
+      hudCtx.lineWidth = 1.25;
+      hudCtx.beginPath();
+      hudCtx.moveTo(-f.major, 0);
+      hudCtx.lineTo(f.major, 0);
+      hudCtx.moveTo(0, -f.minor);
+      hudCtx.lineTo(0, f.minor);
+      hudCtx.stroke();
+      hudCtx.restore();
+
+      hudCtx.save();
+      hudCtx.fillStyle = "rgba(240, 246, 252, 0.92)";
+      hudCtx.beginPath();
+      hudCtx.arc(f.cx, f.cy, 3, 0, Math.PI * 2);
+      hudCtx.fill();
+      hudCtx.restore();
+
+      const major = Math.round(f.major * 2);
+      const minor = Math.round(f.minor * 2);
+      footprintVal.textContent = `${major} × ${minor} px`;
+      majorVal.textContent = `${major} px`;
+      minorVal.textContent = `${minor} px`;
+    }
+
+    function updateFromControls() {
+      const sx = readNumber("sx");
+      const sy = readNumber("sy");
+      const sz = readNumber("sz");
+      const rx = readNumber("rx");
+      const ry = readNumber("ry");
+      const rz = readNumber("rz");
+      const op = readNumber("op");
+
+      mesh.scale.set(sx, sy, sz);
+      wire.scale.copy(mesh.scale);
+      axesGroup.scale.copy(mesh.scale);
+      mesh.rotation.set(deg(rx), deg(ry), deg(rz));
+      wire.rotation.copy(mesh.rotation);
+      axesGroup.rotation.copy(mesh.rotation);
+
+      mat.opacity = op;
+      mat.depthWrite = op >= 0.98;
+      planeMat.opacity = 0.055 + op * 0.07;
+      wire.visible = showWire.checked;
+      axesGroup.visible = showAxes.checked;
+
+      valueMap.sx.textContent = sx.toFixed(2);
+      valueMap.sy.textContent = sy.toFixed(2);
+      valueMap.sz.textContent = sz.toFixed(2);
+      valueMap.rx.textContent = `${Math.round(rx)}°`;
+      valueMap.ry.textContent = `${Math.round(ry)}°`;
+      valueMap.rz.textContent = `${Math.round(rz)}°`;
+      valueMap.op.textContent = op.toFixed(2);
+      shapeVal.textContent = `${sx.toFixed(2)} × ${sy.toFixed(2)} × ${sz.toFixed(2)}`;
+      rotVal.textContent = `${Math.round(rx)} / ${Math.round(ry)} / ${Math.round(rz)}°`;
+      alphaVal.textContent = op.toFixed(2);
+      blendVal.textContent = op.toFixed(2);
+    }
 
     function onResize() {
-      const w = viewport.clientWidth;
-      const h = viewport.clientHeight;
-      camera.aspect = w / Math.max(h, 1);
+      const w = Math.max(1, viewport.clientWidth);
+      const h = Math.max(1, viewport.clientHeight);
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      camera.aspect = w / h;
       camera.updateProjectionMatrix();
-      renderer.setSize(w, h);
+      renderer.setPixelRatio(dpr);
+      renderer.setSize(w, h, false);
+      hudSize.width = w;
+      hudSize.height = h;
+      hud.width = Math.round(w * dpr);
+      hud.height = Math.round(h * dpr);
+      hud.style.width = w + "px";
+      hud.style.height = h + "px";
+      hudCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
+
+    Object.keys(controlsMap).forEach((id) => {
+      controlsMap[id].addEventListener("input", updateFromControls);
+    });
+    [showWire, showAxes, showFootprint].forEach((input) => {
+      input.addEventListener("change", updateFromControls);
+    });
+    document.querySelectorAll("[data-preset]").forEach((button) => {
+      button.addEventListener("click", () => applyPreset(button.dataset.preset));
+    });
 
     new ResizeObserver(onResize).observe(viewport);
     window.addEventListener("resize", onResize);
 
+    updateFromControls();
+    onResize();
+
     function tick() {
       requestAnimationFrame(tick);
-      controls.update();
+      if (autoSpin.checked) {
+        controlsMap.rz.value = String((readNumber("rz") + 0.18 + 180) % 360 - 180);
+        updateFromControls();
+      }
+      orbit.update();
+      screenGroup.quaternion.copy(camera.quaternion);
       renderer.render(scene, camera);
+      drawHud();
     }
     tick();
   </script>

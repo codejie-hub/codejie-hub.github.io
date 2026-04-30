@@ -6,46 +6,292 @@
   <title>语义高斯与抓取意图 — 示意演示</title>
   <style>
     * { box-sizing: border-box; }
-    html, body { height: 100%; margin: 0; }
+    html, body { height: 100%; margin: 0; background: #0d1117; }
     body {
-      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", sans-serif;
-      background: #0d1117;
+      overflow: hidden;
       color: #c9d1d9;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", sans-serif;
     }
-    .layout { display: flex; flex-wrap: wrap; min-height: 100%; align-items: stretch; }
+    button, input, select { font: inherit; }
+    .layout {
+      display: grid;
+      grid-template-columns: 310px minmax(0, 1fr);
+      width: 100%;
+      height: 100%;
+      background: #0d1117;
+    }
     .panel {
-      width: 300px;
-      flex-shrink: 0;
-      padding: 14px 16px;
+      min-height: 0;
+      overflow-y: auto;
+      padding: 14px 16px 16px;
       background: #161b22;
       border-right: 1px solid #30363d;
-      overflow-y: auto;
-      max-height: 100vh;
     }
-    .panel h3 { margin: 0 0 6px; font-size: 14px; font-weight: 600; color: #58a6ff; }
-    .panel .note {
-      font-size: 11px; line-height: 1.5; color: #8b949e; margin: 0 0 14px;
+    .title {
+      display: grid;
+      gap: 3px;
+      margin-bottom: 12px;
     }
-    .field { margin-bottom: 14px; }
-    .field label { display: block; font-size: 12px; color: #8b949e; margin-bottom: 6px; }
-    select, button {
-      width: 100%;
-      padding: 8px 10px;
-      border-radius: 6px;
+    .eyebrow {
+      margin: 0;
+      color: #8b949e;
+      font-size: 11px;
+      line-height: 1.2;
+    }
+    h1 {
+      margin: 0;
+      color: #79c0ff;
+      font-size: 16px;
+      font-weight: 650;
+      line-height: 1.25;
+    }
+    .metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .metric {
+      min-width: 0;
+      padding: 8px;
       border: 1px solid #30363d;
+      border-radius: 8px;
+      background: #0d1117;
+    }
+    .metric.wide { grid-column: 1 / -1; }
+    .metric span {
+      display: block;
+      color: #8b949e;
+      font-size: 10px;
+      line-height: 1.2;
+    }
+    .metric strong {
+      display: block;
+      margin-top: 3px;
+      color: #f0f6fc;
+      font-size: 12px;
+      line-height: 1.25;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .metric.wide strong { white-space: normal; }
+    .section {
+      display: grid;
+      gap: 9px;
+      margin-top: 13px;
+    }
+    .section-title {
+      margin: 0;
+      color: #8b949e;
+      font-size: 11px;
+      font-weight: 650;
+      line-height: 1.2;
+    }
+    .mode-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px;
+    }
+    .btn {
+      min-height: 31px;
+      border: 1px solid #30363d;
+      border-radius: 6px;
       background: #21262d;
       color: #c9d1d9;
-      font-size: 13px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 650;
+    }
+    .btn:hover { background: #30363d; }
+    .btn.active, .btn.primary {
+      background: #238636;
+      border-color: #2ea043;
+      color: #fff;
+    }
+    .btn.warning {
+      background: #9a6700;
+      border-color: #bb8009;
+      color: #fff;
+    }
+    .button-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    select {
+      width: 100%;
+      min-height: 34px;
+      padding: 7px 9px;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      background: #0d1117;
+      color: #c9d1d9;
       cursor: pointer;
     }
-    button { margin-top: 8px; background: #238636; border-color: #238636; font-weight: 600; }
-    button:hover { filter: brightness(1.08); }
-    button:disabled { opacity: 0.5; cursor: not-allowed; filter: none; }
-    #viewport { flex: 1; min-width: 0; min-height: 340px; position: relative; }
-    #viewport canvas { display: block; width: 100%; height: 100%; }
-    .legend { font-size: 11px; color: #6e7681; margin-top: 10px; line-height: 1.45; }
-    @media (max-width: 700px) {
-      .panel { width: 100%; border-right: 0; border-bottom: 1px solid #30363d; max-height: none; }
+    .toggle-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      min-height: 30px;
+      padding: 0 8px;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      background: #0d1117;
+      color: #8b949e;
+      font-size: 12px;
+    }
+    .toggle input {
+      width: 16px;
+      height: 16px;
+      margin: 0;
+      accent-color: #58a6ff;
+    }
+    .pipeline {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 6px;
+    }
+    .pipe-step {
+      min-height: 42px;
+      padding: 7px 6px;
+      border: 1px solid #30363d;
+      border-radius: 7px;
+      background: #0d1117;
+      color: #8b949e;
+      font-size: 10px;
+      line-height: 1.2;
+      text-align: center;
+    }
+    .pipe-step.active {
+      border-color: #58a6ff;
+      color: #f0f6fc;
+      background: rgba(88, 166, 255, 0.12);
+    }
+    .formula {
+      margin: 0;
+      padding: 9px 10px;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      background: #0d1117;
+      color: #8b949e;
+      font-size: 11px;
+      line-height: 1.45;
+    }
+    .formula strong { color: #c9d1d9; font-weight: 650; }
+    #viewport {
+      position: relative;
+      min-width: 0;
+      height: 100%;
+      overflow: hidden;
+      background: #0d1117;
+    }
+    #viewport canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    .hud {
+      position: absolute;
+      right: 14px;
+      bottom: 12px;
+      display: grid;
+      grid-template-columns: auto auto;
+      gap: 6px 10px;
+      max-width: min(360px, calc(100% - 28px));
+      padding: 8px 10px;
+      border: 1px solid rgba(139, 148, 158, 0.28);
+      border-radius: 8px;
+      background: rgba(13, 17, 23, 0.76);
+      color: #8b949e;
+      font-size: 11px;
+      line-height: 1.2;
+      backdrop-filter: blur(8px);
+      font-variant-numeric: tabular-nums;
+      pointer-events: none;
+    }
+    .hud strong {
+      color: #f0f6fc;
+      font-weight: 650;
+    }
+    .legend {
+      position: absolute;
+      left: 14px;
+      bottom: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 12px;
+      max-width: min(520px, calc(100% - 28px));
+      padding: 8px 10px;
+      border: 1px solid rgba(139, 148, 158, 0.24);
+      border-radius: 8px;
+      background: rgba(13, 17, 23, 0.68);
+      color: #8b949e;
+      font-size: 11px;
+      line-height: 1.2;
+      backdrop-filter: blur(8px);
+      pointer-events: none;
+    }
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    .swatch {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+    }
+    .swatch.body { background: #56d364; }
+    .swatch.handle { background: #d2a8ff; }
+    .swatch.affordance { background: #ff7b72; }
+    .swatch.grasp { background: #f2cc60; }
+    @media (max-width: 760px) {
+      body {
+        overflow: auto;
+        overflow-x: hidden;
+      }
+      .layout {
+        grid-template-columns: 1fr;
+        height: 100%;
+        min-height: 100%;
+      }
+      .panel {
+        width: 100%;
+        max-height: 43vh;
+        border-right: 0;
+        border-bottom: 1px solid #30363d;
+      }
+      #viewport {
+        height: 57vh;
+        min-height: 380px;
+      }
+      .legend { display: none; }
+      .hud {
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        max-width: none;
+        grid-template-columns: auto 1fr;
+      }
+    }
+    @media (max-width: 430px) {
+      .panel { padding: 12px; }
+      .metrics, .toggle-grid, .mode-grid, .button-row {
+        grid-template-columns: 1fr;
+      }
+      .pipeline {
+        grid-template-columns: 1fr 1fr;
+      }
     }
   </style>
   <script type="importmap">
@@ -58,255 +304,550 @@
   </script>
 </head>
 <body>
-  <div class="layout">
+  <main class="layout">
     <aside class="panel">
-      <h3>可视化模式</h3>
-      <p class="note">示意：将「高斯/粒子」附上语义后，抓取规划可优先对齐高可供性区域（如杯柄）。非真实机器人控制。</p>
-      <div class="field">
-        <label for="mode">视觉模式</label>
-        <select id="mode">
-          <option value="rgb">RGB 外观（视图相关颜色的简化示意）</option>
-          <option value="semantic">语义分割（部件标签）</option>
-          <option value="grasp">抓取热力图（柄部 ≈ 高权重）</option>
-        </select>
+      <header class="title">
+        <p class="eyebrow">Semantic Gaussian / Affordance Grounding</p>
+        <h1>语义高斯抓取意图</h1>
+      </header>
+
+      <div class="metrics" aria-label="语义抓取指标">
+        <div class="metric wide"><span>语言查询</span><strong id="queryMetric">抓杯柄</strong></div>
+        <div class="metric"><span>选中高斯</span><strong id="selectedMetric">--</strong></div>
+        <div class="metric"><span>可供性均值</span><strong id="affordanceMetric">--</strong></div>
+        <div class="metric"><span>最佳抓取分</span><strong id="scoreMetric">--</strong></div>
+        <div class="metric"><span>候选位姿</span><strong id="candidateMetric">--</strong></div>
+        <div class="metric"><span>执行状态</span><strong id="stateMetric">Ready</strong></div>
       </div>
-      <button type="button" id="graspBtn">执行抓取（目标：杯柄）</button>
-      <p class="legend">
-        · 画布：按住拖拽旋转视角。<br />
-        · RGB：简化外观示意。<br />
-        · 语义：杯身 / 杯柄分区着色。<br />
-        · 热力：高亮高可供性区域；点击按钮后夹爪靠近柄部并闭合。
+
+      <section class="section" aria-label="语义管线">
+        <p class="section-title">语义抓取管线</p>
+        <div class="pipeline">
+          <div class="pipe-step active" id="stepQuery">语言<br>查询</div>
+          <div class="pipe-step active" id="stepMask">语义<br>高斯</div>
+          <div class="pipe-step active" id="stepScore">可供性<br>评分</div>
+          <div class="pipe-step" id="stepPlan">抓取<br>执行</div>
+        </div>
+      </section>
+
+      <section class="section" aria-label="查询目标">
+        <p class="section-title">任务意图</p>
+        <select id="query">
+          <option value="handle">抓杯柄 / hand me the mug</option>
+          <option value="rim">抓杯口 / inspect the rim</option>
+          <option value="body">抓杯身 / move the mug</option>
+        </select>
+      </section>
+
+      <section class="section" aria-label="视觉模式">
+        <p class="section-title">视觉模式</p>
+        <div class="mode-grid">
+          <button class="btn" type="button" data-mode="rgb">RGB</button>
+          <button class="btn" type="button" data-mode="semantic">语义</button>
+          <button class="btn active" type="button" data-mode="affordance">可供性</button>
+          <button class="btn" type="button" data-mode="planning">规划</button>
+        </div>
+      </section>
+
+      <section class="section" aria-label="显示层">
+        <p class="section-title">显示层</p>
+        <div class="toggle-grid">
+          <label class="toggle" for="showCandidates">候选抓取<input id="showCandidates" type="checkbox" checked></label>
+          <label class="toggle" for="showTarget">目标区域<input id="showTarget" type="checkbox" checked></label>
+          <label class="toggle" for="showPath">执行轨迹<input id="showPath" type="checkbox" checked></label>
+          <label class="toggle" for="showMemory">融合记忆<input id="showMemory" type="checkbox" checked></label>
+          <label class="toggle" for="showGripper">夹爪<input id="showGripper" type="checkbox" checked></label>
+          <label class="toggle" for="autoRotate">自动视角<input id="autoRotate" type="checkbox"></label>
+        </div>
+      </section>
+
+      <section class="section" aria-label="执行控制">
+        <p class="section-title">动作</p>
+        <div class="button-row">
+          <button class="btn primary" type="button" id="graspBtn">执行抓取</button>
+          <button class="btn" type="button" id="resetBtn">复位夹爪</button>
+        </div>
+      </section>
+
+      <p class="formula">
+        <strong>score(g) = semantic(g) × affordance(g) × geometry(g)</strong><br>
+        示意：语言查询先筛出部件级高斯，再在其支撑域中选择抓取位姿。非真实机器人控制。
       </p>
     </aside>
-    <div id="viewport"></div>
-  </div>
+
+    <section id="viewport" aria-label="语义高斯与抓取意图三维可视化">
+      <div class="legend" aria-label="图例">
+        <span class="legend-item"><span class="swatch body"></span>杯身/杯口语义</span>
+        <span class="legend-item"><span class="swatch handle"></span>杯柄语义</span>
+        <span class="legend-item"><span class="swatch affordance"></span>高可供性</span>
+        <span class="legend-item"><span class="swatch grasp"></span>候选抓取</span>
+      </div>
+      <div class="hud" aria-label="抓取状态">
+        <span>Query</span><strong id="hudQuery">handle</strong>
+        <span>Best</span><strong id="hudBest">--</strong>
+        <span>Mode</span><strong id="hudMode">affordance</strong>
+      </div>
+    </section>
+  </main>
+
   <script type="module">
     import * as THREE from "three";
     import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
     const viewport = document.getElementById("viewport");
+    const querySelect = document.getElementById("query");
+    const queryMetric = document.getElementById("queryMetric");
+    const selectedMetric = document.getElementById("selectedMetric");
+    const affordanceMetric = document.getElementById("affordanceMetric");
+    const scoreMetric = document.getElementById("scoreMetric");
+    const candidateMetric = document.getElementById("candidateMetric");
+    const stateMetric = document.getElementById("stateMetric");
+    const hudQuery = document.getElementById("hudQuery");
+    const hudBest = document.getElementById("hudBest");
+    const hudMode = document.getElementById("hudMode");
+    const stepPlan = document.getElementById("stepPlan");
+    const showCandidates = document.getElementById("showCandidates");
+    const showTarget = document.getElementById("showTarget");
+    const showPath = document.getElementById("showPath");
+    const showMemory = document.getElementById("showMemory");
+    const showGripper = document.getElementById("showGripper");
+    const autoRotate = document.getElementById("autoRotate");
+    const graspBtn = document.getElementById("graspBtn");
+    const resetBtn = document.getElementById("resetBtn");
+
+    const TYPE_BODY = 0;
+    const TYPE_HANDLE = 1;
+    const TYPE_RIM = 2;
+    const queryLabels = {
+      handle: "抓杯柄",
+      rim: "抓杯口",
+      body: "抓杯身"
+    };
+    const targetType = {
+      handle: TYPE_HANDLE,
+      rim: TYPE_RIM,
+      body: TYPE_BODY
+    };
+
+    const state = {
+      mode: "affordance",
+      query: "handle",
+      best: null,
+      grasping: false
+    };
+
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x0d1117);
+    scene.fog = new THREE.Fog(0x0d1117, 3.6, 7.5);
 
     const camera = new THREE.PerspectiveCamera(
       48,
       viewport.clientWidth / Math.max(viewport.clientHeight, 1),
       0.05,
-      200
+      100
     );
-    camera.position.set(1.85, 1.2, 1.85);
+    camera.position.set(1.85, 1.25, 1.95);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.setSize(viewport.clientWidth, viewport.clientHeight);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
-    viewport.appendChild(renderer.domElement);
+    viewport.prepend(renderer.domElement);
 
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
-    controls.target.set(0, 0.35, 0);
+    controls.target.set(0, 0.32, 0);
+    controls.minDistance = 1.2;
+    controls.maxDistance = 4.8;
 
-    scene.add(new THREE.AmbientLight(0xffffff, 0.45));
-    const L = new THREE.DirectionalLight(0xffffff, 0.85);
-    L.position.set(2, 4, 3);
-    scene.add(L);
+    scene.add(new THREE.HemisphereLight(0xa5d6ff, 0x172033, 1.2));
+    const key = new THREE.DirectionalLight(0xffffff, 1.15);
+    key.position.set(2.5, 4, 2.2);
+    scene.add(key);
+    const rim = new THREE.DirectionalLight(0xffc680, 0.55);
+    rim.position.set(-2.5, 2, -2);
+    scene.add(rim);
 
-    scene.add(new THREE.GridHelper(3, 24, 0x30363d, 0x21262d));
+    const grid = new THREE.GridHelper(3.2, 28, 0x30363d, 0x21262d);
+    grid.position.y = -0.02;
+    scene.add(grid);
 
-    /** 生成杯子状粒子：杯身 + 杯柄，返回 { positions, bodyMask } */
     function buildCupParticles() {
       const positions = [];
-      const body = [];
-
+      const types = [];
       const R = 0.32;
-      const h = 0.55;
-      const nAng = 48;
-      const nH = 22;
+      const h = 0.56;
+      const nAng = 58;
+      const nH = 24;
 
       for (let j = 0; j < nH; j++) {
         const t = j / (nH - 1);
         const y = t * h;
+        const radius = R * (0.94 + t * 0.08);
         for (let i = 0; i < nAng; i++) {
           const a = (i / nAng) * Math.PI * 2;
-          const x = Math.cos(a) * R;
-          const z = Math.sin(a) * R;
-          for (let k = 0; k < 3; k++) {
-            const jx = (Math.random() - 0.5) * 0.02;
-            const jy = (Math.random() - 0.5) * 0.02;
-            const jz = (Math.random() - 0.5) * 0.02;
-            positions.push(x + jx, y + jy, z + jz);
-            body.push(true);
+          const x = Math.cos(a) * radius;
+          const z = Math.sin(a) * radius;
+          for (let k = 0; k < 2; k++) {
+            positions.push(
+              x + (Math.random() - 0.5) * 0.018,
+              y + (Math.random() - 0.5) * 0.018,
+              z + (Math.random() - 0.5) * 0.018
+            );
+            types.push(j > nH - 4 ? TYPE_RIM : TYPE_BODY);
           }
         }
       }
 
-      const bottomN = 400;
-      for (let i = 0; i < bottomN; i++) {
+      for (let i = 0; i < 430; i++) {
         const a = Math.random() * Math.PI * 2;
-        const rr = Math.sqrt(Math.random()) * R * 0.98;
-        positions.push(Math.cos(a) * rr, 0.01, Math.sin(a) * rr);
-        body.push(true);
+        const rr = Math.sqrt(Math.random()) * R * 0.95;
+        positions.push(Math.cos(a) * rr, 0.008, Math.sin(a) * rr);
+        types.push(TYPE_BODY);
       }
 
-      const handleN = 700;
-      for (let i = 0; i < handleN; i++) {
-        const u = i / handleN;
-        const ang = u * Math.PI * 1.05 + Math.PI * 0.35;
-        const hr = 0.38;
-        const hx = Math.cos(ang) * hr + 0.02;
-        const hz = Math.sin(ang) * hr;
-        const hy = 0.22 + Math.sin(u * Math.PI) * 0.12 + (Math.random() - 0.5) * 0.03;
-        positions.push(
-          hx + (Math.random() - 0.5) * 0.018,
-          hy,
-          hz + (Math.random() - 0.5) * 0.018
-        );
-        body.push(false);
+      for (let i = 0; i < 830; i++) {
+        const u = i / 829;
+        const ang = u * Math.PI * 1.08 - Math.PI * 0.54;
+        const hr = 0.43;
+        const x = Math.cos(ang) * hr + 0.34;
+        const y = 0.29 + Math.sin(u * Math.PI) * 0.16 + (Math.random() - 0.5) * 0.035;
+        const z = Math.sin(ang) * hr * 0.62 + (Math.random() - 0.5) * 0.026;
+        positions.push(x, y, z);
+        types.push(TYPE_HANDLE);
       }
 
-      let hx = 0,
-        hy = 0,
-        hz = 0,
-        hn = 0;
-      for (let i = 0; i < body.length; i++) {
-        if (!body[i]) {
-          const o = i * 3;
-          hx += positions[o];
-          hy += positions[o + 1];
-          hz += positions[o + 2];
-          hn++;
-        }
+      const centers = [new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()];
+      const counts = [0, 0, 0];
+      for (let i = 0; i < types.length; i++) {
+        const o = i * 3;
+        centers[types[i]].x += positions[o];
+        centers[types[i]].y += positions[o + 1];
+        centers[types[i]].z += positions[o + 2];
+        counts[types[i]]++;
       }
-      if (hn > 0) {
-        hx /= hn;
-        hy /= hn;
-        hz /= hn;
-      }
+      centers.forEach((center, i) => {
+        if (counts[i]) center.multiplyScalar(1 / counts[i]);
+      });
 
       return {
         positions: new Float32Array(positions),
-        bodyMask: body,
-        count: body.length,
-        handleCenter: new THREE.Vector3(hx, hy, hz),
+        types: new Uint8Array(types),
+        count: types.length,
+        centers,
+        counts
       };
     }
 
     const cup = buildCupParticles();
-    const geo = new THREE.BufferGeometry();
-    geo.setAttribute("position", new THREE.BufferAttribute(cup.positions, 3));
-
-    const colAttr = new Float32Array(cup.count * 3);
-    geo.setAttribute("color", new THREE.BufferAttribute(colAttr, 3));
-
-    function setMode(mode) {
-      const bodyColorRgb = new THREE.Color(0xd4c4b0);
-      const handleColorRgb = new THREE.Color(0xc4b8a8);
-      const bodySem = new THREE.Color(0x3fb950);
-      const handleSem = new THREE.Color(0xa371f7);
-      const cold = new THREE.Color(0x21262d);
-      const hot = new THREE.Color(0xff7b72);
-
-      for (let i = 0; i < cup.count; i++) {
-        const isBody = cup.bodyMask[i];
-        let c;
-        if (mode === "rgb") {
-          c = isBody ? bodyColorRgb : handleColorRgb;
-        } else if (mode === "semantic") {
-          c = isBody ? bodySem : handleSem;
-        } else {
-          c = isBody ? cold : hot;
-        }
-        colAttr[i * 3] = c.r;
-        colAttr[i * 3 + 1] = c.g;
-        colAttr[i * 3 + 2] = c.b;
-      }
-      geo.attributes.color.needsUpdate = true;
-    }
-
-    setMode("rgb");
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute("position", new THREE.BufferAttribute(cup.positions, 3));
+    const colors = new Float32Array(cup.count * 3);
+    geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
 
     const pointsMat = new THREE.PointsMaterial({
       size: 0.022,
       vertexColors: true,
       transparent: true,
-      opacity: 0.92,
+      opacity: 0.94,
       depthWrite: false,
-      sizeAttenuation: true,
+      sizeAttenuation: true
     });
-    const points = new THREE.Points(geo, pointsMat);
+    const points = new THREE.Points(geometry, pointsMat);
     scene.add(points);
 
-    const handleCenter = cup.handleCenter;
+    const targetMarker = new THREE.Mesh(
+      new THREE.SphereGeometry(0.075, 28, 18),
+      new THREE.MeshStandardMaterial({ color: 0xff7b72, emissive: 0x441111, roughness: 0.36 })
+    );
+    scene.add(targetMarker);
 
-    const gripper = new THREE.Group();
-    const fingerGeo = new THREE.BoxGeometry(0.06, 0.14, 0.04);
-    const fingerMat = new THREE.MeshStandardMaterial({
-      color: 0x8b949e,
-      metalness: 0.35,
-      roughness: 0.45,
-    });
-    const left = new THREE.Mesh(fingerGeo, fingerMat);
-    left.position.set(-0.045, 0, 0);
-    const right = new THREE.Mesh(fingerGeo, fingerMat);
-    right.position.set(0.045, 0, 0);
-    gripper.add(left, right);
-    gripper.position.set(1.4, 0.9, 1.2);
-    gripper.lookAt(handleCenter);
+    const memoryShell = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.36, 0.31, 0.58, 64, 1, true),
+      new THREE.MeshBasicMaterial({
+        color: 0x58a6ff,
+        transparent: true,
+        opacity: 0.075,
+        wireframe: true
+      })
+    );
+    memoryShell.position.y = 0.28;
+    scene.add(memoryShell);
+
+    const pathLine = new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3()]),
+      new THREE.LineBasicMaterial({ color: 0xf2cc60, transparent: true, opacity: 0.82 })
+    );
+    scene.add(pathLine);
+
+    const candidatesGroup = new THREE.Group();
+    scene.add(candidatesGroup);
+    const candidates = buildCandidates();
+    candidates.forEach((candidate) => candidatesGroup.add(candidate.group));
+
+    const gripper = createGripper();
     scene.add(gripper);
+    const homePose = {
+      pos: new THREE.Vector3(1.05, 0.78, 0.96),
+      quat: new THREE.Quaternion()
+    };
+    homePose.quat.copy(lookAtQuaternion(homePose.pos, cup.centers[TYPE_HANDLE]));
+    resetGripper();
 
-    let graspAnim = null;
-    const graspBtn = document.getElementById("graspBtn");
-
-    function startGrasp() {
-      graspBtn.disabled = true;
-      const startPos = gripper.position.clone();
-      const startQuat = gripper.quaternion.clone();
-      const endPos = handleCenter.clone().add(new THREE.Vector3(0.12, 0.05, 0.15));
-      const endQuat = new THREE.Quaternion();
-      const m = new THREE.Matrix4();
-      m.lookAt(endPos, handleCenter, new THREE.Vector3(0, 1, 0));
-      endQuat.setFromRotationMatrix(m);
-
-      const openL = -0.045;
-      const openR = 0.045;
-      const t0 = performance.now();
-      const dur = 2200;
-
-      graspAnim = () => {
-        const t = Math.min(1, (performance.now() - t0) / dur);
-        const e = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-
-        gripper.position.lerpVectors(startPos, endPos, e);
-        gripper.quaternion.slerpQuaternions(startQuat, endQuat, e);
-
-        const closeT = Math.max(0, (t - 0.55) / 0.45);
-        const gap = THREE.MathUtils.lerp(0.09, 0.028, closeT);
-        left.position.x = -gap / 2;
-        right.position.x = gap / 2;
-
-        if (t < 1) requestAnimationFrame(graspAnim);
-        else {
-          graspAnim = null;
-          setTimeout(() => {
-            gripper.position.copy(startPos);
-            gripper.quaternion.copy(startQuat);
-            left.position.x = openL;
-            right.position.x = openR;
-            graspBtn.disabled = false;
-          }, 650);
+    function buildCandidates() {
+      return [
+        {
+          id: "handle-side",
+          label: "handle side",
+          type: TYPE_HANDLE,
+          pose: cup.centers[TYPE_HANDLE].clone().add(new THREE.Vector3(0.12, 0.04, 0.14)),
+          target: cup.centers[TYPE_HANDLE].clone(),
+          geometryScore: 0.94,
+          group: createCandidateMarker(0xf2cc60)
+        },
+        {
+          id: "handle-top",
+          label: "handle top",
+          type: TYPE_HANDLE,
+          pose: cup.centers[TYPE_HANDLE].clone().add(new THREE.Vector3(0.02, 0.17, 0.05)),
+          target: cup.centers[TYPE_HANDLE].clone().add(new THREE.Vector3(0, 0.07, 0)),
+          geometryScore: 0.78,
+          group: createCandidateMarker(0xffa657)
+        },
+        {
+          id: "rim-pinch",
+          label: "rim pinch",
+          type: TYPE_RIM,
+          pose: cup.centers[TYPE_RIM].clone().add(new THREE.Vector3(0.18, 0.08, 0.16)),
+          target: cup.centers[TYPE_RIM].clone().add(new THREE.Vector3(0.17, 0, 0.08)),
+          geometryScore: 0.72,
+          group: createCandidateMarker(0xa5d6ff)
+        },
+        {
+          id: "body-wrap",
+          label: "body wrap",
+          type: TYPE_BODY,
+          pose: cup.centers[TYPE_BODY].clone().add(new THREE.Vector3(0.28, 0.05, 0.18)),
+          target: cup.centers[TYPE_BODY].clone().add(new THREE.Vector3(0.15, 0.06, 0.08)),
+          geometryScore: 0.66,
+          group: createCandidateMarker(0xd2a8ff)
         }
-      };
-      requestAnimationFrame(graspAnim);
+      ];
     }
 
-    graspBtn.addEventListener("click", () => {
-      if (graspAnim) return;
-      startGrasp();
+    function createCandidateMarker(color) {
+      const group = new THREE.Group();
+      const mat = new THREE.MeshStandardMaterial({ color, roughness: 0.34, metalness: 0.08 });
+      const palm = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.026, 0.035), mat);
+      const fingerA = new THREE.Mesh(new THREE.BoxGeometry(0.025, 0.12, 0.03), mat);
+      const fingerB = fingerA.clone();
+      fingerA.position.set(-0.065, 0.06, 0);
+      fingerB.position.set(0.065, 0.06, 0);
+      const halo = new THREE.Mesh(
+        new THREE.TorusGeometry(0.11, 0.006, 8, 48),
+        new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.48 })
+      );
+      halo.rotation.x = Math.PI / 2;
+      group.add(palm, fingerA, fingerB, halo);
+      return group;
+    }
+
+    function createGripper() {
+      const group = new THREE.Group();
+      const baseMat = new THREE.MeshStandardMaterial({ color: 0x8b949e, metalness: 0.36, roughness: 0.42 });
+      const activeMat = new THREE.MeshStandardMaterial({ color: 0xf2cc60, metalness: 0.12, roughness: 0.34 });
+      const palm = new THREE.Mesh(new THREE.BoxGeometry(0.17, 0.045, 0.07), baseMat);
+      const left = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.22, 0.05), activeMat);
+      const right = left.clone();
+      left.position.set(-0.065, -0.11, 0);
+      right.position.set(0.065, -0.11, 0);
+      group.add(palm, left, right);
+      group.scale.setScalar(0.64);
+      group.userData.left = left;
+      group.userData.right = right;
+      return group;
+    }
+
+    function scoreCandidate(candidate) {
+      const semantic = candidate.type === targetType[state.query] ? 1 : 0.18;
+      const affordance = semantic * candidate.geometryScore;
+      const reachPenalty = Math.min(1, 1.55 / Math.max(0.2, candidate.pose.length()));
+      return affordance * (0.72 + reachPenalty * 0.28);
+    }
+
+    function computeAffordance(index) {
+      const type = cup.types[index];
+      const semantic = type === targetType[state.query] ? 1 : 0.08;
+      const o = index * 3;
+      const p = new THREE.Vector3(cup.positions[o], cup.positions[o + 1], cup.positions[o + 2]);
+      const center = cup.centers[targetType[state.query]];
+      const dist = p.distanceTo(center);
+      const spatial = Math.exp(-dist * dist / (state.query === "body" ? 0.35 : 0.09));
+      return Math.min(1, semantic * (0.42 + spatial * 0.58));
+    }
+
+    function updateColors() {
+      const bodyRgb = new THREE.Color(0xd4c4b0);
+      const handleRgb = new THREE.Color(0xc4b8a8);
+      const rimRgb = new THREE.Color(0xe6d7c3);
+      const bodySem = new THREE.Color(0x56d364);
+      const handleSem = new THREE.Color(0xd2a8ff);
+      const rimSem = new THREE.Color(0xa5d6ff);
+      const cold = new THREE.Color(0x1f2937);
+      const warm = new THREE.Color(0xff7b72);
+      const selected = new THREE.Color(0xf2cc60);
+
+      let selectedCount = 0;
+      let affordanceSum = 0;
+      for (let i = 0; i < cup.count; i++) {
+        const type = cup.types[i];
+        const affordance = computeAffordance(i);
+        const isSelected = affordance > 0.46;
+        if (isSelected) selectedCount++;
+        affordanceSum += affordance;
+
+        let color;
+        if (state.mode === "rgb") {
+          color = type === TYPE_HANDLE ? handleRgb : type === TYPE_RIM ? rimRgb : bodyRgb;
+        } else if (state.mode === "semantic") {
+          color = type === TYPE_HANDLE ? handleSem : type === TYPE_RIM ? rimSem : bodySem;
+        } else if (state.mode === "planning" && isSelected) {
+          color = selected.clone().lerp(warm, affordance * 0.42);
+        } else {
+          color = cold.clone().lerp(warm, affordance);
+        }
+        colors[i * 3] = color.r;
+        colors[i * 3 + 1] = color.g;
+        colors[i * 3 + 2] = color.b;
+      }
+      geometry.attributes.color.needsUpdate = true;
+      selectedMetric.textContent = `${selectedCount} / ${cup.count}`;
+      affordanceMetric.textContent = (affordanceSum / cup.count).toFixed(3);
+    }
+
+    function updateCandidates() {
+      let best = candidates[0];
+      let bestScore = -Infinity;
+      candidates.forEach((candidate) => {
+        candidate.score = scoreCandidate(candidate);
+        if (candidate.score > bestScore) {
+          bestScore = candidate.score;
+          best = candidate;
+        }
+      });
+      state.best = best;
+
+      candidates.forEach((candidate) => {
+        const isBest = candidate === best;
+        candidate.group.position.copy(candidate.pose);
+        candidate.group.quaternion.copy(lookAtQuaternion(candidate.pose, candidate.target));
+        candidate.group.visible = showCandidates.checked;
+        candidate.group.scale.setScalar(isBest ? 1.25 : 0.82);
+        candidate.group.traverse((obj) => {
+          if (!obj.material) return;
+          obj.material.transparent = !isBest;
+          obj.material.opacity = isBest ? 1 : 0.36;
+        });
+      });
+
+      targetMarker.position.copy(cup.centers[targetType[state.query]]);
+      targetMarker.visible = showTarget.checked;
+      candidatesGroup.visible = showCandidates.checked;
+      pathLine.visible = showPath.checked;
+      memoryShell.visible = showMemory.checked;
+      gripper.visible = showGripper.checked;
+
+      pathLine.geometry.setFromPoints([gripper.position.clone(), best.pose.clone(), best.target.clone()]);
+      scoreMetric.textContent = best.score.toFixed(3);
+      candidateMetric.textContent = best.label;
+      hudBest.textContent = `${best.label} (${best.score.toFixed(2)})`;
+    }
+
+    function lookAtQuaternion(from, to) {
+      const m = new THREE.Matrix4();
+      m.lookAt(from, to, new THREE.Vector3(0, 1, 0));
+      return new THREE.Quaternion().setFromRotationMatrix(m);
+    }
+
+    function resetGripper() {
+      gripper.position.copy(homePose.pos);
+      gripper.quaternion.copy(homePose.quat);
+      gripper.userData.left.position.x = -0.065;
+      gripper.userData.right.position.x = 0.065;
+      state.grasping = false;
+      graspBtn.disabled = false;
+      stateMetric.textContent = "Ready";
+      stepPlan.classList.remove("active");
+      updateCandidates();
+    }
+
+    function startGrasp() {
+      if (!state.best || state.grasping) return;
+      state.grasping = true;
+      graspBtn.disabled = true;
+      stateMetric.textContent = "Executing";
+      stepPlan.classList.add("active");
+
+      const candidate = state.best;
+      const startPos = gripper.position.clone();
+      const startQuat = gripper.quaternion.clone();
+      const endPos = candidate.pose.clone();
+      const endQuat = lookAtQuaternion(candidate.pose, candidate.target);
+      const startTime = performance.now();
+      const duration = 2300;
+
+      function step() {
+        const t = Math.min(1, (performance.now() - startTime) / duration);
+        const ease = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        gripper.position.lerpVectors(startPos, endPos, ease);
+        gripper.quaternion.slerpQuaternions(startQuat, endQuat, ease);
+
+        const closeT = Math.max(0, (t - 0.58) / 0.42);
+        const gap = THREE.MathUtils.lerp(0.13, 0.045, closeT);
+        gripper.userData.left.position.x = -gap / 2;
+        gripper.userData.right.position.x = gap / 2;
+        pathLine.geometry.setFromPoints([startPos, endPos, candidate.target]);
+
+        if (t < 1) {
+          requestAnimationFrame(step);
+        } else {
+          stateMetric.textContent = "Grasp aligned";
+          setTimeout(resetGripper, 900);
+        }
+      }
+      requestAnimationFrame(step);
+    }
+
+    function updateAll() {
+      queryMetric.textContent = queryLabels[state.query];
+      hudQuery.textContent = state.query;
+      hudMode.textContent = state.mode;
+      updateColors();
+      updateCandidates();
+    }
+
+    document.querySelectorAll("[data-mode]").forEach((button) => {
+      button.addEventListener("click", () => {
+        state.mode = button.dataset.mode;
+        document.querySelectorAll("[data-mode]").forEach((item) => item.classList.toggle("active", item === button));
+        updateAll();
+      });
     });
 
-    document.getElementById("mode").addEventListener("change", (e) => {
-      setMode(e.target.value);
+    querySelect.addEventListener("change", () => {
+      state.query = querySelect.value;
+      if (state.mode === "rgb") {
+        state.mode = "affordance";
+        document.querySelectorAll("[data-mode]").forEach((item) => item.classList.toggle("active", item.dataset.mode === state.mode));
+      }
+      updateAll();
     });
+
+    [showCandidates, showTarget, showPath, showMemory, showGripper].forEach((control) => {
+      control.addEventListener("change", updateCandidates);
+    });
+    graspBtn.addEventListener("click", startGrasp);
+    resetBtn.addEventListener("click", resetGripper);
 
     function onResize() {
       const w = viewport.clientWidth;
@@ -318,8 +859,12 @@
     new ResizeObserver(onResize).observe(viewport);
     window.addEventListener("resize", onResize);
 
+    updateAll();
+
     function tick() {
       requestAnimationFrame(tick);
+      if (autoRotate.checked) controls.autoRotate = true;
+      else controls.autoRotate = false;
       controls.update();
       renderer.render(scene, camera);
     }

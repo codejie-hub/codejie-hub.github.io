@@ -1,325 +1,818 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>欧拉角与万向锁演示</title>
-    <style>
-        body { margin: 0; overflow: hidden; font-family: Arial, sans-serif; }
-        #canvas-container { width: 100%; height: 100vh; }
-        #controls {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            max-width: 320px;
-        }
-        .control-group {
-            margin-bottom: 12px;
-        }
-        label {
-            display: block;
-            margin-bottom: 4px;
-            font-size: 12px;
-            font-weight: bold;
-            color: #333;
-        }
-        input[type="range"] {
-            width: 100%;
-        }
-        .value-display {
-            display: inline-block;
-            min-width: 50px;
-            text-align: right;
-            font-family: monospace;
-            color: #666;
-        }
-        #info-display {
-            margin-top: 15px;
-            padding: 10px;
-            background: #f5f5f5;
-            border-radius: 4px;
-            font-size: 11px;
-            line-height: 1.6;
-        }
-        h3 {
-            margin: 0 0 10px 0;
-            font-size: 14px;
-            color: #2563EB;
-        }
-        .warning {
-            background: #FEF3C7;
-            border-left: 3px solid #F59E0B;
-            padding: 8px;
-            margin-top: 10px;
-            border-radius: 4px;
-            font-size: 11px;
-        }
-        .mode-selector {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 15px;
-        }
-        .mode-btn {
-            flex: 1;
-            padding: 8px;
-            border: 2px solid #2563EB;
-            background: white;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-            transition: all 0.2s;
-        }
-        .mode-btn.active {
-            background: #2563EB;
-            color: white;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>欧拉角与万向锁演示</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; background: #0d1117; }
+    body {
+      overflow: hidden;
+      color: #c9d1d9;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", sans-serif;
+    }
+    button, input { font: inherit; }
+    .layout {
+      display: grid;
+      grid-template-columns: 300px minmax(0, 1fr);
+      width: 100%;
+      height: 100%;
+      background: #0d1117;
+    }
+    .panel {
+      min-height: 0;
+      overflow-y: auto;
+      padding: 14px 16px 16px;
+      background: #161b22;
+      border-right: 1px solid #30363d;
+    }
+    .title {
+      display: grid;
+      gap: 3px;
+      margin-bottom: 12px;
+    }
+    .eyebrow {
+      margin: 0;
+      color: #8b949e;
+      font-size: 11px;
+      line-height: 1.2;
+    }
+    h1 {
+      margin: 0;
+      color: #79c0ff;
+      font-size: 16px;
+      font-weight: 650;
+      line-height: 1.25;
+    }
+    .metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .metric {
+      min-width: 0;
+      padding: 8px;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      background: #0d1117;
+    }
+    .metric.wide { grid-column: 1 / -1; }
+    .metric span {
+      display: block;
+      color: #8b949e;
+      font-size: 10px;
+      line-height: 1.2;
+    }
+    .metric strong {
+      display: block;
+      margin-top: 3px;
+      color: #f0f6fc;
+      font-size: 12px;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.25;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .metric.wide strong { white-space: normal; }
+    .status-safe strong { color: #56d364; }
+    .status-warn strong { color: #ffa657; }
+    .status-lock strong { color: #ff7b72; }
+    .section {
+      display: grid;
+      gap: 9px;
+      margin-top: 13px;
+    }
+    .section-title {
+      margin: 0;
+      color: #8b949e;
+      font-size: 11px;
+      font-weight: 650;
+      line-height: 1.2;
+    }
+    .mode-grid, .preset-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px;
+    }
+    .preset-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .btn {
+      min-height: 31px;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      background: #21262d;
+      color: #c9d1d9;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 650;
+    }
+    .btn:hover { background: #30363d; }
+    .btn.active, .btn.primary {
+      background: #238636;
+      border-color: #2ea043;
+      color: #fff;
+    }
+    .btn.warning {
+      background: #9a6700;
+      border-color: #bb8009;
+      color: #fff;
+    }
+    .control-row {
+      display: grid;
+      gap: 5px;
+      min-width: 0;
+    }
+    .control-row label {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+      color: #c9d1d9;
+      font-size: 12px;
+      line-height: 1.2;
+    }
+    .control-row .axis-name {
+      color: #8b949e;
+      font-weight: 500;
+    }
+    .value-display {
+      color: #7dcfff;
+      font-size: 11px;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    input[type="range"] {
+      width: 100%;
+      min-width: 0;
+      accent-color: #58a6ff;
+    }
+    .toggle-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      min-height: 30px;
+      padding: 0 8px;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      background: #0d1117;
+      color: #8b949e;
+      font-size: 12px;
+    }
+    .toggle input {
+      width: 16px;
+      height: 16px;
+      margin: 0;
+      accent-color: #58a6ff;
+    }
+    .formula {
+      margin: 0;
+      padding: 9px 10px;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      background: #0d1117;
+      color: #8b949e;
+      font-size: 11px;
+      line-height: 1.45;
+    }
+    .formula strong { color: #c9d1d9; font-weight: 650; }
+    .quat-box {
+      display: grid;
+      gap: 5px;
+      padding: 9px 10px;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      background: #0d1117;
+      color: #8b949e;
+      font-size: 11px;
+      line-height: 1.35;
+    }
+    .quat-box code {
+      color: #f0f6fc;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 11px;
+      white-space: pre-wrap;
+    }
+    #viewport {
+      position: relative;
+      min-width: 0;
+      height: 100%;
+      overflow: hidden;
+      background: #0d1117;
+    }
+    #canvas-container {
+      width: 100%;
+      height: 100%;
+    }
+    #canvas-container canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    .hud {
+      position: absolute;
+      right: 14px;
+      bottom: 12px;
+      display: grid;
+      grid-template-columns: auto auto;
+      gap: 6px 10px;
+      max-width: min(360px, calc(100% - 28px));
+      padding: 8px 10px;
+      border: 1px solid rgba(139, 148, 158, 0.28);
+      border-radius: 8px;
+      background: rgba(13, 17, 23, 0.76);
+      color: #8b949e;
+      font-size: 11px;
+      line-height: 1.2;
+      backdrop-filter: blur(8px);
+      font-variant-numeric: tabular-nums;
+      pointer-events: none;
+    }
+    .hud strong {
+      color: #f0f6fc;
+      font-weight: 650;
+    }
+    .legend {
+      position: absolute;
+      left: 14px;
+      bottom: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 12px;
+      max-width: min(500px, calc(100% - 28px));
+      padding: 8px 10px;
+      border: 1px solid rgba(139, 148, 158, 0.24);
+      border-radius: 8px;
+      background: rgba(13, 17, 23, 0.68);
+      color: #8b949e;
+      font-size: 11px;
+      line-height: 1.2;
+      backdrop-filter: blur(8px);
+      pointer-events: none;
+    }
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    .swatch {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+    }
+    .swatch.yaw { background: #58a6ff; }
+    .swatch.pitch { background: #56d364; }
+    .swatch.roll { background: #ff7b72; }
+    .swatch.quat { background: #f2cc60; }
+    @media (max-width: 760px) {
+      body {
+        overflow: auto;
+        overflow-x: hidden;
+      }
+      .layout {
+        grid-template-columns: 1fr;
+        height: 100%;
+        min-height: 100%;
+      }
+      .panel {
+        width: 100%;
+        max-height: 43vh;
+        border-right: 0;
+        border-bottom: 1px solid #30363d;
+      }
+      #viewport {
+        height: 57vh;
+        min-height: 340px;
+      }
+      .legend { display: none; }
+      .hud {
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        max-width: none;
+        grid-template-columns: auto 1fr;
+      }
+    }
+    @media (max-width: 420px) {
+      .panel { padding: 12px; }
+      .metrics, .toggle-grid, .preset-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div id="canvas-container"></div>
-    <div id="controls">
-        <h3>🔄 欧拉角与万向锁演示</h3>
+  <main class="layout">
+    <aside class="panel">
+      <header class="title">
+        <p class="eyebrow">Euler ZYX / Quaternion Rotation</p>
+        <h1>欧拉角与万向锁原理</h1>
+      </header>
 
-        <div class="mode-selector">
-            <button class="mode-btn active" data-mode="euler">欧拉角</button>
-            <button class="mode-btn" data-mode="quaternion">四元数</button>
+      <div class="metrics" aria-label="旋转状态指标">
+        <div class="metric" id="statusMetric"><span>状态</span><strong id="statusText">Normal</strong></div>
+        <div class="metric"><span>轴重合度</span><strong id="alignmentMetric">0.00</strong></div>
+        <div class="metric"><span>轴间夹角</span><strong id="axisAngleMetric">90°</strong></div>
+        <div class="metric"><span>Pitch 裕度</span><strong id="marginMetric">90°</strong></div>
+        <div class="metric wide"><span>四元数 q</span><strong id="quatMetric">w 1.000 / x 0.000 / y 0.000 / z 0.000</strong></div>
+      </div>
+
+      <section class="section" aria-label="表示模式">
+        <p class="section-title">旋转表示</p>
+        <div class="mode-grid">
+          <button class="btn active" type="button" data-mode="euler">Euler ZYX</button>
+          <button class="btn" type="button" data-mode="quaternion">Quaternion</button>
         </div>
+      </section>
 
-        <div class="control-group">
-            <label>Roll (X轴, 红): <span class="value-display" id="roll-value">0°</span></label>
-            <input type="range" id="roll" min="-180" max="180" step="1" value="0">
+      <section class="section" aria-label="角度控制">
+        <p class="section-title">欧拉角</p>
+        <div class="control-row">
+          <label for="roll">Roll <span class="axis-name">X</span><span class="value-display" id="roll-value">0°</span></label>
+          <input type="range" id="roll" min="-180" max="180" step="1" value="0">
         </div>
-
-        <div class="control-group">
-            <label>Pitch (Y轴, 绿): <span class="value-display" id="pitch-value">0°</span></label>
-            <input type="range" id="pitch" min="-180" max="180" step="1" value="0">
+        <div class="control-row">
+          <label for="pitch">Pitch <span class="axis-name">Y</span><span class="value-display" id="pitch-value">0°</span></label>
+          <input type="range" id="pitch" min="-180" max="180" step="1" value="0">
         </div>
-
-        <div class="control-group">
-            <label>Yaw (Z轴, 蓝): <span class="value-display" id="yaw-value">0°</span></label>
-            <input type="range" id="yaw" min="-180" max="180" step="1" value="0">
+        <div class="control-row">
+          <label for="yaw">Yaw <span class="axis-name">Z</span><span class="value-display" id="yaw-value">0°</span></label>
+          <input type="range" id="yaw" min="-180" max="180" step="1" value="0">
         </div>
+      </section>
 
-        <button id="gimbal-lock-btn" style="width: 100%; padding: 10px; background: #F59E0B; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; margin-bottom: 10px;">
-            ⚠️ 触发万向锁 (Pitch = 90°)
-        </button>
-
-        <div id="info-display">
-            <strong>当前状态:</strong>
-            <div id="status-text">正常</div>
-            <div style="margin-top: 8px;">
-                <strong>四元数:</strong>
-                <div id="quaternion-text" style="font-family: monospace; font-size: 10px;"></div>
-            </div>
+      <section class="section" aria-label="姿态预设">
+        <p class="section-title">姿态预设</p>
+        <div class="preset-grid">
+          <button class="btn primary" type="button" data-preset="neutral">Neutral</button>
+          <button class="btn" type="button" data-preset="free">Free</button>
+          <button class="btn warning" type="button" data-preset="lock90">Pitch 90</button>
+          <button class="btn" type="button" data-preset="lockNeg90">Pitch -90</button>
+          <button class="btn" type="button" data-preset="bank">Bank</button>
+          <button class="btn" type="button" data-preset="random">Random</button>
         </div>
+      </section>
 
-        <div class="warning" id="gimbal-warning" style="display: none;">
-            <strong>⚠️ 万向锁警告!</strong><br>
-            当 Pitch ≈ ±90° 时，Roll 和 Yaw 轴重合，失去一个自由度！
+      <section class="section" aria-label="显示层">
+        <p class="section-title">显示层</p>
+        <div class="toggle-grid">
+          <label class="toggle" for="showRings">万向环<input id="showRings" type="checkbox" checked></label>
+          <label class="toggle" for="showAxes">旋转轴<input id="showAxes" type="checkbox" checked></label>
+          <label class="toggle" for="showDirect">四元数对照<input id="showDirect" type="checkbox" checked></label>
+          <label class="toggle" for="showGrid">网格<input id="showGrid" type="checkbox" checked></label>
+          <label class="toggle" for="autoDemo">联动演示<input id="autoDemo" type="checkbox"></label>
+          <label class="toggle" for="showGhost">重合提示<input id="showGhost" type="checkbox" checked></label>
         </div>
-    </div>
+      </section>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script>
-        // 场景设置
-        const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0xf0f0f0);
+      <section class="section">
+        <div class="quat-box">
+          <span>旋转矩阵 R</span>
+          <code id="matrixText">identity</code>
+        </div>
+        <p class="formula">
+          <strong>R = R<sub>z</sub>(yaw) R<sub>y</sub>(pitch) R<sub>x</sub>(roll)</strong><br>
+          Pitch = ±90° 时，Yaw 的 Z 轴与 Roll 的 X 轴重合，欧拉角局部失去一个自由度。
+        </p>
+      </section>
+    </aside>
 
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(5, 3, 5);
-        camera.lookAt(0, 0, 0);
+    <section id="viewport" aria-label="欧拉角万向锁三维可视化">
+      <div id="canvas-container"></div>
+      <div class="legend" aria-label="图例">
+        <span class="legend-item"><span class="swatch yaw"></span>Yaw / Z</span>
+        <span class="legend-item"><span class="swatch pitch"></span>Pitch / Y</span>
+        <span class="legend-item"><span class="swatch roll"></span>Roll / X</span>
+        <span class="legend-item"><span class="swatch quat"></span>Quaternion</span>
+      </div>
+      <div class="hud" aria-label="显示状态">
+        <span>Euler</span><strong id="hudEuler">0 / 0 / 0°</strong>
+        <span>Mode</span><strong id="hudMode">Euler ZYX</strong>
+        <span>Lock</span><strong id="hudLock">0%</strong>
+      </div>
+    </section>
+  </main>
 
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.getElementById('canvas-container').appendChild(renderer.domElement);
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    const viewport = document.getElementById("viewport");
+    const canvasContainer = document.getElementById("canvas-container");
+    const sliders = {
+      roll: document.getElementById("roll"),
+      pitch: document.getElementById("pitch"),
+      yaw: document.getElementById("yaw")
+    };
+    const values = {
+      roll: document.getElementById("roll-value"),
+      pitch: document.getElementById("pitch-value"),
+      yaw: document.getElementById("yaw-value")
+    };
+    const statusMetric = document.getElementById("statusMetric");
+    const statusText = document.getElementById("statusText");
+    const alignmentMetric = document.getElementById("alignmentMetric");
+    const axisAngleMetric = document.getElementById("axisAngleMetric");
+    const marginMetric = document.getElementById("marginMetric");
+    const quatMetric = document.getElementById("quatMetric");
+    const matrixText = document.getElementById("matrixText");
+    const hudEuler = document.getElementById("hudEuler");
+    const hudMode = document.getElementById("hudMode");
+    const hudLock = document.getElementById("hudLock");
+    const showRings = document.getElementById("showRings");
+    const showAxes = document.getElementById("showAxes");
+    const showDirect = document.getElementById("showDirect");
+    const showGrid = document.getElementById("showGrid");
+    const showGhost = document.getElementById("showGhost");
+    const autoDemo = document.getElementById("autoDemo");
 
-        // 添加网格
-        const gridHelper = new THREE.GridHelper(10, 10, 0xcccccc, 0xe0e0e0);
-        scene.add(gridHelper);
+    const presets = {
+      neutral: { roll: 0, pitch: 0, yaw: 0 },
+      free: { roll: 38, pitch: 42, yaw: -32 },
+      lock90: { roll: 35, pitch: 90, yaw: -28 },
+      lockNeg90: { roll: -42, pitch: -90, yaw: 52 },
+      bank: { roll: 78, pitch: 24, yaw: 44 },
+      random: null
+    };
 
-        // 创建万向节环
-        function createGimbalRing(radius, color, axis) {
-            const geometry = new THREE.TorusGeometry(radius, 0.05, 16, 100);
-            const material = new THREE.MeshPhongMaterial({ color: color });
-            const ring = new THREE.Mesh(geometry, material);
+    const state = {
+      mode: "euler",
+      roll: 0,
+      pitch: 0,
+      yaw: 0
+    };
 
-            if (axis === 'x') ring.rotation.y = Math.PI / 2;
-            if (axis === 'y') ring.rotation.x = Math.PI / 2;
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0d1117);
+    scene.fog = new THREE.Fog(0x0d1117, 6, 12);
 
-            return ring;
-        }
+    const camera = new THREE.PerspectiveCamera(48, 1, 0.05, 100);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    canvasContainer.appendChild(renderer.domElement);
 
-        // 创建万向节系统
-        const gimbalSystem = new THREE.Group();
+    scene.add(new THREE.HemisphereLight(0xa5d6ff, 0x182032, 1.2));
+    const key = new THREE.DirectionalLight(0xffffff, 1.05);
+    key.position.set(4, 5, 4);
+    scene.add(key);
+    const rim = new THREE.DirectionalLight(0xffc680, 0.62);
+    rim.position.set(-4, 2, -3);
+    scene.add(rim);
 
-        const outerRing = createGimbalRing(2.0, 0x0000ff, 'z'); // Yaw (蓝色)
-        const middleRing = createGimbalRing(1.5, 0x00ff00, 'y'); // Pitch (绿色)
-        const innerRing = createGimbalRing(1.0, 0xff0000, 'x'); // Roll (红色)
+    const gridHelper = new THREE.GridHelper(7, 28, 0x30363d, 0x21262d);
+    gridHelper.position.y = -1.9;
+    scene.add(gridHelper);
 
-        const outerGroup = new THREE.Group();
-        const middleGroup = new THREE.Group();
-        const innerGroup = new THREE.Group();
+    const eulerRoot = new THREE.Group();
+    eulerRoot.position.set(-1.35, 0, 0);
+    scene.add(eulerRoot);
 
-        outerGroup.add(outerRing);
-        middleGroup.add(middleRing);
-        innerGroup.add(innerRing);
+    const outerGroup = new THREE.Group();
+    const middleGroup = new THREE.Group();
+    const innerGroup = new THREE.Group();
+    eulerRoot.add(outerGroup);
+    outerGroup.add(middleGroup);
+    middleGroup.add(innerGroup);
 
-        outerGroup.add(middleGroup);
-        middleGroup.add(innerGroup);
+    const outerRing = createGimbalRing(1.55, 0x58a6ff, "z");
+    const middleRing = createGimbalRing(1.18, 0x56d364, "y");
+    const innerRing = createGimbalRing(0.82, 0xff7b72, "x");
+    outerGroup.add(outerRing);
+    middleGroup.add(middleRing);
+    innerGroup.add(innerRing);
 
-        // 添加飞机模型
-        const planeGeometry = new THREE.Group();
+    const eulerCraft = createAircraft(0x79c0ff, 0xa5d6ff);
+    innerGroup.add(eulerCraft);
 
-        // 机身
-        const bodyGeometry = new THREE.CylinderGeometry(0.1, 0.1, 1.2, 8);
-        const bodyMaterial = new THREE.MeshPhongMaterial({ color: 0x2563EB });
-        const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
-        body.rotation.z = Math.PI / 2;
+    const directRoot = new THREE.Group();
+    directRoot.position.set(1.45, 0, 0);
+    scene.add(directRoot);
+    const directCraft = createAircraft(0xf2cc60, 0xffd866);
+    const directFrame = createAxesFrame(0.82);
+    directRoot.add(directCraft, directFrame);
+    const directRing = new THREE.Mesh(
+      new THREE.TorusGeometry(1.0, 0.018, 12, 96),
+      new THREE.MeshBasicMaterial({ color: 0xf2cc60, transparent: true, opacity: 0.38 })
+    );
+    directRoot.add(directRing);
 
-        // 机翼
-        const wingGeometry = new THREE.BoxGeometry(2, 0.05, 0.4);
-        const wingMaterial = new THREE.MeshPhongMaterial({ color: 0x3B82F6 });
-        const wing = new THREE.Mesh(wingGeometry, wingMaterial);
+    const axisGroup = new THREE.Group();
+    scene.add(axisGroup);
+    const yawAxisArrow = makeAxisArrow(0x58a6ff);
+    const pitchAxisArrow = makeAxisArrow(0x56d364);
+    const rollAxisArrow = makeAxisArrow(0xff7b72);
+    axisGroup.add(yawAxisArrow, pitchAxisArrow, rollAxisArrow);
 
-        // 尾翼
-        const tailGeometry = new THREE.BoxGeometry(0.05, 0.4, 0.3);
-        const tail = new THREE.Mesh(tailGeometry, wingMaterial);
-        tail.position.x = -0.5;
+    const ghostGroup = new THREE.Group();
+    scene.add(ghostGroup);
+    const yawGhost = makeGhostLine(0x58a6ff);
+    const rollGhost = makeGhostLine(0xff7b72);
+    ghostGroup.add(yawGhost, rollGhost);
 
-        planeGeometry.add(body, wing, tail);
-        innerGroup.add(planeGeometry);
+    const worldFrame = createAxesFrame(0.75);
+    worldFrame.position.set(-3.15, -1.65, -1.5);
+    scene.add(worldFrame);
 
-        gimbalSystem.add(outerGroup);
-        scene.add(gimbalSystem);
+    const cameraState = { theta: 0.72, height: 2.15, distance: 6.2 };
+    const dragState = { active: false, x: 0, y: 0 };
+    const euler = new THREE.Euler(0, 0, 0, "ZYX");
+    const quaternion = new THREE.Quaternion();
+    const rotationMatrix = new THREE.Matrix4();
+    const yawAxis = new THREE.Vector3();
+    const pitchAxis = new THREE.Vector3();
+    const rollAxis = new THREE.Vector3();
+    const origin = new THREE.Vector3();
 
-        // 添加光照
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-        scene.add(ambientLight);
+    function createGimbalRing(radius, color, axis) {
+      const geometry = new THREE.TorusGeometry(radius, 0.032, 20, 128);
+      const material = new THREE.MeshStandardMaterial({
+        color,
+        roughness: 0.34,
+        metalness: 0.12,
+        emissive: new THREE.Color(color).multiplyScalar(0.05)
+      });
+      const ring = new THREE.Mesh(geometry, material);
+      if (axis === "x") ring.rotation.y = Math.PI / 2;
+      if (axis === "y") ring.rotation.x = Math.PI / 2;
+      return ring;
+    }
 
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.4);
-        directionalLight.position.set(5, 10, 5);
-        scene.add(directionalLight);
+    function createAircraft(bodyColor, wingColor) {
+      const group = new THREE.Group();
+      const body = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.075, 0.11, 1.25, 18),
+        new THREE.MeshStandardMaterial({ color: bodyColor, roughness: 0.36, metalness: 0.08 })
+      );
+      body.rotation.z = Math.PI / 2;
 
-        // 控制参数
-        let mode = 'euler';
-        let roll = 0, pitch = 0, yaw = 0;
+      const nose = new THREE.Mesh(
+        new THREE.ConeGeometry(0.12, 0.32, 18),
+        new THREE.MeshStandardMaterial({ color: wingColor, roughness: 0.34, metalness: 0.08 })
+      );
+      nose.rotation.z = -Math.PI / 2;
+      nose.position.x = 0.78;
 
-        // 更新旋转
-        function updateRotation() {
-            if (mode === 'euler') {
-                // 欧拉角模式：ZYX顺序
-                outerGroup.rotation.z = THREE.MathUtils.degToRad(yaw);
-                middleGroup.rotation.y = THREE.MathUtils.degToRad(pitch);
-                innerGroup.rotation.x = THREE.MathUtils.degToRad(roll);
-            } else {
-                // 四元数模式：平滑插值
-                const euler = new THREE.Euler(
-                    THREE.MathUtils.degToRad(roll),
-                    THREE.MathUtils.degToRad(pitch),
-                    THREE.MathUtils.degToRad(yaw),
-                    'ZYX'
-                );
-                const quaternion = new THREE.Quaternion().setFromEuler(euler);
+      const wing = new THREE.Mesh(
+        new THREE.BoxGeometry(0.95, 0.045, 0.38),
+        new THREE.MeshStandardMaterial({ color: wingColor, roughness: 0.42, metalness: 0.06 })
+      );
 
-                // 直接应用到飞机
-                planeGeometry.quaternion.copy(quaternion);
+      const tail = new THREE.Mesh(
+        new THREE.BoxGeometry(0.06, 0.38, 0.32),
+        wing.material
+      );
+      tail.position.x = -0.5;
+      tail.position.y = 0.16;
 
-                // 重置万向节
-                outerGroup.rotation.set(0, 0, 0);
-                middleGroup.rotation.set(0, 0, 0);
-                innerGroup.rotation.set(0, 0, 0);
-            }
+      group.add(body, nose, wing, tail);
+      return group;
+    }
 
-            updateInfo();
-        }
+    function createAxesFrame(size) {
+      const group = new THREE.Group();
+      group.add(new THREE.ArrowHelper(new THREE.Vector3(1, 0, 0), new THREE.Vector3(), size, 0xff7b72, size * 0.18, size * 0.08));
+      group.add(new THREE.ArrowHelper(new THREE.Vector3(0, 1, 0), new THREE.Vector3(), size, 0x56d364, size * 0.18, size * 0.08));
+      group.add(new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(), size, 0x58a6ff, size * 0.18, size * 0.08));
+      return group;
+    }
 
-        // 更新信息显示
-        function updateInfo() {
-            const euler = new THREE.Euler(
-                THREE.MathUtils.degToRad(roll),
-                THREE.MathUtils.degToRad(pitch),
-                THREE.MathUtils.degToRad(yaw),
-                'ZYX'
-            );
-            const quaternion = new THREE.Quaternion().setFromEuler(euler);
+    function makeAxisArrow(color) {
+      const arrow = new THREE.ArrowHelper(new THREE.Vector3(0, 1, 0), new THREE.Vector3(), 1.35, color, 0.16, 0.08);
+      arrow.line.material.transparent = true;
+      arrow.line.material.opacity = 0.9;
+      arrow.cone.material.transparent = true;
+      arrow.cone.material.opacity = 0.95;
+      return arrow;
+    }
 
-            document.getElementById('quaternion-text').textContent =
-                `w: ${quaternion.w.toFixed(3)}\n` +
-                `x: ${quaternion.x.toFixed(3)}\n` +
-                `y: ${quaternion.y.toFixed(3)}\n` +
-                `z: ${quaternion.z.toFixed(3)}`;
+    function makeGhostLine(color) {
+      return new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3()]),
+        new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.42 })
+      );
+    }
 
-            // 检测万向锁
-            const gimbalLock = Math.abs(pitch) > 85 && Math.abs(pitch) < 95;
-            const warning = document.getElementById('gimbal-warning');
-            const statusText = document.getElementById('status-text');
+    function setOpacity(root, opacity) {
+      root.traverse((obj) => {
+        if (!obj.material) return;
+        obj.material.transparent = opacity < 1;
+        obj.material.opacity = opacity;
+      });
+    }
 
-            if (gimbalLock && mode === 'euler') {
-                warning.style.display = 'block';
-                statusText.textContent = '⚠️ 万向锁状态';
-                statusText.style.color = '#F59E0B';
-            } else {
-                warning.style.display = 'none';
-                statusText.textContent = mode === 'euler' ? '正常 (欧拉角)' : '正常 (四元数)';
-                statusText.style.color = '#059669';
-            }
-        }
+    function readSliders() {
+      state.roll = Number(sliders.roll.value);
+      state.pitch = Number(sliders.pitch.value);
+      state.yaw = Number(sliders.yaw.value);
+      values.roll.textContent = `${state.roll}°`;
+      values.pitch.textContent = `${state.pitch}°`;
+      values.yaw.textContent = `${state.yaw}°`;
+    }
 
-        // 绑定滑块
-        ['roll', 'pitch', 'yaw'].forEach(axis => {
-            const slider = document.getElementById(axis);
-            const display = document.getElementById(axis + '-value');
+    function setAngles(next, presetName) {
+      Object.keys(sliders).forEach((key) => {
+        sliders[key].value = String(Math.round(next[key]));
+      });
+      document.querySelectorAll("[data-preset]").forEach((button) => {
+        button.classList.toggle("active", button.dataset.preset === presetName);
+      });
+      readSliders();
+      updateRotation();
+    }
 
-            slider.addEventListener('input', (e) => {
-                const value = parseInt(e.target.value);
-                if (axis === 'roll') roll = value;
-                if (axis === 'pitch') pitch = value;
-                if (axis === 'yaw') yaw = value;
+    function updateRotation() {
+      euler.set(
+        THREE.MathUtils.degToRad(state.roll),
+        THREE.MathUtils.degToRad(state.pitch),
+        THREE.MathUtils.degToRad(state.yaw),
+        "ZYX"
+      );
+      quaternion.setFromEuler(euler);
 
-                display.textContent = value + '°';
-                updateRotation();
-            });
-        });
+      outerGroup.rotation.z = THREE.MathUtils.degToRad(state.yaw);
+      middleGroup.rotation.y = THREE.MathUtils.degToRad(state.pitch);
+      innerGroup.rotation.x = THREE.MathUtils.degToRad(state.roll);
+      directRoot.quaternion.copy(quaternion);
+      rotationMatrix.makeRotationFromQuaternion(quaternion);
 
-        // 模式切换
-        document.querySelectorAll('.mode-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-                e.target.classList.add('active');
-                mode = e.target.dataset.mode;
-                updateRotation();
-            });
-        });
+      scene.updateMatrixWorld(true);
+      updateAxesAndMetrics();
+      updateVisibility();
+    }
 
-        // 万向锁按钮
-        document.getElementById('gimbal-lock-btn').addEventListener('click', () => {
-            pitch = 90;
-            document.getElementById('pitch').value = 90;
-            document.getElementById('pitch-value').textContent = '90°';
-            updateRotation();
-        });
+    function updateAxesAndMetrics() {
+      origin.copy(eulerRoot.position);
+      yawAxis.set(0, 0, 1);
+      pitchAxis.set(0, 1, 0).transformDirection(outerGroup.matrixWorld).normalize();
+      rollAxis.set(1, 0, 0).transformDirection(middleGroup.matrixWorld).normalize();
 
-        // 初始化
+      setArrow(yawAxisArrow, origin, yawAxis);
+      setArrow(pitchAxisArrow, origin, pitchAxis);
+      setArrow(rollAxisArrow, origin, rollAxis);
+      updateGhostLine(yawGhost, origin, yawAxis);
+      updateGhostLine(rollGhost, origin, rollAxis);
+
+      const alignment = Math.abs(yawAxis.dot(rollAxis));
+      const axisAngle = THREE.MathUtils.radToDeg(Math.acos(Math.min(1, Math.max(0, alignment))));
+      const margin = Math.abs(90 - Math.abs(((state.pitch + 180) % 360) - 180));
+      const lockPercent = Math.round(alignment * 100);
+      const locked = alignment > 0.985;
+      const warning = alignment > 0.92;
+
+      statusMetric.classList.toggle("status-lock", locked);
+      statusMetric.classList.toggle("status-warn", !locked && warning);
+      statusMetric.classList.toggle("status-safe", !locked && !warning);
+      statusText.textContent = locked ? "Gimbal lock" : warning ? "Near lock" : "Normal";
+      alignmentMetric.textContent = alignment.toFixed(3);
+      axisAngleMetric.textContent = `${axisAngle.toFixed(1)}°`;
+      marginMetric.textContent = `${Math.max(0, margin).toFixed(1)}°`;
+      quatMetric.textContent = `w ${quaternion.w.toFixed(3)} / x ${quaternion.x.toFixed(3)} / y ${quaternion.y.toFixed(3)} / z ${quaternion.z.toFixed(3)}`;
+      matrixText.textContent = formatMatrix(rotationMatrix);
+      hudEuler.textContent = `${state.roll} / ${state.pitch} / ${state.yaw}°`;
+      hudMode.textContent = state.mode === "euler" ? "Euler ZYX" : "Quaternion";
+      hudLock.textContent = `${lockPercent}%`;
+    }
+
+    function setArrow(arrow, start, direction) {
+      arrow.position.copy(start);
+      arrow.setDirection(direction.clone().normalize());
+    }
+
+    function updateGhostLine(line, start, direction) {
+      const p0 = start.clone().addScaledVector(direction, -1.65);
+      const p1 = start.clone().addScaledVector(direction, 1.65);
+      line.geometry.setFromPoints([p0, p1]);
+    }
+
+    function formatMatrix(matrix) {
+      const e = matrix.elements;
+      const rows = [
+        [e[0], e[4], e[8]],
+        [e[1], e[5], e[9]],
+        [e[2], e[6], e[10]]
+      ];
+      return rows.map((row) => row.map((value) => value.toFixed(2).padStart(5, " ")).join(" ")).join("\n");
+    }
+
+    function updateVisibility() {
+      eulerRoot.visible = showRings.checked;
+      axisGroup.visible = showAxes.checked;
+      ghostGroup.visible = showGhost.checked && showAxes.checked;
+      directRoot.visible = showDirect.checked;
+      gridHelper.visible = showGrid.checked;
+      setOpacity(eulerRoot, state.mode === "euler" ? 1 : 0.36);
+      setOpacity(directRoot, state.mode === "quaternion" ? 1 : 0.62);
+    }
+
+    Object.keys(sliders).forEach((key) => {
+      sliders[key].addEventListener("input", () => {
+        document.querySelectorAll("[data-preset]").forEach((button) => button.classList.remove("active"));
+        readSliders();
         updateRotation();
+      });
+    });
 
-        // 动画循环
-        function animate() {
-            requestAnimationFrame(animate);
-            renderer.render(scene, camera);
-        }
+    document.querySelectorAll("[data-mode]").forEach((button) => {
+      button.addEventListener("click", () => {
+        state.mode = button.dataset.mode;
+        document.querySelectorAll("[data-mode]").forEach((item) => item.classList.toggle("active", item === button));
+        updateRotation();
+      });
+    });
 
-        animate();
+    document.querySelectorAll("[data-preset]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const name = button.dataset.preset;
+        const next = name === "random"
+          ? {
+              roll: Math.random() * 240 - 120,
+              pitch: Math.random() * 180 - 90,
+              yaw: Math.random() * 240 - 120
+            }
+          : presets[name];
+        setAngles(next, name);
+      });
+    });
 
-        // 响应窗口大小变化
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
-    </script>
+    [showRings, showAxes, showDirect, showGrid, showGhost].forEach((control) => {
+      control.addEventListener("change", updateRotation);
+    });
+
+    renderer.domElement.addEventListener("pointerdown", (event) => {
+      dragState.active = true;
+      dragState.x = event.clientX;
+      dragState.y = event.clientY;
+      renderer.domElement.setPointerCapture(event.pointerId);
+    });
+
+    renderer.domElement.addEventListener("pointermove", (event) => {
+      if (!dragState.active) return;
+      const dx = event.clientX - dragState.x;
+      const dy = event.clientY - dragState.y;
+      cameraState.theta -= dx * 0.008;
+      cameraState.height = Math.max(0.35, Math.min(4.4, cameraState.height + dy * 0.012));
+      dragState.x = event.clientX;
+      dragState.y = event.clientY;
+    });
+
+    renderer.domElement.addEventListener("pointerup", (event) => {
+      dragState.active = false;
+      renderer.domElement.releasePointerCapture(event.pointerId);
+    });
+
+    renderer.domElement.addEventListener("wheel", (event) => {
+      event.preventDefault();
+      cameraState.distance = Math.max(3.4, Math.min(9.5, cameraState.distance + event.deltaY * 0.006));
+    }, { passive: false });
+
+    function updateCamera() {
+      camera.position.set(
+        Math.cos(cameraState.theta) * cameraState.distance,
+        cameraState.height,
+        Math.sin(cameraState.theta) * cameraState.distance
+      );
+      camera.lookAt(0, 0, 0);
+    }
+
+    function onResize() {
+      const width = Math.max(1, viewport.clientWidth);
+      const height = Math.max(1, viewport.clientHeight);
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer.setSize(width, height, false);
+    }
+
+    window.addEventListener("resize", onResize);
+    new ResizeObserver(onResize).observe(viewport);
+
+    function animate(time) {
+      requestAnimationFrame(animate);
+      if (autoDemo.checked) {
+        const t = time * 0.001;
+        sliders.roll.value = String(Math.round(Math.sin(t * 0.82) * 100));
+        sliders.yaw.value = String(Math.round(Math.cos(t * 0.82) * 100));
+        if (Math.abs(state.pitch) < 80) sliders.pitch.value = "90";
+        readSliders();
+        updateRotation();
+      }
+      updateCamera();
+      renderer.render(scene, camera);
+    }
+
+    readSliders();
+    updateRotation();
+    onResize();
+    animate(0);
+  </script>
 </body>
 </html>

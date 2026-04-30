@@ -1,235 +1,736 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>坐标系变换可视化</title>
-    <style>
-        body { margin: 0; overflow: hidden; font-family: Arial, sans-serif; }
-        #canvas-container { width: 100%; height: 100vh; }
-        #controls {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            max-width: 300px;
-        }
-        .control-group {
-            margin-bottom: 12px;
-        }
-        label {
-            display: block;
-            margin-bottom: 4px;
-            font-size: 12px;
-            font-weight: bold;
-            color: #333;
-        }
-        input[type="range"] {
-            width: 100%;
-        }
-        .value-display {
-            display: inline-block;
-            min-width: 50px;
-            text-align: right;
-            font-family: monospace;
-            color: #666;
-        }
-        #matrix-display {
-            margin-top: 15px;
-            padding: 10px;
-            background: #f5f5f5;
-            border-radius: 4px;
-            font-family: monospace;
-            font-size: 11px;
-            line-height: 1.4;
-        }
-        h3 {
-            margin: 0 0 10px 0;
-            font-size: 14px;
-            color: #2563EB;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>坐标系变换可视化</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; background: #0d1117; }
+    body {
+      overflow: hidden;
+      color: #c9d1d9;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", sans-serif;
+    }
+    button, input { font: inherit; }
+    .layout {
+      display: grid;
+      grid-template-columns: 300px minmax(0, 1fr);
+      width: 100%;
+      height: 100%;
+      background: #0d1117;
+    }
+    .panel {
+      min-height: 0;
+      overflow-y: auto;
+      padding: 14px 16px 16px;
+      background: #161b22;
+      border-right: 1px solid #30363d;
+    }
+    .title {
+      display: grid;
+      gap: 3px;
+      margin-bottom: 12px;
+    }
+    .eyebrow {
+      margin: 0;
+      color: #8b949e;
+      font-size: 11px;
+      line-height: 1.2;
+    }
+    h1 {
+      margin: 0;
+      color: #79c0ff;
+      font-size: 16px;
+      font-weight: 650;
+      line-height: 1.25;
+    }
+    .metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .metric {
+      min-width: 0;
+      padding: 8px;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      background: #0d1117;
+    }
+    .metric.wide { grid-column: 1 / -1; }
+    .metric span {
+      display: block;
+      color: #8b949e;
+      font-size: 10px;
+      line-height: 1.2;
+    }
+    .metric strong {
+      display: block;
+      margin-top: 3px;
+      color: #f0f6fc;
+      font-size: 12px;
+      line-height: 1.25;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .metric.wide strong { white-space: normal; }
+    .section {
+      display: grid;
+      gap: 9px;
+      margin-top: 13px;
+    }
+    .section-title {
+      margin: 0;
+      color: #8b949e;
+      font-size: 11px;
+      font-weight: 650;
+      line-height: 1.2;
+    }
+    .preset-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 7px;
+    }
+    .btn {
+      min-height: 31px;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      background: #21262d;
+      color: #c9d1d9;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 650;
+    }
+    .btn:hover { background: #30363d; }
+    .btn.active, .btn.primary {
+      background: #238636;
+      border-color: #2ea043;
+      color: #fff;
+    }
+    .control-row {
+      display: grid;
+      gap: 5px;
+      min-width: 0;
+    }
+    .control-row label {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+      color: #c9d1d9;
+      font-size: 12px;
+      line-height: 1.2;
+    }
+    .control-row .axis-name {
+      color: #8b949e;
+      font-weight: 500;
+    }
+    .value-display {
+      color: #7dcfff;
+      font-size: 11px;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    input[type="range"] {
+      width: 100%;
+      min-width: 0;
+      accent-color: #58a6ff;
+    }
+    .toggle-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      min-height: 30px;
+      padding: 0 8px;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      background: #0d1117;
+      color: #8b949e;
+      font-size: 12px;
+    }
+    .toggle input {
+      width: 16px;
+      height: 16px;
+      margin: 0;
+      accent-color: #58a6ff;
+    }
+    .matrix-box {
+      display: grid;
+      gap: 5px;
+      padding: 9px 10px;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      background: #0d1117;
+      color: #8b949e;
+      font-size: 11px;
+      line-height: 1.35;
+    }
+    .matrix-box code {
+      color: #f0f6fc;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 11px;
+      white-space: pre;
+    }
+    .formula {
+      margin: 0;
+      padding: 9px 10px;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      background: #0d1117;
+      color: #8b949e;
+      font-size: 11px;
+      line-height: 1.45;
+    }
+    .formula strong { color: #c9d1d9; font-weight: 650; }
+    #viewport {
+      position: relative;
+      min-width: 0;
+      height: 100%;
+      overflow: hidden;
+      background: #0d1117;
+    }
+    #canvas-container {
+      width: 100%;
+      height: 100%;
+    }
+    #canvas-container canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    .hud {
+      position: absolute;
+      right: 14px;
+      bottom: 12px;
+      display: grid;
+      grid-template-columns: auto auto;
+      gap: 6px 10px;
+      max-width: min(360px, calc(100% - 28px));
+      padding: 8px 10px;
+      border: 1px solid rgba(139, 148, 158, 0.28);
+      border-radius: 8px;
+      background: rgba(13, 17, 23, 0.76);
+      color: #8b949e;
+      font-size: 11px;
+      line-height: 1.2;
+      backdrop-filter: blur(8px);
+      font-variant-numeric: tabular-nums;
+      pointer-events: none;
+    }
+    .hud strong {
+      color: #f0f6fc;
+      font-weight: 650;
+    }
+    .legend {
+      position: absolute;
+      left: 14px;
+      bottom: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 12px;
+      max-width: min(500px, calc(100% - 28px));
+      padding: 8px 10px;
+      border: 1px solid rgba(139, 148, 158, 0.24);
+      border-radius: 8px;
+      background: rgba(13, 17, 23, 0.68);
+      color: #8b949e;
+      font-size: 11px;
+      line-height: 1.2;
+      backdrop-filter: blur(8px);
+      pointer-events: none;
+    }
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    .swatch {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+    }
+    .swatch.parent { background: #8b949e; }
+    .swatch.child { background: #58a6ff; }
+    .swatch.vector { background: #ffa657; }
+    .swatch.cube { background: #d2a8ff; }
+    @media (max-width: 760px) {
+      body {
+        overflow: auto;
+        overflow-x: hidden;
+      }
+      .layout {
+        grid-template-columns: 1fr;
+        height: 100%;
+        min-height: 100%;
+      }
+      .panel {
+        width: 100%;
+        max-height: 43vh;
+        border-right: 0;
+        border-bottom: 1px solid #30363d;
+      }
+      #viewport {
+        height: 57vh;
+        min-height: 340px;
+      }
+      .legend { display: none; }
+      .hud {
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        max-width: none;
+        grid-template-columns: auto 1fr;
+      }
+    }
+    @media (max-width: 420px) {
+      .panel { padding: 12px; }
+      .metrics, .toggle-grid, .preset-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div id="canvas-container"></div>
-    <div id="controls">
-        <h3>🔧 坐标系变换控制</h3>
+  <main class="layout">
+    <aside class="panel">
+      <header class="title">
+        <p class="eyebrow">Homogeneous Transform / Parent to Child Frame</p>
+        <h1>坐标系变换原理</h1>
+      </header>
 
-        <div class="control-group">
-            <label>平移 X: <span class="value-display" id="tx-value">0.0</span></label>
-            <input type="range" id="tx" min="-5" max="5" step="0.1" value="0">
+      <div class="metrics" aria-label="变换指标">
+        <div class="metric wide"><span>平移向量 p</span><strong id="translationMetric">[0.00, 0.00, 0.00]</strong></div>
+        <div class="metric"><span>距离 ||p||</span><strong id="distanceMetric">0.00</strong></div>
+        <div class="metric"><span>det(R)</span><strong id="detMetric">1.000</strong></div>
+        <div class="metric wide"><span>四元数 q</span><strong id="quatMetric">w 1.000 / x 0.000 / y 0.000 / z 0.000</strong></div>
+      </div>
+
+      <section class="section" aria-label="变换预设">
+        <p class="section-title">变换预设</p>
+        <div class="preset-grid">
+          <button class="btn" type="button" data-preset="identity">Identity</button>
+          <button class="btn" type="button" data-preset="translate">Translate</button>
+          <button class="btn" type="button" data-preset="rotate">Rotate</button>
+          <button class="btn active" type="button" data-preset="compose">Compose</button>
+          <button class="btn" type="button" data-preset="inverse">Inverse</button>
+          <button class="btn" type="button" data-preset="random">Random</button>
         </div>
+      </section>
 
-        <div class="control-group">
-            <label>平移 Y: <span class="value-display" id="ty-value">0.0</span></label>
-            <input type="range" id="ty" min="-5" max="5" step="0.1" value="0">
+      <section class="section" aria-label="平移控制">
+        <p class="section-title">平移 p</p>
+        <div class="control-row">
+          <label for="tx">X <span class="axis-name">right</span><span class="value-display" id="tx-value">1.6</span></label>
+          <input type="range" id="tx" min="-3" max="3" step="0.1" value="1.6">
         </div>
-
-        <div class="control-group">
-            <label>平移 Z: <span class="value-display" id="tz-value">0.0</span></label>
-            <input type="range" id="tz" min="-5" max="5" step="0.1" value="0">
+        <div class="control-row">
+          <label for="ty">Y <span class="axis-name">up</span><span class="value-display" id="ty-value">1.0</span></label>
+          <input type="range" id="ty" min="-3" max="3" step="0.1" value="1.0">
         </div>
-
-        <div class="control-group">
-            <label>旋转 X (°): <span class="value-display" id="rx-value">0</span></label>
-            <input type="range" id="rx" min="-180" max="180" step="1" value="0">
+        <div class="control-row">
+          <label for="tz">Z <span class="axis-name">forward</span><span class="value-display" id="tz-value">1.2</span></label>
+          <input type="range" id="tz" min="-3" max="3" step="0.1" value="1.2">
         </div>
+      </section>
 
-        <div class="control-group">
-            <label>旋转 Y (°): <span class="value-display" id="ry-value">0</span></label>
-            <input type="range" id="ry" min="-180" max="180" step="1" value="0">
+      <section class="section" aria-label="旋转控制">
+        <p class="section-title">旋转 R</p>
+        <div class="control-row">
+          <label for="rx">Roll <span class="axis-name">X</span><span class="value-display" id="rx-value">-24°</span></label>
+          <input type="range" id="rx" min="-180" max="180" step="1" value="-24">
         </div>
-
-        <div class="control-group">
-            <label>旋转 Z (°): <span class="value-display" id="rz-value">0</span></label>
-            <input type="range" id="rz" min="-180" max="180" step="1" value="0">
+        <div class="control-row">
+          <label for="ry">Pitch <span class="axis-name">Y</span><span class="value-display" id="ry-value">38°</span></label>
+          <input type="range" id="ry" min="-180" max="180" step="1" value="38">
         </div>
-
-        <div id="matrix-display">
-            <strong>齐次变换矩阵 T:</strong>
-            <pre id="matrix-content"></pre>
+        <div class="control-row">
+          <label for="rz">Yaw <span class="axis-name">Z</span><span class="value-display" id="rz-value">52°</span></label>
+          <input type="range" id="rz" min="-180" max="180" step="1" value="52">
         </div>
-    </div>
+      </section>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script>
-        // 场景设置
-        const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0xf0f0f0);
+      <section class="section" aria-label="显示层">
+        <p class="section-title">显示层</p>
+        <div class="toggle-grid">
+          <label class="toggle" for="showParent">父坐标<input id="showParent" type="checkbox" checked></label>
+          <label class="toggle" for="showChild">子坐标<input id="showChild" type="checkbox" checked></label>
+          <label class="toggle" for="showCube">局部物体<input id="showCube" type="checkbox" checked></label>
+          <label class="toggle" for="showVector">平移向量<input id="showVector" type="checkbox" checked></label>
+          <label class="toggle" for="showGhost">原始影子<input id="showGhost" type="checkbox" checked></label>
+          <label class="toggle" for="autoOrbit">自动视角<input id="autoOrbit" type="checkbox"></label>
+        </div>
+      </section>
 
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(8, 6, 8);
-        camera.lookAt(0, 0, 0);
+      <section class="section">
+        <div class="matrix-box">
+          <span>齐次变换矩阵 T</span>
+          <code id="matrixText">identity</code>
+        </div>
+        <p class="formula">
+          <strong>T = [ R&nbsp; p; 0&nbsp; 1 ]</strong><br>
+          子坐标系中的点 x<sub>C</sub> 经 T 映射到父坐标系：x<sub>P</sub> = R x<sub>C</sub> + p。
+        </p>
+      </section>
+    </aside>
 
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.getElementById('canvas-container').appendChild(renderer.domElement);
+    <section id="viewport" aria-label="坐标系变换三维可视化">
+      <div id="canvas-container"></div>
+      <div class="legend" aria-label="图例">
+        <span class="legend-item"><span class="swatch parent"></span>父坐标系</span>
+        <span class="legend-item"><span class="swatch child"></span>子坐标系</span>
+        <span class="legend-item"><span class="swatch vector"></span>平移向量 p</span>
+        <span class="legend-item"><span class="swatch cube"></span>局部物体</span>
+      </div>
+      <div class="hud" aria-label="相机与状态">
+        <span>相机</span><strong>拖拽旋转 / 滚轮缩放</strong>
+        <span>顺序</span><strong>XYZ Euler</strong>
+        <span>状态</span><strong id="statusText">Rigid transform</strong>
+      </div>
+    </section>
+  </main>
 
-        // 添加网格
-        const gridHelper = new THREE.GridHelper(20, 20, 0xcccccc, 0xe0e0e0);
-        scene.add(gridHelper);
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    const viewport = document.getElementById("viewport");
+    const canvasContainer = document.getElementById("canvas-container");
+    const ids = ["tx", "ty", "tz", "rx", "ry", "rz"];
+    const controls = Object.fromEntries(ids.map((id) => [id, document.getElementById(id)]));
+    const displays = Object.fromEntries(ids.map((id) => [id, document.getElementById(`${id}-value`)]));
+    const translationMetric = document.getElementById("translationMetric");
+    const distanceMetric = document.getElementById("distanceMetric");
+    const detMetric = document.getElementById("detMetric");
+    const quatMetric = document.getElementById("quatMetric");
+    const matrixText = document.getElementById("matrixText");
+    const statusText = document.getElementById("statusText");
+    const showParent = document.getElementById("showParent");
+    const showChild = document.getElementById("showChild");
+    const showCube = document.getElementById("showCube");
+    const showVector = document.getElementById("showVector");
+    const showGhost = document.getElementById("showGhost");
+    const autoOrbit = document.getElementById("autoOrbit");
 
-        // 创建坐标轴辅助函数
-        function createAxes(size = 2) {
-            const axes = new THREE.Group();
+    const presets = {
+      identity: { tx: 0, ty: 0, tz: 0, rx: 0, ry: 0, rz: 0 },
+      translate: { tx: 1.8, ty: 1.1, tz: -1.2, rx: 0, ry: 0, rz: 0 },
+      rotate: { tx: 0, ty: 0, tz: 0, rx: 28, ry: -36, rz: 44 },
+      compose: { tx: 1.6, ty: 1.0, tz: 1.2, rx: -24, ry: 38, rz: 52 },
+      inverse: { tx: -1.6, ty: -1.0, tz: -1.2, rx: 24, ry: -38, rz: -52 },
+      random: null
+    };
 
-            const arrowX = new THREE.ArrowHelper(
-                new THREE.Vector3(1, 0, 0),
-                new THREE.Vector3(0, 0, 0),
-                size, 0xff0000, size * 0.2, size * 0.15
-            );
-            const arrowY = new THREE.ArrowHelper(
-                new THREE.Vector3(0, 1, 0),
-                new THREE.Vector3(0, 0, 0),
-                size, 0x00ff00, size * 0.2, size * 0.15
-            );
-            const arrowZ = new THREE.ArrowHelper(
-                new THREE.Vector3(0, 0, 1),
-                new THREE.Vector3(0, 0, 0),
-                size, 0x0000ff, size * 0.2, size * 0.15
-            );
+    const state = { tx: 0, ty: 0, tz: 0, rx: 0, ry: 0, rz: 0 };
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0d1117);
+    scene.fog = new THREE.Fog(0x0d1117, 8, 14);
 
-            axes.add(arrowX, arrowY, arrowZ);
-            return axes;
-        }
+    const camera = new THREE.PerspectiveCamera(48, 1, 0.05, 100);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    canvasContainer.appendChild(renderer.domElement);
 
-        // 世界坐标系（固定）
-        const worldAxes = createAxes(3);
-        scene.add(worldAxes);
+    scene.add(new THREE.HemisphereLight(0xa5d6ff, 0x182032, 1.15));
+    const keyLight = new THREE.DirectionalLight(0xffffff, 1.05);
+    keyLight.position.set(4, 6, 5);
+    scene.add(keyLight);
+    const rimLight = new THREE.DirectionalLight(0xffc680, 0.58);
+    rimLight.position.set(-4, 3, -4);
+    scene.add(rimLight);
 
-        // 子坐标系（可变换）
-        const childAxes = createAxes(2);
-        scene.add(childAxes);
+    const grid = new THREE.GridHelper(8, 32, 0x30363d, 0x21262d);
+    scene.add(grid);
 
-        // 添加立方体以更好地显示变换
-        const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
-        const cubeMaterial = new THREE.MeshPhongMaterial({
-            color: 0x2563EB,
-            transparent: true,
-            opacity: 0.6
-        });
-        const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-        childAxes.add(cube);
+    const parentFrame = createAxesFrame(1.45, 0.95);
+    scene.add(parentFrame);
 
-        // 添加光照
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-        scene.add(ambientLight);
+    const ghostGroup = new THREE.Group();
+    ghostGroup.add(createAxesFrame(0.86, 0.32));
+    const ghostCube = createCube(0x8b949e, 0.16, true);
+    ghostGroup.add(ghostCube);
+    scene.add(ghostGroup);
 
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.4);
-        directionalLight.position.set(5, 10, 5);
-        scene.add(directionalLight);
+    const childFrame = new THREE.Group();
+    scene.add(childFrame);
+    const childAxes = createAxesFrame(1.15, 1);
+    const childCube = createCube(0xd2a8ff, 0.44, false);
+    const localPlane = createLocalPlane();
+    childFrame.add(childAxes, childCube, localPlane);
 
-        // 控制器
-        const controls = {
-            tx: 0, ty: 0, tz: 0,
-            rx: 0, ry: 0, rz: 0
-        };
+    const translationArrow = new THREE.ArrowHelper(
+      new THREE.Vector3(1, 0, 0),
+      new THREE.Vector3(0, 0, 0),
+      1,
+      0xffa657,
+      0.22,
+      0.1
+    );
+    scene.add(translationArrow);
+    const connectorLine = new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3()]),
+      new THREE.LineBasicMaterial({ color: 0xffa657, transparent: true, opacity: 0.52 })
+    );
+    scene.add(connectorLine);
 
-        // 更新变换矩阵显示
-        function updateMatrixDisplay() {
-            const matrix = childAxes.matrix.clone();
-            const elements = matrix.elements;
+    const samplePoint = new THREE.Mesh(
+      new THREE.SphereGeometry(0.075, 24, 16),
+      new THREE.MeshStandardMaterial({ color: 0xf2cc60, emissive: 0x332400, roughness: 0.38 })
+    );
+    samplePoint.position.set(0.55, 0.44, 0.36);
+    childFrame.add(samplePoint);
 
-            const matrixStr = `[${elements[0].toFixed(2)}  ${elements[4].toFixed(2)}  ${elements[8].toFixed(2)}  ${elements[12].toFixed(2)}]
-[${elements[1].toFixed(2)}  ${elements[5].toFixed(2)}  ${elements[9].toFixed(2)}  ${elements[13].toFixed(2)}]
-[${elements[2].toFixed(2)}  ${elements[6].toFixed(2)}  ${elements[10].toFixed(2)}  ${elements[14].toFixed(2)}]
-[${elements[3].toFixed(2)}  ${elements[7].toFixed(2)}  ${elements[11].toFixed(2)}  ${elements[15].toFixed(2)}]`;
+    const projectedPoint = new THREE.Mesh(
+      new THREE.SphereGeometry(0.052, 20, 12),
+      new THREE.MeshStandardMaterial({ color: 0xf2cc60, transparent: true, opacity: 0.48, roughness: 0.42 })
+    );
+    scene.add(projectedPoint);
+    const pointLine = new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3()]),
+      new THREE.LineBasicMaterial({ color: 0xf2cc60, transparent: true, opacity: 0.68 })
+    );
+    scene.add(pointLine);
 
-            document.getElementById('matrix-content').textContent = matrixStr;
-        }
+    const tempVector = new THREE.Vector3();
+    const tempQuat = new THREE.Quaternion();
+    const tempScale = new THREE.Vector3();
+    const tempMatrix = new THREE.Matrix4();
+    const tempLocalPoint = new THREE.Vector3(0.55, 0.44, 0.36);
+    const tempWorldPoint = new THREE.Vector3();
+    const cameraState = { theta: 0.78, height: 3.4, distance: 8.0 };
+    const dragState = { active: false, x: 0, y: 0 };
 
-        // 更新子坐标系变换
-        function updateTransform() {
-            childAxes.position.set(controls.tx, controls.ty, controls.tz);
-            childAxes.rotation.set(
-                THREE.MathUtils.degToRad(controls.rx),
-                THREE.MathUtils.degToRad(controls.ry),
-                THREE.MathUtils.degToRad(controls.rz)
-            );
-            childAxes.updateMatrix();
-            updateMatrixDisplay();
-        }
+    function createAxesFrame(size, opacity) {
+      const group = new THREE.Group();
+      group.add(makeAxis(new THREE.Vector3(1, 0, 0), size, 0xff7b72, opacity));
+      group.add(makeAxis(new THREE.Vector3(0, 1, 0), size, 0x56d364, opacity));
+      group.add(makeAxis(new THREE.Vector3(0, 0, 1), size, 0x58a6ff, opacity));
+      return group;
+    }
 
-        // 绑定控制器
-        ['tx', 'ty', 'tz', 'rx', 'ry', 'rz'].forEach(id => {
-            const slider = document.getElementById(id);
-            const display = document.getElementById(id + '-value');
+    function makeAxis(direction, size, color, opacity) {
+      const arrow = new THREE.ArrowHelper(direction, new THREE.Vector3(), size, color, size * 0.18, size * 0.08);
+      arrow.line.material.transparent = opacity < 1;
+      arrow.line.material.opacity = opacity;
+      arrow.cone.material.transparent = opacity < 1;
+      arrow.cone.material.opacity = opacity;
+      return arrow;
+    }
 
-            slider.addEventListener('input', (e) => {
-                const value = parseFloat(e.target.value);
-                controls[id] = value;
-                display.textContent = id.startsWith('r') ? value.toFixed(0) : value.toFixed(1);
-                updateTransform();
-            });
-        });
+    function createCube(color, opacity, wireframe) {
+      const cube = new THREE.Mesh(
+        new THREE.BoxGeometry(0.72, 0.72, 0.72),
+        new THREE.MeshStandardMaterial({
+          color,
+          transparent: true,
+          opacity,
+          wireframe,
+          roughness: 0.42,
+          metalness: 0.08
+        })
+      );
+      cube.position.set(0.35, 0.35, 0.35);
+      return cube;
+    }
 
-        // 初始化显示
-        updateMatrixDisplay();
+    function createLocalPlane() {
+      const plane = new THREE.Mesh(
+        new THREE.PlaneGeometry(1.35, 1.35, 1, 1),
+        new THREE.MeshBasicMaterial({
+          color: 0x58a6ff,
+          transparent: true,
+          opacity: 0.08,
+          side: THREE.DoubleSide
+        })
+      );
+      plane.rotation.x = -Math.PI / 2;
+      return plane;
+    }
 
-        // 动画循环
-        function animate() {
-            requestAnimationFrame(animate);
+    function readControls() {
+      ids.forEach((id) => {
+        state[id] = Number(controls[id].value);
+        displays[id].textContent = id.startsWith("r") ? `${Math.round(state[id])}°` : state[id].toFixed(1);
+      });
+    }
 
-            // 缓慢旋转相机以获得更好的视角
-            const time = Date.now() * 0.0001;
-            camera.position.x = Math.cos(time) * 10;
-            camera.position.z = Math.sin(time) * 10;
-            camera.lookAt(0, 0, 0);
+    function setControls(next, presetName) {
+      ids.forEach((id) => {
+        controls[id].value = String(next[id]);
+      });
+      document.querySelectorAll("[data-preset]").forEach((button) => {
+        button.classList.toggle("active", button.dataset.preset === presetName);
+      });
+      readControls();
+      updateTransform();
+    }
 
-            renderer.render(scene, camera);
-        }
+    function updateTransform() {
+      childFrame.position.set(state.tx, state.ty, state.tz);
+      childFrame.rotation.set(
+        THREE.MathUtils.degToRad(state.rx),
+        THREE.MathUtils.degToRad(state.ry),
+        THREE.MathUtils.degToRad(state.rz),
+        "XYZ"
+      );
+      childFrame.updateMatrixWorld(true);
 
-        animate();
+      parentFrame.visible = showParent.checked;
+      childAxes.visible = showChild.checked;
+      childCube.visible = showCube.checked;
+      localPlane.visible = showCube.checked;
+      ghostGroup.visible = showGhost.checked;
+      translationArrow.visible = showVector.checked;
+      connectorLine.visible = showVector.checked;
+      pointLine.visible = showVector.checked;
+      projectedPoint.visible = showVector.checked;
 
-        // 响应窗口大小变化
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
-    </script>
+      updateVectorLayer();
+      updateMetrics();
+    }
+
+    function updateVectorLayer() {
+      tempVector.set(state.tx, state.ty, state.tz);
+      const len = tempVector.length();
+      if (len > 0.001) {
+        translationArrow.setDirection(tempVector.clone().normalize());
+        translationArrow.setLength(len, 0.22, 0.1);
+        translationArrow.position.set(0, 0, 0);
+      } else {
+        translationArrow.setLength(0.001);
+      }
+      connectorLine.geometry.setFromPoints([new THREE.Vector3(0, 0, 0), tempVector.clone()]);
+
+      tempWorldPoint.copy(tempLocalPoint).applyMatrix4(childFrame.matrixWorld);
+      projectedPoint.position.copy(tempLocalPoint);
+      pointLine.geometry.setFromPoints([tempLocalPoint.clone(), tempWorldPoint.clone()]);
+    }
+
+    function updateMetrics() {
+      childFrame.matrixWorld.decompose(tempVector, tempQuat, tempScale);
+      tempMatrix.copy(childFrame.matrixWorld);
+      const e = tempMatrix.elements;
+      const det =
+        e[0] * (e[5] * e[10] - e[9] * e[6]) -
+        e[4] * (e[1] * e[10] - e[9] * e[2]) +
+        e[8] * (e[1] * e[6] - e[5] * e[2]);
+      const dist = tempVector.length();
+      translationMetric.textContent = `[${tempVector.x.toFixed(2)}, ${tempVector.y.toFixed(2)}, ${tempVector.z.toFixed(2)}]`;
+      distanceMetric.textContent = dist.toFixed(2);
+      detMetric.textContent = det.toFixed(3);
+      quatMetric.textContent = `w ${tempQuat.w.toFixed(3)} / x ${tempQuat.x.toFixed(3)} / y ${tempQuat.y.toFixed(3)} / z ${tempQuat.z.toFixed(3)}`;
+      matrixText.textContent = formatMatrix(tempMatrix);
+      statusText.textContent = Math.abs(det - 1) < 0.01 ? "Rigid transform" : "Check rotation";
+    }
+
+    function formatMatrix(matrix) {
+      const e = matrix.elements;
+      const rows = [
+        [e[0], e[4], e[8], e[12]],
+        [e[1], e[5], e[9], e[13]],
+        [e[2], e[6], e[10], e[14]],
+        [e[3], e[7], e[11], e[15]]
+      ];
+      return rows.map((row) => row.map((value) => value.toFixed(2).padStart(6, " ")).join(" ")).join("\n");
+    }
+
+    function randomPreset() {
+      return {
+        tx: Number((Math.random() * 4.4 - 2.2).toFixed(1)),
+        ty: Number((Math.random() * 2.8 + 0.2).toFixed(1)),
+        tz: Number((Math.random() * 4.4 - 2.2).toFixed(1)),
+        rx: Math.round(Math.random() * 180 - 90),
+        ry: Math.round(Math.random() * 180 - 90),
+        rz: Math.round(Math.random() * 180 - 90)
+      };
+    }
+
+    ids.forEach((id) => {
+      controls[id].addEventListener("input", () => {
+        document.querySelectorAll("[data-preset]").forEach((button) => button.classList.remove("active"));
+        readControls();
+        updateTransform();
+      });
+    });
+
+    document.querySelectorAll("[data-preset]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const name = button.dataset.preset;
+        setControls(name === "random" ? randomPreset() : presets[name], name);
+      });
+    });
+
+    [showParent, showChild, showCube, showVector, showGhost].forEach((control) => {
+      control.addEventListener("change", updateTransform);
+    });
+
+    renderer.domElement.addEventListener("pointerdown", (event) => {
+      dragState.active = true;
+      dragState.x = event.clientX;
+      dragState.y = event.clientY;
+      renderer.domElement.setPointerCapture(event.pointerId);
+    });
+
+    renderer.domElement.addEventListener("pointermove", (event) => {
+      if (!dragState.active) return;
+      const dx = event.clientX - dragState.x;
+      const dy = event.clientY - dragState.y;
+      cameraState.theta -= dx * 0.008;
+      cameraState.height = Math.max(0.7, Math.min(6.0, cameraState.height + dy * 0.012));
+      dragState.x = event.clientX;
+      dragState.y = event.clientY;
+    });
+
+    renderer.domElement.addEventListener("pointerup", (event) => {
+      dragState.active = false;
+      renderer.domElement.releasePointerCapture(event.pointerId);
+    });
+
+    renderer.domElement.addEventListener("wheel", (event) => {
+      event.preventDefault();
+      cameraState.distance = Math.max(3.6, Math.min(11.5, cameraState.distance + event.deltaY * 0.006));
+    }, { passive: false });
+
+    function updateCamera() {
+      if (autoOrbit.checked) cameraState.theta += 0.004;
+      camera.position.set(
+        Math.cos(cameraState.theta) * cameraState.distance,
+        cameraState.height,
+        Math.sin(cameraState.theta) * cameraState.distance
+      );
+      camera.lookAt(0, 0.8, 0);
+    }
+
+    function onResize() {
+      const width = Math.max(1, viewport.clientWidth);
+      const height = Math.max(1, viewport.clientHeight);
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer.setSize(width, height, false);
+    }
+
+    window.addEventListener("resize", onResize);
+    new ResizeObserver(onResize).observe(viewport);
+
+    function animate() {
+      requestAnimationFrame(animate);
+      updateCamera();
+      renderer.render(scene, camera);
+    }
+
+    readControls();
+    updateTransform();
+    onResize();
+    animate();
+  </script>
 </body>
 </html>

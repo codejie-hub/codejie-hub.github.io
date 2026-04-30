@@ -4,7 +4,9 @@ date: 2026-04-17 10:00:00 +0800
 categories: [机器人抓取]
 tags: [kinematics, robotics, quaternion, euler-angles, coordinate-transform, 7dof]
 description: 深入解析机器人运动学核心概念：坐标系转换、欧拉角、四元数、万向锁问题，以7自由度机械臂为例，配合Three.js交互式3D可视化，帮助理解空间旋转与末端位姿控制。
-image: /assets/images/posts/robotics/kinematics-cover.jpg
+image:
+  path: /assets/images/posts/robotics/kinematics-cover.jpg
+  alt: 机器人运动学坐标变换与7自由度机械臂文章封面
 math: true
 mermaid: true
 ---
