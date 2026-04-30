@@ -4,7 +4,9 @@ date: 2025-11-26 14:00:00 +0800
 categories: [大模型应用]
 tags: [transformer, attention]
 description: 2017年，Google发布了Transformer模型，该模型基于注意力机制，在NLP任务中取得了显著的成果。
-image: /assets/images/posts/llm/transformer-cover.jpg
+image:
+  path: /assets/images/posts/llm/transformer-cover.jpg
+  alt: Transformer 注意力机制与编码器解码器架构文章封面
 mermaid: true
 math: true
 ---
