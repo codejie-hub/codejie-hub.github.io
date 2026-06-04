@@ -490,6 +490,125 @@ mjx-container[jax='CHTML'][display='true'] {
   white-space: nowrap;
 }
 
+article[data-toc] > header {
+  margin-bottom: 2.15rem;
+}
+
+article[data-toc] > header h1[data-toc-skip] {
+  max-width: 52rem;
+  margin-bottom: 0.8rem;
+  color: var(--heading-color);
+  font-size: clamp(1.82rem, 1.42rem + 1.12vw, 2.48rem);
+  font-weight: 760;
+  line-height: 1.28;
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+
+article[data-toc] > header .post-desc {
+  max-width: 50rem;
+  margin: 0.75rem 0 1.05rem !important;
+  border-left: 3px solid var(--codejie-border);
+  padding: 0.18rem 0 0.18rem 0.9rem;
+  color: var(--text-muted-color);
+  font-size: 1.02rem;
+  font-weight: 400 !important;
+  line-height: 1.78;
+}
+
+article[data-toc] > header > .post-meta {
+  color: var(--text-muted-color) !important;
+  font-size: 0.84rem;
+  line-height: 1.55;
+}
+
+article[data-toc] > header > .post-meta > span:first-child,
+article[data-toc] > header > .post-meta > span:nth-child(2) {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 0.3rem;
+  margin-bottom: 0.75rem;
+}
+
+article[data-toc] > header > .post-meta > div.mt-3.mb-3 {
+  margin-top: 0.75rem !important;
+  margin-bottom: 1rem !important;
+}
+
+article[data-toc] > header .preview-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 40 / 21;
+  border: 1px solid var(--main-border-color);
+  border-radius: 8px;
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.06);
+  object-fit: cover;
+}
+
+article[data-toc] > header figcaption {
+  padding-top: 0.55rem !important;
+  padding-bottom: 0.15rem !important;
+  color: var(--text-muted-color);
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+article[data-toc] > header > .post-meta > .d-flex.justify-content-between {
+  align-items: center;
+  margin-top: 1.05rem;
+  border: 1px solid var(--main-border-color);
+  border-radius: 8px;
+  padding: 0.62rem 0.8rem;
+  background: var(--codejie-surface-tint);
+  color: var(--text-muted-color);
+  gap: 0.75rem;
+}
+
+article[data-toc] > header > .post-meta > .d-flex.justify-content-between a,
+article[data-toc] > header > .post-meta > .d-flex.justify-content-between em {
+  color: var(--text-muted-highlight-color);
+}
+
+article[data-toc] > .content {
+  margin-top: 2.05rem;
+}
+
+article[data-toc] > .content > blockquote:first-child {
+  margin: 0 0 1.55rem;
+  border-left: 3px solid var(--codejie-accent);
+  border-radius: 0 8px 8px 0;
+  padding: 0.9rem 1.05rem;
+  background: var(--codejie-surface-tint);
+  color: var(--text-color);
+  box-shadow: inset 0 0 0 1px rgba(15, 118, 110, 0.08);
+}
+
+article[data-toc] > .content > blockquote:first-child p {
+  margin: 0;
+  line-height: 1.78;
+}
+
+article[data-toc] > .content > p {
+  margin: 1.05rem 0;
+}
+
+article[data-toc] > .content > h2 {
+  margin-top: 2.75rem;
+  margin-bottom: 0.9rem;
+}
+
+article[data-toc] > .content > h2 + p,
+article[data-toc] > .content > h3 + p {
+  margin-top: 0.55rem;
+}
+
+article[data-toc] > .content ul:not([class]),
+article[data-toc] > .content ol:not([class]) {
+  margin-top: 0.65rem;
+  margin-bottom: 1.1rem;
+}
+
 @media (max-width: 767.98px) {
   .home-lab {
     margin-top: 1rem;
@@ -540,6 +659,45 @@ mjx-container[jax='CHTML'][display='true'] {
 
   article header h1 {
     font-size: 1.68rem;
+  }
+
+  article[data-toc] > header {
+    margin-bottom: 1.65rem;
+  }
+
+  article[data-toc] > header h1[data-toc-skip] {
+    max-width: 100%;
+    margin-bottom: 0.72rem;
+    font-size: clamp(1.58rem, 1.35rem + 0.9vw, 1.82rem);
+    line-height: 1.33;
+  }
+
+  article[data-toc] > header .post-desc {
+    margin-bottom: 0.9rem !important;
+    padding-left: 0.75rem;
+    font-size: 0.96rem;
+    line-height: 1.72;
+  }
+
+  article[data-toc] > header > .post-meta > div.mt-3.mb-3 {
+    margin-top: 0.55rem !important;
+  }
+
+  article[data-toc] > header > .post-meta > .d-flex.justify-content-between {
+    flex-wrap: wrap;
+    padding: 0.58rem 0.7rem;
+  }
+
+  article[data-toc] > header > .post-meta > .d-flex.justify-content-between > div {
+    margin-left: 0;
+  }
+
+  article[data-toc] > .content {
+    margin-top: 1.7rem;
+  }
+
+  article[data-toc] > .content > blockquote:first-child {
+    padding: 0.82rem 0.9rem;
   }
 
   article .content {
