@@ -300,7 +300,7 @@ $$
 
 ### 7.1 坐标系变换可视化
 
-<iframe src="/assets/demos/robot-kinematics-transform.html" width="100%" height="500px" frameborder="0"></iframe>
+{% include demo-frame.html src="/assets/demos/robot-kinematics-transform.html" title="坐标系变换可视化" height="500px" caption="拖动平移和旋转参数，观察子坐标系相对于父坐标系的变换。" %}
 
 **操作说明**：
 - 拖动滑块调整平移和旋转参数
@@ -309,7 +309,7 @@ $$
 
 ### 7.2 欧拉角与万向锁演示
 
-<iframe src="/assets/demos/robot-kinematics-gimbal.html" width="100%" height="500px" frameborder="0"></iframe>
+{% include demo-frame.html src="/assets/demos/robot-kinematics-gimbal.html" title="欧拉角与万向锁演示" height="500px" caption="调整 Roll、Pitch、Yaw，观察 Pitch 接近 90 度时的万向锁现象。" %}
 
 **操作说明**：
 - 调整 Roll、Pitch、Yaw 三个角度
@@ -318,7 +318,7 @@ $$
 
 ### 7.3 7-DOF机械臂正运动学
 
-<iframe src="/assets/demos/robot-kinematics-7dof.html" width="100%" height="600px" frameborder="0"></iframe>
+{% include demo-frame.html src="/assets/demos/robot-kinematics-7dof.html" title="7-DOF 机械臂正运动学" height="600px" caption="调整 7 个关节角，观察末端位姿和奇异性指标变化。" %}
 
 **操作说明**：
 - 调整7个关节角度

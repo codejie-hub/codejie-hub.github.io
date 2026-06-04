@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Robotics article cover</title>
+  <desc id="desc">A clean technical placeholder cover for robotics and embodied AI articles.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7fbfa"/>
+      <stop offset="0.52" stop-color="#e6f4f1"/>
+      <stop offset="1" stop-color="#eef4ff"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0f766e"/>
+      <stop offset="1" stop-color="#2563eb"/>
+    </linearGradient>
+    <pattern id="grid" width="42" height="42" patternUnits="userSpaceOnUse">
+      <path d="M42 0H0V42" fill="none" stroke="#0f766e" stroke-opacity="0.08" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <path d="M90 496C220 448 300 448 430 496S650 544 780 496 990 448 1110 492" fill="none" stroke="#2563eb" stroke-opacity="0.18" stroke-width="16"/>
+  <g transform="translate(690 126)" stroke="url(#accent)" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M122 78h150a54 54 0 0 1 54 54v96" fill="none" stroke-width="30"/>
+    <path d="M326 228l76 86M326 228l-64 92" fill="none" stroke-width="30"/>
+    <path d="M402 314l-46 74M262 320l-58 66" fill="none" stroke-width="24"/>
+    <rect x="40" y="38" width="106" height="106" rx="24" fill="#ffffff" fill-opacity="0.68" stroke-width="18"/>
+    <path d="M93 144v72M58 216h70" fill="none" stroke-width="18"/>
+    <path d="M204 388h178" fill="none" stroke-width="20"/>
+  </g>
+  <g fill="#0f172a">
+    <text x="92" y="185" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="700">Robotics</text>
+    <text x="92" y="252" font-family="Inter, Arial, sans-serif" font-size="70" font-weight="800">Embodied AI</text>
+    <text x="96" y="314" font-family="Inter, Arial, sans-serif" font-size="28" fill="#475569">grasping · control · vision-language-action</text>
+  </g>
+  <rect x="92" y="374" width="248" height="8" rx="4" fill="url(#accent)"/>
+</svg>

@@ -16,14 +16,14 @@ timezone: Asia/Shanghai
 
 title: CodeJie's Blog # the main title
 
-tagline: Hi! # it will display as the subtitle
+tagline: 具身智能、机器人与大模型学习笔记 # it will display as the subtitle
 
 description: >- # used by seo meta and the atom feed
   专注于具身智能、机器人抓取、大模型、人工智能应用的学习笔记与研究总结。分享技术探索、论文阅读和项目实践经验。
 
 # Fill in the protocol & hostname for your site.
 # E.g. 'https://username.github.io', note that it does not end with a '/'.
-url: "https://github.com/codejie-hub/codejie-hub.github.io"
+url: "https://codejie-hub.github.io"
 
 github:
   username: codejie-hub # change to your GitHub username

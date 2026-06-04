@@ -4,6 +4,9 @@ date: 2026-04-01 16:00:00 +0800
 categories: [论文笔记]
 tags: [flow-matching, diffusion, generative-model, rectified-flow, optimal-transport]
 description: 流匹配用 ODE 与向量场回归描述从噪声到数据的输运；本文整理直线路径（OT）直觉、条件流匹配训练目标，以及与扩散在轨迹与调度上的差异，并附可部署 2D 轨迹演示。
+image:
+  path: /assets/images/posts/placeholders/paper-note.svg
+  alt: Flow Matching 生成模型论文笔记文章封面
 mermaid: true
 math: true
 ---
@@ -54,18 +57,7 @@ math: true
 
 每个粒子满足 **$x_t=(1-t)x_0+t x_1$**（$y$ 同理），$x_0$ 来自二维高斯，$x_1$ 落在「∞」形曲线。拖动 **时间进度 $t$** 可观察 **线性概率路径**（理想化 OT 直觉）。部署后若 iframe 不显示，请用 `bundle exec jekyll serve` 本地预览或打开独立链接。
 
-<div class="flow-matching-demo-embed" style="width:100%;max-width:640px;margin:1.25rem auto;">
-  <iframe
-    src="{{ site.baseurl }}/assets/demos/flow-matching-ot.html"
-    title="流匹配 2D 轨迹可视化"
-    width="100%"
-    height="620"
-    style="border:0;border-radius:10px;box-shadow:0 8px 32px rgba(0,0,0,.2);display:block;background:#0f1419;"
-    loading="lazy"
-    allowfullscreen
-  ></iframe>
-  <p style="text-align:center;font-size:0.85rem;opacity:.8;margin:0.5rem 0 0;">独立打开：<a href="{{ site.baseurl }}/assets/demos/flow-matching-ot.html" rel="noopener noreferrer" target="_blank">flow-matching-ot.html</a></p>
-</div>
+{% include demo-frame.html src="/assets/demos/flow-matching-ot.html" title="流匹配 2D 轨迹可视化" height="620px" caption="拖动时间进度观察最优传输直线路径。" %}
 
 ## 5. 小结
 

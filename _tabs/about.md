@@ -35,6 +35,6 @@ order: 4
 
 如果您对机器人抓取技术感兴趣，或有任何问题想要交流，欢迎通过以下方式联系我：
 - GitHub：[@codejie-hub](https://github.com/codejie-hub)
-- 邮箱：[您的邮箱]
+- 邮箱：[code_jie@163.com](mailto:code_jie@163.com)
 
 together with me!

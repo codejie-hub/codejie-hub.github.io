@@ -86,13 +86,13 @@ image:
   lqip: data:image/webp;base64,UklGRpoAAABXRUJQVlA4WAoAAAAQAAAADwAABwAAQUxQSAwAAAARBxAR/Q9ERP8DAABWUDggGAAAABQBAJ0BKhAACAAFADQlpAADcAD++/1QAA==
 ```
 
-## 📝 待添加封面的其他文章
+## 📝 分类占位封面
 
-你可以继续为以下文章添加封面：
-- 2025-12-14-roboLLM.md (Robot+LLM 综述)
-- 2026-04-01-VGGT.md (VGGT 论文)
-- 2026-03-26-priorDA.md (深度估计)
-- 2026-04-01-flowmatching.md (流匹配)
-- 其他文章...
+以下文章已先使用分类占位图，后续如果有更贴合内容的真封面，可以直接替换 `image.path`：
 
-按照相同的方式在 frontmatter 中添加 `image` 字段即可。
+- `2025-09-11-llm.md`、`2025-12-03-llms.md`、`2025-12-08-quiz.md`：`placeholders/llm.svg`
+- `2025-12-14-roboLLM.md`：`placeholders/robotics.svg`
+- `2026-03-26-priorDA.md`、`2026-04-01-VGGT.md`：`placeholders/vision-3d.svg`
+- `2026-04-01-flowmatching.md`：`placeholders/paper-note.svg`
+
+占位图位于 `assets/images/posts/placeholders/`，尺寸为 1200x630。
