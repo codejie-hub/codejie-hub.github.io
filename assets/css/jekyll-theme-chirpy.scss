@@ -10,6 +10,8 @@
 
 /* append your custom style below */
 
+/* Theme tokens */
+
 :root {
   --codejie-accent: #0f766e;
   --codejie-accent-strong: #2563eb;
@@ -32,6 +34,8 @@ html[data-mode='dark'] {
 body {
   line-height: 1.72;
 }
+
+/* Home */
 
 .home-lab {
   position: relative;
@@ -320,6 +324,8 @@ body {
   margin-top: 1.25rem;
 }
 
+/* Home post list */
+
 #post-list {
   margin-top: 1.75rem;
 }
@@ -400,6 +406,8 @@ body {
   line-height: 1.45;
 }
 
+/* Shared content rhythm */
+
 article header h1 {
   line-height: 1.35;
   letter-spacing: 0;
@@ -464,6 +472,8 @@ mjx-container[jax='CHTML'][display='true'] {
   padding: 0.35rem 0;
 }
 
+/* Demo embeds */
+
 .demo-frame {
   --demo-height: 520px;
   margin: 1.35rem 0 1.8rem;
@@ -489,6 +499,8 @@ mjx-container[jax='CHTML'][display='true'] {
 .demo-frame__caption a {
   white-space: nowrap;
 }
+
+/* Post page */
 
 article[data-toc] > header {
   margin-bottom: 2.15rem;
@@ -609,6 +621,203 @@ article[data-toc] > .content ol:not([class]) {
   margin-bottom: 1.1rem;
 }
 
+/* Tabs pages */
+
+article:not([data-toc]) > .dynamic-title {
+  margin-bottom: 1.35rem;
+  color: var(--heading-color);
+  font-size: clamp(1.72rem, 1.42rem + 0.9vw, 2.25rem);
+  line-height: 1.28;
+  letter-spacing: 0;
+}
+
+article:not([data-toc]) > .content {
+  line-height: 1.78;
+}
+
+article:not([data-toc]) > .content > h1 {
+  margin-top: 0;
+  margin-bottom: 0.85rem;
+  color: var(--heading-color);
+  font-size: clamp(1.55rem, 1.25rem + 0.8vw, 2rem);
+  line-height: 1.32;
+  letter-spacing: 0;
+}
+
+article:not([data-toc]) > .content > h2 {
+  margin-top: 2.15rem;
+  margin-bottom: 0.75rem;
+  color: var(--heading-color);
+  font-size: 1.22rem;
+  line-height: 1.38;
+  letter-spacing: 0;
+}
+
+article:not([data-toc]) > .content > p {
+  max-width: 48rem;
+  margin: 0.9rem 0;
+  color: var(--text-color);
+}
+
+article:not([data-toc]) > .content > ul {
+  max-width: 50rem;
+  margin-top: 0.7rem;
+  margin-bottom: 1.25rem;
+}
+
+.categories.card {
+  overflow: hidden;
+  margin-bottom: 1rem;
+  border: 1px solid var(--codejie-border);
+  border-radius: 8px;
+  background: var(--card-bg);
+  box-shadow: var(--codejie-card-shadow);
+}
+
+.categories .card-header {
+  align-items: center;
+  padding: 0.86rem 0.95rem;
+  background: var(--codejie-surface-tint);
+}
+
+.categories .card-header a {
+  color: var(--heading-color);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.categories .card-header i,
+.categories .list-group-item i {
+  color: var(--codejie-accent);
+}
+
+.categories .card-header .text-muted,
+.categories .list-group-item .text-muted {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--main-border-color);
+  border-radius: 999px;
+  padding: 0.08rem 0.45rem;
+  background: var(--main-bg);
+  font-size: 0.72rem;
+  line-height: 1.45;
+}
+
+.categories .list-group {
+  border-radius: 0 0 8px 8px;
+}
+
+.categories .list-group-item {
+  padding: 0.78rem 1rem 0.78rem 1.65rem;
+  background: var(--card-bg);
+  transition:
+    background-color 0.2s ease,
+    padding-left 0.2s ease;
+}
+
+.categories .list-group-item:hover {
+  padding-left: 1.85rem;
+  background: var(--codejie-surface-tint);
+}
+
+.category-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted-color) !important;
+}
+
+#tags {
+  gap: 0.55rem;
+  margin-top: 0.5rem;
+}
+
+#tags > div {
+  display: inline-flex;
+}
+
+#tags .tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0;
+  border: 1px solid var(--codejie-border) !important;
+  border-radius: 999px;
+  padding: 0.34rem 0.68rem;
+  background: var(--card-bg);
+  box-shadow: none;
+  color: var(--text-muted-highlight-color);
+  line-height: 1.35;
+  text-decoration: none;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+#tags .tag:hover {
+  border-color: rgba(15, 118, 110, 0.34) !important;
+  background: var(--codejie-surface-tint);
+  transform: translateY(-1px);
+}
+
+#tags .tag span {
+  min-width: 1.2rem;
+  margin-left: 0;
+  border-radius: 999px;
+  padding: 0.02rem 0.32rem;
+  background: var(--codejie-surface-tint);
+  font-family: inherit;
+  font-size: 0.72rem;
+  text-align: center;
+}
+
+#archives {
+  margin-top: 0.55rem;
+  letter-spacing: 0;
+}
+
+#archives .year {
+  color: var(--heading-color);
+  font-size: 1.36rem;
+  font-weight: 800;
+}
+
+#archives ul li {
+  margin: 0.12rem 0;
+  border-radius: 8px;
+  padding: 0.1rem 0.35rem;
+  line-height: 2.55rem;
+  transition: background-color 0.2s ease;
+}
+
+#archives ul li:nth-child(odd) {
+  background-color: transparent;
+  background-image: none;
+}
+
+#archives ul li:hover {
+  background: var(--codejie-surface-tint);
+}
+
+#archives .date.day {
+  color: var(--text-muted-highlight-color);
+  font-weight: 700;
+}
+
+#archives a {
+  color: var(--heading-color);
+  font-size: 1rem;
+  line-height: 1.55;
+  text-decoration: none;
+}
+
+#archives a:hover {
+  color: var(--codejie-accent);
+}
+
+/* Responsive */
+
 @media (max-width: 767.98px) {
   .home-lab {
     margin-top: 1rem;
@@ -631,6 +840,48 @@ article[data-toc] > .content ol:not([class]) {
 
   .home-lab__topics {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  article:not([data-toc]) > .dynamic-title {
+    font-size: 1.65rem;
+  }
+
+  article:not([data-toc]) > .content > h1 {
+    font-size: 1.45rem;
+  }
+
+  article:not([data-toc]) > .content > h2 {
+    margin-top: 1.85rem;
+    font-size: 1.12rem;
+  }
+
+  .categories .card-header {
+    padding: 0.78rem 0.8rem;
+  }
+
+  .categories .list-group-item {
+    padding-left: 1.1rem;
+  }
+
+  .categories .list-group-item:hover {
+    padding-left: 1.2rem;
+  }
+
+  #tags {
+    justify-content: flex-start !important;
+    gap: 0.45rem;
+  }
+
+  #tags .tag {
+    padding: 0.3rem 0.58rem;
+  }
+
+  #archives ul li {
+    line-height: 2.25rem;
+  }
+
+  #archives a {
+    font-size: 0.94rem;
   }
 
   #post-list {
