@@ -1,0 +1,122 @@
+---
+layout: default
+refactor: true
+---
+
+{% include lang.html %}
+{% assign blog_domains = site.data.domains %}
+
+<article class="section-page blog-page">
+  <header class="section-page__header">
+    <p class="section-page__eyebrow">Writing</p>
+    <h1>{{ page.title }}</h1>
+    <p>记录 VLA、视觉伺服、控制、强化学习、多模态模型与世界模型相关的方法理解和工程实践。</p>
+  </header>
+
+  <nav class="blog-filter" aria-label="按领域筛选文章">
+    <button class="blog-filter__button is-active" type="button" data-blog-filter="全部文章" aria-pressed="true">
+      全部文章 <span>{{ site.posts | size }}</span>
+    </button>
+    {% for domain in blog_domains %}
+      {% assign domain_count = site.categories[domain] | size %}
+      <button class="blog-filter__button" type="button" data-blog-filter="{{ domain | escape }}" aria-pressed="false">
+        {{ domain }} <span>{{ domain_count }}</span>
+      </button>
+    {% endfor %}
+  </nav>
+
+  <div class="blog-list-heading" aria-live="polite">
+    <div>
+      <p class="section-page__eyebrow">Category</p>
+      <h2 data-blog-heading>全部文章</h2>
+    </div>
+    <span data-blog-count>{{ site.posts | size }} 篇</span>
+  </div>
+
+  <div class="paper-note-list blog-note-list" data-blog-grid>
+    {% for post in site.posts %}
+      <article class="paper-note blog-note" data-blog-domain="{{ post.categories | first | escape }}">
+        <div class="paper-note__index" data-blog-index>{{ forloop.index | prepend: '0' | slice: -2, 2 }}</div>
+        <div class="paper-note__body">
+          <p class="paper-note__meta">
+            {% include datetime.html date=post.date lang=lang %}
+            {% if post.categories.size > 0 %} · {{ post.categories | first }}{% endif %}
+          </p>
+          <h2><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
+          <p>{{ post.description | default: post.excerpt | strip_html | strip_newlines | truncate: 180 }}</p>
+          <a class="paper-note__link" href="{{ post.url | relative_url }}">阅读笔记 →</a>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+
+  <div class="blog-empty" data-blog-empty hidden>
+    <strong>这个领域还没有文章</strong>
+    <span>分类已经建立，之后发布相关内容时会自动显示在这里。</span>
+  </div>
+
+  <nav class="blog-resources" aria-label="更多博客浏览方式">
+    <span>更多浏览方式</span>
+    <a href="{{ '/categories/' | relative_url }}">分类索引</a>
+    <a href="{{ '/tags/' | relative_url }}">标签</a>
+    <a href="{{ '/archives/' | relative_url }}">时间归档</a>
+    <a href="{{ '/feed.xml' | relative_url }}">RSS</a>
+  </nav>
+</article>
+
+<script>
+  (() => {
+    const buttons = Array.from(document.querySelectorAll('[data-blog-filter]'));
+    const cards = Array.from(document.querySelectorAll('[data-blog-domain]'));
+    const heading = document.querySelector('[data-blog-heading]');
+    const count = document.querySelector('[data-blog-count]');
+    const empty = document.querySelector('[data-blog-empty]');
+
+    if (!buttons.length || !cards.length || !heading || !count || !empty) return;
+
+    const showDomain = (domain, updateUrl = true) => {
+      const selected = buttons.find((button) => button.dataset.blogFilter === domain) || buttons[0];
+      const selectedDomain = selected.dataset.blogFilter;
+      let visibleCount = 0;
+
+      buttons.forEach((button) => {
+        const active = button === selected;
+        button.classList.toggle('is-active', active);
+        button.setAttribute('aria-pressed', String(active));
+      });
+
+      cards.forEach((card) => {
+        const visible = selectedDomain === '全部文章' || card.dataset.blogDomain === selectedDomain;
+        card.hidden = !visible;
+        if (visible) {
+          visibleCount += 1;
+          const index = card.querySelector('[data-blog-index]');
+          if (index) index.textContent = String(visibleCount).padStart(2, '0');
+        }
+      });
+
+      heading.textContent = selectedDomain;
+      count.textContent = `${visibleCount} 篇`;
+      empty.hidden = visibleCount !== 0;
+
+      if (updateUrl) {
+        const nextHash = selectedDomain === '全部文章' ? '' : `#${encodeURIComponent(selectedDomain)}`;
+        history.replaceState(null, '', `${location.pathname}${location.search}${nextHash}`);
+      }
+    };
+
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => showDomain(button.dataset.blogFilter));
+    });
+
+    let initialDomain = '全部文章';
+    if (location.hash.length > 1) {
+      try {
+        initialDomain = decodeURIComponent(location.hash.slice(1));
+      } catch (_) {
+        initialDomain = '全部文章';
+      }
+    }
+    showDomain(initialDomain, false);
+  })();
+</script>

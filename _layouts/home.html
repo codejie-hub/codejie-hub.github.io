@@ -5,15 +5,12 @@ refactor: true
 
 {% include lang.html %}
 
+{% assign visible_posts = site.posts | where_exp: 'item', 'item.hidden != true' %}
+{% assign featured_posts = visible_posts | slice: 0, 3 %}
+
 {% assign all_pinned = site.posts | where: 'pin', 'true' %}
 {% assign all_normal = site.posts | where_exp: 'item', 'item.pin != true and item.hidden != true' %}
-{% assign visible_posts = site.posts | where_exp: 'item', 'item.hidden != true' %}
-{% assign latest_post = visible_posts | first %}
-
 {% assign posts = '' | split: '' %}
-
-<!-- Get pinned posts on current page -->
-
 {% assign visible_start = paginator.page | minus: 1 | times: paginator.per_page %}
 {% assign visible_end = visible_start | plus: paginator.per_page %}
 
@@ -31,172 +28,168 @@ refactor: true
   {% assign pinned_size = 0 %}
 {% endif %}
 
-<!-- Get normal posts on current page -->
-
 {% assign normal_size = paginator.posts | size | minus: pinned_size %}
-
 {% if normal_size > 0 %}
   {% if pinned_size > 0 %}
     {% assign normal_start = 0 %}
   {% else %}
     {% assign normal_start = visible_start | minus: all_pinned.size %}
   {% endif %}
-
   {% assign normal_end = normal_start | plus: normal_size | minus: 1 %}
-
   {% for i in (normal_start..normal_end) %}
     {% assign posts = posts | push: all_normal[i] %}
   {% endfor %}
 {% endif %}
 
-{% if paginator.page == 1 %}
-  <section class="home-lab px-xl-1">
-    <div class="home-lab__grid">
-      <div class="home-lab__intro">
-        <span class="home-lab__eyebrow">Research Notebook</span>
-        <h1>{{ site.title }}</h1>
-        <p>{{ site.description }}</p>
-        <div class="home-lab__chips" aria-label="研究方向">
-          <span>机器人抓取</span>
-          <span>3D视觉</span>
-          <span>大模型</span>
-          <span>论文笔记</span>
-        </div>
-      </div>
-
-      {% if latest_post %}
-        {% assign latest_src = latest_post.image.path | default: latest_post.image %}
-        {% unless latest_src contains '//' %}
-          {% assign latest_src = latest_post.media_subpath | append: '/' | append: latest_src | replace: '//', '/' | relative_url %}
-        {% endunless %}
-        {% assign latest_alt = latest_post.image.alt | default: latest_post.title %}
-
-        <a class="home-lab__latest" href="{{ latest_post.url | relative_url }}">
-          <span class="home-lab__latest-label">最新文章</span>
-          {% if latest_src %}
-            <img src="{{ latest_src }}" alt="{{ latest_alt | xml_escape }}">
-          {% endif %}
-          <div class="home-lab__latest-body">
-            <div class="home-lab__latest-meta">
-              <i class="far fa-calendar fa-fw"></i>
-              {% include datetime.html date=latest_post.date lang=lang %}
-              {% if latest_post.categories.size > 0 %}
-                <span>{{ latest_post.categories | first }}</span>
-              {% endif %}
-            </div>
-            <h2>{{ latest_post.title }}</h2>
-            <p>{{ latest_post.description | default: latest_post.excerpt | strip_html | truncate: 96 }}</p>
-          </div>
-        </a>
-      {% endif %}
+<div class="home-page">
+  {% if paginator.page == 1 %}
+    <div class="home-wash" aria-hidden="true">
+      <img src="{{ site.avatar | relative_url }}" alt="">
     </div>
 
-    {% assign home_topics = '机器人抓取|3D视觉|大模型应用|论文笔记' | split: '|' %}
-    <div class="home-lab__topics">
-      {% for topic in home_topics %}
-        {% assign topic_posts = site.categories[topic] %}
-        {% assign topic_count = topic_posts | size %}
+    <section class="home-hero" aria-labelledby="home-title">
+      <div class="home-hero__intro">
+        <p class="home-eyebrow">Embodied Intelligence · Research Notes</p>
+        <h1 id="home-title">
+          <span>{{ site.title }}</span>
+          <small>学习与研究笔记</small>
+        </h1>
+        <p class="home-hero__tagline">机器人学习、感知与智能控制</p>
+        <p class="home-hero__meta">VLA · 视觉伺服 · 控制与强化学习 · 多模态与世界模型</p>
+      </div>
 
-        {% case topic %}
-          {% when '机器人抓取' %}
-            {% assign topic_mark = 'RBT' %}
-            {% assign topic_desc = '抓取、控制、VLA 与具身智能实践' %}
-          {% when '3D视觉' %}
-            {% assign topic_mark = '3D' %}
-            {% assign topic_desc = '几何重建、深度估计与高斯表示' %}
-          {% when '大模型应用' %}
-            {% assign topic_mark = 'LLM' %}
-            {% assign topic_desc = 'Transformer、微调、推理与面试复盘' %}
-          {% else %}
-            {% assign topic_mark = 'NOTE' %}
-            {% assign topic_desc = '生成模型、论文阅读与方法速览' %}
-        {% endcase %}
+      <img
+        class="home-hero__photo"
+        src="{{ site.avatar | relative_url }}"
+        width="320"
+        height="320"
+        alt="{{ site.social.name }} 的头像"
+      >
 
-        <a
-          class="home-topic-card"
-          href="{{ site.baseurl }}/categories/{{ topic | slugify | url_encode }}/"
-        >
-          <span class="home-topic-card__mark">{{ topic_mark }}</span>
-          <span class="home-topic-card__body">
-            <strong>{{ topic }}</strong>
-            <em>{{ topic_desc }}</em>
-          </span>
-          <span class="home-topic-card__count">{{ topic_count }}</span>
-        </a>
+      <div class="home-hero__copy">
+        <p>{{ site.description }}</p>
+        <div class="home-actions" aria-label="个人链接">
+          <a class="home-action home-action--github" href="https://github.com/{{ site.github.username }}" target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-github" aria-hidden="true"></i>
+            <span>GitHub</span>
+          </a>
+          <a class="home-action home-action--mail" href="mailto:{{ site.social.email }}">
+            <i class="fas fa-envelope" aria-hidden="true"></i>
+            <span>{{ site.social.email }}</span>
+          </a>
+          <a class="home-action home-action--about" href="{{ '/about/' | relative_url }}">
+            <i class="fas fa-arrow-right" aria-hidden="true"></i>
+            <span>关于我</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="home-section" aria-labelledby="focus-heading">
+      <div class="home-section__head">
+        <h2 id="focus-heading">关注方向</h2>
+        <a href="{{ '/blog/' | relative_url }}">全部分类 →</a>
+      </div>
+
+      <ol class="focus-list">
+        <li>
+          <a href="{{ '/blog/' | relative_url }}#{{ 'VLA' | url_encode }}">
+            <span class="focus-list__num">01</span>
+            <span class="focus-list__copy">
+              <strong>VLA 与机器人操作</strong>
+              <span>围绕机器人抓取与操作，整理视觉、语言、动作生成与真实执行的完整链路。</span>
+            </span>
+            <span class="focus-list__arrow" aria-hidden="true">↗</span>
+          </a>
+        </li>
+        <li>
+          <a href="{{ '/blog/' | relative_url }}#{{ '视觉伺服' | url_encode }}">
+            <span class="focus-list__num">02</span>
+            <span class="focus-list__copy">
+              <strong>视觉伺服与机器人控制</strong>
+              <span>研究视觉反馈、状态估计、运动控制与强化学习驱动的闭环操作方法。</span>
+            </span>
+            <span class="focus-list__arrow" aria-hidden="true">↗</span>
+          </a>
+        </li>
+        <li>
+          <a href="{{ '/blog/' | relative_url }}#{{ '多模态模型' | url_encode }}">
+            <span class="focus-list__num">03</span>
+            <span class="focus-list__copy">
+              <strong>多模态模型与世界模型</strong>
+              <span>关注视觉语言模型、生成式建模、环境预测与面向机器人决策的表征学习。</span>
+            </span>
+            <span class="focus-list__arrow" aria-hidden="true">↗</span>
+          </a>
+        </li>
+      </ol>
+    </section>
+
+    <section class="home-section" aria-labelledby="featured-heading">
+      <div class="home-section__head">
+        <h2 id="featured-heading">精选文章</h2>
+        <a href="{{ '/blog/' | relative_url }}">全部文章 →</a>
+      </div>
+
+      <div class="featured-grid">
+        {% for post in featured_posts %}
+          {% assign featured_src = post.image.path | default: post.image %}
+          {% unless featured_src contains '://' %}
+            {% assign featured_src = post.media_subpath | append: '/' | append: featured_src | replace: '//', '/' | relative_url %}
+          {% endunless %}
+          <a class="featured-card" href="{{ post.url | relative_url }}">
+            {% if featured_src %}
+              <img src="{{ featured_src }}" alt="{{ post.image.alt | default: post.title | xml_escape }}" loading="lazy">
+            {% endif %}
+            <span class="featured-card__body">
+              <span class="featured-card__meta">
+                {% include datetime.html date=post.date lang=lang %}
+                {% if post.categories.size > 0 %} · {{ post.categories | first }}{% endif %}
+              </span>
+              <strong>{{ post.title }}</strong>
+              <span class="featured-card__desc">{{ post.description | default: post.excerpt | strip_html | strip_newlines | truncate: 92 }}</span>
+            </span>
+          </a>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+
+  <section class="home-section home-section--posts" aria-labelledby="posts-heading">
+    <div class="home-section__head">
+      <h2 id="posts-heading">{% if paginator.page == 1 %}近期文章{% else %}文章{% endif %}</h2>
+      {% if paginator.page == 1 %}<a href="{{ '/archives/' | relative_url }}">按时间浏览 →</a>{% endif %}
+    </div>
+
+    <div class="post-list" id="post-list">
+      {% for post in posts %}
+        {% assign post_src = post.image.path | default: post.image %}
+        {% unless post_src contains '://' %}
+          {% assign post_src = post.media_subpath | append: '/' | append: post_src | replace: '//', '/' | relative_url %}
+        {% endunless %}
+
+        <article class="post-row">
+          <a class="post-row__link" href="{{ post.url | relative_url }}">
+            {% if post_src %}
+              <span class="post-row__cover" aria-hidden="true">
+                <img src="{{ post_src }}" alt="" loading="lazy">
+              </span>
+            {% endif %}
+            <span class="post-row__body">
+              <span class="post-row__meta">
+                {% include datetime.html date=post.date lang=lang %}
+                {% if post.categories.size > 0 %} · {{ post.categories | first }}{% endif %}
+                {% if post.pin %} · 置顶{% endif %}
+              </span>
+              <strong>{{ post.title }}</strong>
+              <span>{{ post.description | default: post.excerpt | strip_html | strip_newlines | truncate: 148 }}</span>
+            </span>
+          </a>
+        </article>
       {% endfor %}
     </div>
   </section>
-{% endif %}
-
-<div id="post-list" class="flex-grow-1 px-xl-1">
-  {% for post in posts %}
-    <article class="card-wrapper card">
-      <a href="{{ post.url | relative_url }}" class="post-preview row g-0 flex-md-row-reverse">
-        {% assign card_body_col = '12' %}
-
-        {% if post.image %}
-          {% assign src = post.image.path | default: post.image %}
-          {% unless src contains '//' %}
-            {% assign src = post.media_subpath | append: '/' | append: src | replace: '//', '/' %}
-          {% endunless %}
-
-          {% assign alt = post.image.alt | xml_escape | default: 'Preview Image' %}
-
-          {% assign lqip = null %}
-
-          {% if post.image.lqip %}
-            {% capture lqip %}lqip="{{ post.image.lqip }}"{% endcapture %}
-          {% endif %}
-
-          <div class="col-md-5">
-            <img src="{{ src }}" alt="{{ alt }}" {{ lqip }}>
-          </div>
-
-          {% assign card_body_col = '7' %}
-        {% endif %}
-
-        <div class="col-md-{{ card_body_col }}">
-          <div class="card-body d-flex flex-column">
-            <h1 class="card-title my-2 mt-md-0">{{ post.title }}</h1>
-
-            <div class="card-text content mt-0 mb-3">
-              <p>{{ post.description | default: post.excerpt | strip_html | strip_newlines | truncate: 180 }}</p>
-            </div>
-
-            <div class="post-meta flex-grow-1 d-flex align-items-end">
-              <div class="me-auto">
-                <!-- posted date -->
-                <i class="far fa-calendar fa-fw me-1"></i>
-                {% include datetime.html date=post.date lang=lang %}
-
-                <!-- categories -->
-                {% if post.categories.size > 0 %}
-                  <i class="far fa-folder-open fa-fw me-1"></i>
-                  <span class="categories">
-                    {% for category in post.categories %}
-                      {{ category }}
-                      {%- unless forloop.last -%},{%- endunless -%}
-                    {% endfor %}
-                  </span>
-                {% endif %}
-              </div>
-
-              {% if post.pin %}
-                <div class="pin ms-1">
-                  <i class="fas fa-thumbtack fa-fw"></i>
-                  <span>{{ site.data.locales[lang].post.pin_prompt }}</span>
-                </div>
-              {% endif %}
-            </div>
-            <!-- .post-meta -->
-          </div>
-          <!-- .card-body -->
-        </div>
-      </a>
-    </article>
-  {% endfor %}
 </div>
-<!-- #post-list -->
 
 {% if paginator.total_pages > 1 %}
   {% include post-paginator.html %}

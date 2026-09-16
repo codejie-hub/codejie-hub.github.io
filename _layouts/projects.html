@@ -1,0 +1,60 @@
+---
+layout: default
+refactor: true
+---
+
+<article class="section-page projects-page">
+  <header class="section-page__header">
+    <p class="section-page__eyebrow">Projects</p>
+    <h1>{{ page.title }}</h1>
+    <p>记录机器人抓取、操作与视觉伺服相关项目，把感知、规划和控制方法落实为可运行的系统与交互原型。</p>
+  </header>
+
+  <section class="project-section" aria-labelledby="interactive-projects">
+    <div class="project-section__head">
+      <h2 id="interactive-projects">机器人项目与方法原型</h2>
+      <span>持续更新</span>
+    </div>
+
+    <div class="project-page-grid">
+      <article class="project-page-card">
+        <img src="{{ '/assets/images/posts/robotics/kinematics-cover.jpg' | relative_url }}" alt="七自由度机械臂运动学交互演示">
+        <div class="project-page-card__body">
+          <div class="project-page-card__meta"><span>Control · Manipulation</span><span>2026</span></div>
+          <h3>Robot Kinematics Lab</h3>
+          <p>用交互动画理解坐标变换、欧拉角、万向锁和七自由度机械臂的正逆运动学。</p>
+          <div class="project-page-card__links">
+            <a href="{{ '/assets/demos/robot-kinematics-7dof.html' | relative_url }}">7-DOF 演示</a>
+            <a href="{{ '/posts/robot-kinematics/' | relative_url }}">阅读文章</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-page-card">
+        <img src="{{ '/assets/images/posts/3d-vision/3dgs-cover.jpg' | relative_url }}" alt="语义高斯场与机器人抓取交互演示">
+        <div class="project-page-card__body">
+          <div class="project-page-card__meta"><span>Robot Grasping</span><span>2026</span></div>
+          <h3>Semantic Gaussian Grasp</h3>
+          <p>探索三维高斯表示、语义特征与机器人抓取之间的连接，展示从场景表示到候选抓取的过程。</p>
+          <div class="project-page-card__links">
+            <a href="{{ '/assets/demos/semantic-gaussian-grasp.html' | relative_url }}">打开演示</a>
+            <a href="{{ '/posts/3DGSS/' | relative_url }}">阅读文章</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-page-card">
+        <img src="{{ '/assets/images/posts/placeholders/paper-note.svg' | relative_url }}" alt="Flow Matching 最优传输轨迹演示">
+        <div class="project-page-card__body">
+          <div class="project-page-card__meta"><span>Action Generation</span><span>2026</span></div>
+          <h3>Flow Matching · Action Playground</h3>
+          <p>以二维轨迹原型理解流匹配与向量场，为 VLA 中的连续动作生成和机器人轨迹建模提供方法验证。</p>
+          <div class="project-page-card__links">
+            <a href="{{ '/assets/demos/flow-matching-ot.html' | relative_url }}">打开演示</a>
+            <a href="{{ '/posts/flowmatching/' | relative_url }}">阅读文章</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+</article>

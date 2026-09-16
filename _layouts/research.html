@@ -1,0 +1,68 @@
+---
+layout: default
+refactor: true
+---
+
+<article class="section-page research-page">
+  <header class="section-page__header">
+    <p class="section-page__eyebrow">Research</p>
+    <h1>{{ page.title }}</h1>
+    <p>围绕机器人如何感知、理解、决策并作用于真实世界，持续记录论文阅读、方法学习与工程验证。</p>
+  </header>
+
+  <div class="research-theme-stack">
+    <section class="research-theme-card" id="robot-learning">
+      <div class="research-theme-card__copy">
+        <span class="research-theme-card__index">01</span>
+        <h2>VLA 与机器人操作</h2>
+        <p class="research-theme-card__lead">连接视觉、语言与动作生成，让基础模型进入真实机器人执行闭环。</p>
+        <p>重点关注 VLA、机器人抓取与操作、模仿学习，以及多模态指令到连续动作策略的建模与部署。</p>
+        <div class="research-theme-card__links">
+          <a href="{{ '/publications/' | relative_url }}#{{ 'VLA' | url_encode }}">论文笔记</a>
+          <a href="{{ '/projects/' | relative_url }}">交互项目</a>
+        </div>
+      </div>
+      <img src="{{ '/assets/images/posts/robotics/kinematics-cover.jpg' | relative_url }}" alt="机械臂运动学与机器人操作研究">
+    </section>
+
+    <section class="research-theme-card research-theme-card--reverse" id="visual-servoing">
+      <div class="research-theme-card__copy">
+        <span class="research-theme-card__index">02</span>
+        <h2>视觉伺服与机器人控制</h2>
+        <p class="research-theme-card__lead">利用视觉反馈实时修正机器人运动，在不确定环境中形成稳定闭环。</p>
+        <p>涵盖相机与机器人标定、特征与位姿估计、IBVS/PBVS、运动学控制，以及强化学习与经典控制方法的结合。</p>
+        <div class="research-theme-card__links">
+          <a href="{{ '/publications/' | relative_url }}#{{ '视觉伺服' | url_encode }}">视觉伺服笔记</a>
+          <a href="{{ '/publications/' | relative_url }}#{{ '控制' | url_encode }}">控制笔记</a>
+        </div>
+      </div>
+      <img src="{{ '/assets/images/posts/placeholders/vision-3d.svg' | relative_url }}" alt="视觉伺服与机器人闭环控制研究">
+    </section>
+
+    <section class="research-theme-card" id="foundation-models">
+      <div class="research-theme-card__copy">
+        <span class="research-theme-card__index">03</span>
+        <h2>多模态模型与世界模型</h2>
+        <p class="research-theme-card__lead">学习能够联合理解多种感知信号、预测环境变化并支持行动决策的模型。</p>
+        <p>关注视觉语言模型、Transformer、Flow Matching、世界状态预测、策略学习，以及模型在机器人任务中的迁移。</p>
+        <div class="research-theme-card__links">
+          <a href="{{ '/publications/' | relative_url }}#{{ '多模态模型' | url_encode }}">多模态笔记</a>
+          <a href="{{ '/publications/' | relative_url }}#{{ '世界模型' | url_encode }}">世界模型笔记</a>
+        </div>
+      </div>
+      <img src="{{ '/assets/images/posts/llm/transformer-cover.jpg' | relative_url }}" alt="Transformer 与生成模型研究笔记">
+    </section>
+  </div>
+
+  <section class="research-methods" aria-labelledby="methods-heading">
+    <h2 id="methods-heading">常用方法与工具</h2>
+    <ul>
+      <li>Robot Kinematics</li>
+      <li>Vision-Language-Action</li>
+      <li>Visual Servoing</li>
+      <li>Reinforcement Learning</li>
+      <li>Flow Matching</li>
+      <li>World Models</li>
+    </ul>
+  </section>
+</article>

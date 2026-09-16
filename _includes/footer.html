@@ -1,0 +1,8 @@
+<footer class="site-footer" aria-label="网站信息">
+  <p>© <time>{{ 'now' | date: '%Y' }}</time> {{ site.social.name }}</p>
+  <nav class="site-footer__links" aria-label="页脚导航">
+    <a href="https://github.com/{{ site.github.username }}" target="_blank" rel="noopener noreferrer">GitHub</a>
+    <a href="mailto:{{ site.social.email }}">Email</a>
+    <a href="{{ '/feed.xml' | relative_url }}">RSS</a>
+  </nav>
+</footer>

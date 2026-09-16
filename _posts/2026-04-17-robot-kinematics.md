@@ -1,7 +1,7 @@
 ---
 title: 【机器人运动学】坐标变换、四元数与7自由度机械臂详解
 date: 2026-04-17 10:00:00 +0800
-categories: [机器人抓取]
+categories: [控制]
 tags: [kinematics, robotics, quaternion, euler-angles, coordinate-transform, 7dof]
 description: 深入解析机器人运动学核心概念：坐标系转换、欧拉角、四元数、万向锁问题，以7自由度机械臂为例，配合Three.js交互式3D可视化，帮助理解空间旋转与末端位姿控制。
 image:

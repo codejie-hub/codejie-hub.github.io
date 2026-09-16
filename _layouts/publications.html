@@ -1,0 +1,114 @@
+---
+layout: default
+refactor: true
+---
+
+{% include lang.html %}
+{% assign publication_domains = site.data.domains %}
+
+<article class="section-page publications-page">
+  <header class="section-page__header">
+    <p class="section-page__eyebrow">Papers</p>
+    <h1>{{ page.title }}</h1>
+    <p>用于整理 VLA、视觉伺服、控制、强化学习、多模态模型与世界模型相关论文，记录问题设定、方法逻辑、实验结论与阅读思考。</p>
+  </header>
+
+  <nav class="blog-filter publication-filter" aria-label="按领域筛选论文笔记">
+    <button class="blog-filter__button is-active" type="button" data-publication-filter="全部笔记" aria-pressed="true">
+      全部笔记 <span>{{ site.posts | size }}</span>
+    </button>
+    {% for domain in publication_domains %}
+      {% assign domain_count = site.categories[domain] | size %}
+      <button class="blog-filter__button" type="button" data-publication-filter="{{ domain | escape }}" aria-pressed="false">
+        {{ domain }} <span>{{ domain_count }}</span>
+      </button>
+    {% endfor %}
+  </nav>
+
+  <div class="blog-list-heading" aria-live="polite">
+    <div>
+      <p class="section-page__eyebrow">Field</p>
+      <h2 data-publication-heading>全部笔记</h2>
+    </div>
+    <span data-publication-count>{{ site.posts | size }} 篇</span>
+  </div>
+
+  <div class="paper-note-list">
+    {% for post in site.posts %}
+      <article class="paper-note publication-note" data-publication-domain="{{ post.categories | first | escape }}">
+        <div class="paper-note__index" data-publication-index>{{ forloop.index | prepend: '0' | slice: -2, 2 }}</div>
+        <div class="paper-note__body">
+          <p class="paper-note__meta">
+            {% include datetime.html date=post.date lang=lang %}
+            {% if post.categories.size > 0 %} · {{ post.categories | first }}{% endif %}
+          </p>
+          <h2><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
+          <p>{{ post.description | default: post.excerpt | strip_html | strip_newlines | truncate: 180 }}</p>
+          <a class="paper-note__link" href="{{ post.url | relative_url }}">阅读笔记 →</a>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+
+  <div class="blog-empty" data-publication-empty hidden>
+    <strong>这个领域还没有论文笔记</strong>
+    <span>分类已经建立，之后发布相关内容时会自动显示在这里。</span>
+  </div>
+</article>
+
+<script>
+  (() => {
+    const buttons = Array.from(document.querySelectorAll('[data-publication-filter]'));
+    const notes = Array.from(document.querySelectorAll('[data-publication-domain]'));
+    const heading = document.querySelector('[data-publication-heading]');
+    const count = document.querySelector('[data-publication-count]');
+    const empty = document.querySelector('[data-publication-empty]');
+
+    if (!buttons.length || !notes.length || !heading || !count || !empty) return;
+
+    const showDomain = (domain, updateUrl = true) => {
+      const selected = buttons.find((button) => button.dataset.publicationFilter === domain) || buttons[0];
+      const selectedDomain = selected.dataset.publicationFilter;
+      let visibleCount = 0;
+
+      buttons.forEach((button) => {
+        const active = button === selected;
+        button.classList.toggle('is-active', active);
+        button.setAttribute('aria-pressed', String(active));
+      });
+
+      notes.forEach((note) => {
+        const visible = selectedDomain === '全部笔记' || note.dataset.publicationDomain === selectedDomain;
+        note.hidden = !visible;
+        if (visible) {
+          visibleCount += 1;
+          const index = note.querySelector('[data-publication-index]');
+          if (index) index.textContent = String(visibleCount).padStart(2, '0');
+        }
+      });
+
+      heading.textContent = selectedDomain;
+      count.textContent = `${visibleCount} 篇`;
+      empty.hidden = visibleCount !== 0;
+
+      if (updateUrl) {
+        const nextHash = selectedDomain === '全部笔记' ? '' : `#${encodeURIComponent(selectedDomain)}`;
+        history.replaceState(null, '', `${location.pathname}${location.search}${nextHash}`);
+      }
+    };
+
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => showDomain(button.dataset.publicationFilter));
+    });
+
+    let initialDomain = '全部笔记';
+    if (location.hash.length > 1) {
+      try {
+        initialDomain = decodeURIComponent(location.hash.slice(1));
+      } catch (_) {
+        initialDomain = '全部笔记';
+      }
+    }
+    showDomain(initialDomain, false);
+  })();
+</script>

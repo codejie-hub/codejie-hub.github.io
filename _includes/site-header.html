@@ -1,0 +1,68 @@
+<header aria-label="网站导航" id="sidebar" class="site-header">
+  <div class="site-header__inner">
+    <a id="topbar-title" class="wordmark" href="{{ '/' | relative_url }}" aria-label="{{ site.title }} 首页">
+      <span class="wordmark__mark" aria-hidden="true">CJ</span>
+      <span>{{ site.title }}</span>
+    </a>
+
+    <nav class="site-nav" aria-label="主导航">
+      <ul class="site-nav__list">
+        <li class="site-nav__item{% if page.layout == 'home' %} is-active{% endif %}">
+          <a href="{{ '/' | relative_url }}">首页</a>
+        </li>
+        {% for tab in site.tabs %}
+          {% if tab.nav != false %}
+            {% capture tab_name %}{{ tab.url | split: '/' }}{% endcapture %}
+            {% assign tab_active = false %}
+            {% if tab.url == page.url %}
+              {% assign tab_active = true %}
+            {% elsif tab.url == '/blog/' %}
+              {% if page.layout == 'post' or page.layout == 'category' or page.layout == 'tag' or page.layout == 'archives' or page.layout == 'categories' or page.layout == 'tags' %}
+                {% assign tab_active = true %}
+              {% endif %}
+            {% endif %}
+            <li class="site-nav__item{% if tab_active %} is-active{% endif %}">
+              <a href="{{ tab.url | relative_url }}">
+                {{- site.data.locales[include.lang].tabs.[tab_name] | default: tab.title -}}
+              </a>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </nav>
+
+    <div class="site-header__actions">
+      <button type="button" id="search-trigger" class="header-icon" aria-label="搜索">
+        <i class="fas fa-search" aria-hidden="true"></i>
+      </button>
+
+      <search id="search" class="site-search align-items-center">
+        <i class="fas fa-search" aria-hidden="true"></i>
+        <input
+          class="form-control"
+          id="search-input"
+          type="search"
+          aria-label="搜索文章"
+          autocomplete="off"
+          placeholder="搜索文章..."
+        >
+      </search>
+
+      <button type="button" id="search-cancel" class="header-text-btn">取消</button>
+
+      <button type="button" class="header-icon" aria-label="切换深色或浅色主题" id="mode-toggle">
+        <i class="fas fa-moon theme-moon" aria-hidden="true"></i>
+        <i class="fas fa-sun theme-sun" aria-hidden="true"></i>
+      </button>
+
+      <button
+        type="button"
+        id="sidebar-trigger"
+        class="header-text-btn menu-toggle"
+        aria-label="打开导航菜单"
+      >
+        菜单
+      </button>
+    </div>
+  </div>
+</header>

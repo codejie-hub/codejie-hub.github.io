@@ -1,7 +1,7 @@
 ---
 title: 【Transformer】Attention Is All You Need：从注意力机制到手写实现
 date: 2025-11-26 14:00:00 +0800
-categories: [大模型应用]
+categories: [多模态模型]
 tags: [transformer, attention]
 description: 系统梳理 Transformer 的核心思想、整体架构、位置编码、Scaled Dot-Product Attention、Multi-Head Attention、Encoder/Decoder、Mask 机制、复杂度优势，并附 PyTorch 手写实现。
 image:
