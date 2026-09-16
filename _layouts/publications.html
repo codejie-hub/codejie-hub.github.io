@@ -18,9 +18,16 @@ refactor: true
       全部笔记 <span>{{ site.posts | size }}</span>
     </button>
     {% for domain in publication_domains %}
-      {% assign domain_count = site.categories[domain] | size %}
-      <button class="blog-filter__button" type="button" data-publication-filter="{{ domain | escape }}" aria-pressed="false">
-        {{ domain }} <span>{{ domain_count }}</span>
+      {% assign domain_count = site.categories[domain.name] | size %}
+      <button
+        id="paper-domain-{{ domain.slug }}"
+        class="blog-filter__button"
+        type="button"
+        data-publication-filter="{{ domain.name | escape }}"
+        data-publication-slug="{{ domain.slug }}"
+        aria-pressed="false"
+      >
+        {{ domain.name }} <span>{{ domain_count }}</span>
       </button>
     {% endfor %}
   </nav>
@@ -92,7 +99,7 @@ refactor: true
       empty.hidden = visibleCount !== 0;
 
       if (updateUrl) {
-        const nextHash = selectedDomain === '全部笔记' ? '' : `#${encodeURIComponent(selectedDomain)}`;
+        const nextHash = selectedDomain === '全部笔记' ? '' : `#paper-domain-${selected.dataset.publicationSlug}`;
         history.replaceState(null, '', `${location.pathname}${location.search}${nextHash}`);
       }
     };
@@ -103,11 +110,9 @@ refactor: true
 
     let initialDomain = '全部笔记';
     if (location.hash.length > 1) {
-      try {
-        initialDomain = decodeURIComponent(location.hash.slice(1));
-      } catch (_) {
-        initialDomain = '全部笔记';
-      }
+      const hashTarget = location.hash.slice(1);
+      const hashButton = buttons.find((button) => button.id === hashTarget);
+      if (hashButton) initialDomain = hashButton.dataset.publicationFilter;
     }
     showDomain(initialDomain, false);
   })();

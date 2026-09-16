@@ -18,9 +18,16 @@ refactor: true
       全部文章 <span>{{ site.posts | size }}</span>
     </button>
     {% for domain in blog_domains %}
-      {% assign domain_count = site.categories[domain] | size %}
-      <button class="blog-filter__button" type="button" data-blog-filter="{{ domain | escape }}" aria-pressed="false">
-        {{ domain }} <span>{{ domain_count }}</span>
+      {% assign domain_count = site.categories[domain.name] | size %}
+      <button
+        id="blog-domain-{{ domain.slug }}"
+        class="blog-filter__button"
+        type="button"
+        data-blog-filter="{{ domain.name | escape }}"
+        data-blog-slug="{{ domain.slug }}"
+        aria-pressed="false"
+      >
+        {{ domain.name }} <span>{{ domain_count }}</span>
       </button>
     {% endfor %}
   </nav>
@@ -100,7 +107,7 @@ refactor: true
       empty.hidden = visibleCount !== 0;
 
       if (updateUrl) {
-        const nextHash = selectedDomain === '全部文章' ? '' : `#${encodeURIComponent(selectedDomain)}`;
+        const nextHash = selectedDomain === '全部文章' ? '' : `#blog-domain-${selected.dataset.blogSlug}`;
         history.replaceState(null, '', `${location.pathname}${location.search}${nextHash}`);
       }
     };
@@ -111,11 +118,9 @@ refactor: true
 
     let initialDomain = '全部文章';
     if (location.hash.length > 1) {
-      try {
-        initialDomain = decodeURIComponent(location.hash.slice(1));
-      } catch (_) {
-        initialDomain = '全部文章';
-      }
+      const hashTarget = location.hash.slice(1);
+      const hashButton = buttons.find((button) => button.id === hashTarget);
+      if (hashButton) initialDomain = hashButton.dataset.blogFilter;
     }
     showDomain(initialDomain, false);
   })();

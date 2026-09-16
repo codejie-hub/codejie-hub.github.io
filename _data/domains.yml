@@ -1,6 +1,12 @@
-- VLA
-- 视觉伺服
-- 控制
-- 强化学习
-- 多模态模型
-- 世界模型
+- name: VLA
+  slug: vla
+- name: 视觉伺服
+  slug: visual-servoing
+- name: 控制
+  slug: control
+- name: 强化学习
+  slug: reinforcement-learning
+- name: 多模态模型
+  slug: multimodal-models
+- name: 世界模型
+  slug: world-models
