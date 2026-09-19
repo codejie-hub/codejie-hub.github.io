@@ -25,6 +25,9 @@ description: >- # used by seo meta and the atom feed
 # E.g. 'https://username.github.io', note that it does not end with a '/'.
 url: "https://codejie-hub.github.io"
 
+# Local preview port (override with `jekyll serve --port`).
+port: 4001
+
 github:
   username: codejie-hub # change to your GitHub username
 

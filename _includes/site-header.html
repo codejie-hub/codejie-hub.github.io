@@ -50,10 +50,43 @@
 
       <button type="button" id="search-cancel" class="header-text-btn">取消</button>
 
-      <button type="button" class="header-icon" aria-label="切换深色或浅色主题" id="mode-toggle">
-        <i class="fas fa-moon theme-moon" aria-hidden="true"></i>
-        <i class="fas fa-sun theme-sun" aria-hidden="true"></i>
-      </button>
+      {% unless site.theme_mode == 'light' or site.theme_mode == 'dark' %}
+        <div class="dropdown">
+          <button
+            type="button"
+            class="header-icon"
+            aria-label="选择明暗主题"
+            aria-expanded="false"
+            aria-controls="theme-menu"
+            id="mode-toggle"
+            data-bs-toggle="dropdown"
+          >
+            <i class="fas fa-sun" data-theme-mode="light" aria-hidden="true"></i>
+            <i class="fas fa-moon" data-theme-mode="dark" aria-hidden="true"></i>
+            <i class="fas fa-desktop" data-theme-mode="system" aria-hidden="true"></i>
+          </button>
+          <ul id="theme-menu" class="dropdown-menu dropdown-menu-end theme-menu" aria-labelledby="mode-toggle">
+            <li>
+              <button class="dropdown-item" type="button" data-theme-mode="light">
+                <i class="fas fa-sun" aria-hidden="true"></i>
+                {{- site.data.locales[include.lang].theme.light | default: '浅色' -}}
+              </button>
+            </li>
+            <li>
+              <button class="dropdown-item" type="button" data-theme-mode="dark">
+                <i class="fas fa-moon" aria-hidden="true"></i>
+                {{- site.data.locales[include.lang].theme.dark | default: '深色' -}}
+              </button>
+            </li>
+            <li>
+              <button class="dropdown-item" type="button" data-theme-mode="system">
+                <i class="fas fa-desktop" aria-hidden="true"></i>
+                {{- site.data.locales[include.lang].theme.system | default: '跟随系统' -}}
+              </button>
+            </li>
+          </ul>
+        </div>
+      {% endunless %}
 
       <button
         type="button"
