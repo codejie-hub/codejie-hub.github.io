@@ -1,0 +1,661 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ViT-VS Hierarchical Feature Binning 交互式可视化</title>
+<style>
+:root{
+  --bg:#f6f8fb;
+  --panel:#ffffff;
+  --text:#1f2937;
+  --muted:#64748b;
+  --line:#dbe2ea;
+  --blue:#2563eb;
+  --blue-weak:#dbeafe;
+  --green:#059669;
+  --green-weak:#d1fae5;
+  --orange:#d97706;
+  --orange-weak:#ffedd5;
+  --red:#dc2626;
+  --red-weak:#fee2e2;
+  --purple:#7c3aed;
+  --purple-weak:#ede9fe;
+  --gray:#94a3b8;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;
+}
+.wrapper{max-width:1280px;margin:0 auto;padding:24px 18px 60px}
+h1{font-size:34px;margin:8px 0 10px;line-height:1.25}
+h2{font-size:26px;margin:0 0 16px}
+h3{font-size:20px;margin:0 0 10px}
+p,li{font-size:16px;line-height:1.75}
+small,.muted{color:var(--muted)}
+.header{
+  background:linear-gradient(135deg,#eff6ff,#faf5ff);
+  border:1px solid #dbeafe;
+  border-radius:20px;
+  padding:22px;
+  margin-bottom:18px;
+}
+.header .subtitle{font-size:17px;color:#475569}
+.toolbar{
+  display:flex;flex-wrap:wrap;gap:10px;margin-top:14px
+}
+button{
+  border:none;border-radius:10px;padding:10px 14px;font-size:14px;font-weight:700;
+  cursor:pointer;transition:.2s;background:#e2e8f0;color:#0f172a
+}
+button:hover{transform:translateY(-1px)}
+button.primary{background:var(--blue);color:white}
+button.secondary{background:white;border:1px solid var(--line)}
+button.active{box-shadow:0 0 0 3px rgba(37,99,235,.15)}
+.card{
+  background:var(--panel);
+  border:1px solid #e5e7eb;
+  border-radius:18px;
+  padding:20px;
+  margin:16px 0;
+  box-shadow:0 8px 24px rgba(15,23,42,.05);
+}
+.note{
+  padding:14px 16px;border-radius:12px;background:#eff6ff;border-left:5px solid var(--blue);margin:12px 0
+}
+.warn{
+  padding:14px 16px;border-radius:12px;background:#fff7ed;border-left:5px solid var(--orange);margin:12px 0
+}
+.good{
+  padding:14px 16px;border-radius:12px;background:#ecfdf5;border-left:5px solid var(--green);margin:12px 0
+}
+.eq{
+  background:#0f172a;color:#f8fafc;border-radius:12px;padding:13px 15px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:14px;line-height:1.75;white-space:pre-wrap;overflow:auto
+}
+.layout2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.layout3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:980px){.layout2,.layout3{grid-template-columns:1fr}}
+
+.stage{
+  display:none;
+  animation:fade .35s ease;
+}
+.stage.visible{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.stepper{
+  display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:16px
+}
+.step{
+  padding:10px;border-radius:12px;background:#f8fafc;border:1px solid #e2e8f0;
+  font-size:13px;text-align:center;color:#475569;cursor:pointer
+}
+.step.current{
+  background:#dbeafe;border-color:#60a5fa;color:#1d4ed8;font-weight:700
+}
+@media(max-width:800px){.stepper{grid-template-columns:repeat(2,1fr)}}
+
+.matrix-wrap{overflow:auto}
+.matrix{
+  display:grid;
+  width:max-content;
+  margin:12px auto;
+  gap:4px;
+  padding:4px;
+  background:#e2e8f0;
+  border-radius:14px;
+}
+.m7{grid-template-columns:repeat(7,72px)}
+.m9{grid-template-columns:repeat(9,58px)}
+.cell{
+  width:72px;height:72px;border-radius:9px;background:white;border:1px solid #cbd5e1;
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  font-size:13px;position:relative;padding:3px;
+  transition:.25s;
+}
+.m9 .cell{width:58px;height:58px;font-size:11px}
+.cell.center{background:var(--red-weak);border:2px solid var(--red);font-weight:700}
+.cell.fine{background:var(--blue-weak);border:2px solid var(--blue)}
+.cell.coarse{background:var(--green-weak);border:2px solid var(--green);font-weight:700}
+.cell.pool{background:var(--orange-weak);border:2px solid var(--orange)}
+.cell.dim{opacity:.22}
+.cell.flash{animation:pulse 1.1s infinite alternate}
+@keyframes pulse{from{transform:scale(1)}to{transform:scale(1.06)}}
+.tag{
+  position:absolute;right:4px;top:3px;font-size:9px;color:#64748b
+}
+
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.legend-item{
+  display:flex;align-items:center;gap:7px;background:#f8fafc;border:1px solid #e2e8f0;
+  padding:7px 10px;border-radius:10px;font-size:13px
+}
+.swatch{width:14px;height:14px;border-radius:3px}
+.swatch.fine{background:var(--blue-weak);border:2px solid var(--blue)}
+.swatch.coarse{background:var(--green-weak);border:2px solid var(--green)}
+.swatch.pool{background:var(--orange-weak);border:2px solid var(--orange)}
+.swatch.center{background:var(--red-weak);border:2px solid var(--red)}
+
+.flow{
+  display:flex;align-items:center;flex-wrap:wrap;gap:8px
+}
+.flow .box{
+  padding:10px 12px;border-radius:10px;background:#fff;border:1px solid #cbd5e1;
+  text-align:center;font-size:14px
+}
+.flow .arrow{font-size:23px;color:#64748b}
+
+.controls{
+  display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 14px
+}
+.slider-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+input[type="range"]{width:260px}
+.badge{
+  display:inline-block;padding:4px 9px;border-radius:999px;font-size:12px;font-weight:700
+}
+.badge.blue{background:var(--blue-weak);color:#1d4ed8}
+.badge.green{background:var(--green-weak);color:#047857}
+.badge.orange{background:var(--orange-weak);color:#b45309}
+.badge.red{background:var(--red-weak);color:#b91c1c}
+
+.comparison{
+  display:grid;grid-template-columns:1fr 1fr;gap:16px
+}
+@media(max-width:900px){.comparison{grid-template-columns:1fr}}
+.comp-panel{
+  border:1px solid #e2e8f0;border-radius:14px;padding:16px;background:#fbfdff
+}
+.bar{
+  height:16px;background:#e2e8f0;border-radius:999px;overflow:hidden;margin:6px 0 12px
+}
+.fill{height:100%;border-radius:999px}
+.fill.blue{background:var(--blue)}
+.fill.green{background:var(--green)}
+.fill.orange{background:var(--orange)}
+
+.tooltip{
+  display:none;position:fixed;z-index:9999;max-width:280px;
+  background:#0f172a;color:white;padding:10px 12px;border-radius:10px;
+  font-size:12px;line-height:1.5;pointer-events:none;box-shadow:0 10px 30px rgba(15,23,42,.25)
+}
+
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{border:1px solid #e2e8f0;padding:10px;text-align:left}
+th{background:#f8fafc}
+
+.highlight-box{
+  border:2px solid #93c5fd;background:#eff6ff;border-radius:14px;padding:14px;margin:12px 0
+}
+code{
+  background:#f1f5f9;padding:2px 5px;border-radius:5px
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <div class="header">
+    <h1>ViT-VS：Hierarchical Feature Binning 交互式可视化</h1>
+    <div class="subtitle">
+      重点讲清楚 <b>β=1 → 3×3 Average Pooling → 外围 8 个 coarse bins → β=2 拼接</b> 的全过程。
+    </div>
+    <div class="toolbar">
+      <button class="primary" onclick="nextStage()">下一步 ▶</button>
+      <button class="secondary" onclick="prevStage()">◀ 上一步</button>
+      <button class="secondary" onclick="playAll()">自动播放</button>
+      <button class="secondary" onclick="resetAll()">重置</button>
+    </div>
+    <div class="stepper">
+      <div class="step current" onclick="goStage(0)">1. DINO feature map</div>
+      <div class="step" onclick="goStage(1)">2. β=1 fine bins</div>
+      <div class="step" onclick="goStage(2)">3. 3×3 AvgPool</div>
+      <div class="step" onclick="goStage(3)">4. pooled map</div>
+      <div class="step" onclick="goStage(4)">5. 外围 8 bins</div>
+      <div class="step" onclick="goStage(5)">6. 最终 β=2 descriptor</div>
+    </div>
+  </div>
+
+  <div class="note">
+    <b>最重要的区分：</b>
+    Average Pooling 作用在 <b>DINO 的 patch feature map</b> 上，而不是 RGB 像素上。
+    每个格子是一个 <code>D</code> 维 descriptor；平均以后仍然是 <code>D</code> 维。
+  </div>
+
+  <!-- Stage 1 -->
+  <section class="card stage visible" id="stage0">
+    <h2>步骤 1：DINO 先得到 patch feature map</h2>
+    <p>
+      例如输入图像经过 DINOv2-S/14 后，得到一个 patch 网格。为了可视化，下面用 <b>7×7</b> 代替真实的 22×22。
+      每个格子 <code>F(i,j)</code> 都代表一个 <b>D 维向量</b>。
+    </p>
+    <div class="eq">F(i,j) ∈ R^D
+
+例如 DINOv2-Small:
+D = 384
+
+所以每个格子不是“一个像素”，而是一个 384 维 descriptor。</div>
+
+    <div class="matrix-wrap">
+      <div class="matrix m7" id="baseGrid"></div>
+    </div>
+
+    <div class="highlight-box">
+      当前我们选中心 patch：
+      <b>X = F(3,3)</b>。接下来所有 hierarchical descriptor 都是围绕这个中心 patch 构造的。
+    </div>
+  </section>
+
+  <!-- Stage 2 -->
+  <section class="card stage" id="stage1">
+    <h2>步骤 2：β=1 —— 先保留中心 3×3 的 9 个 fine bins</h2>
+
+    <div class="legend">
+      <div class="legend-item"><span class="swatch center"></span>中心 patch X</div>
+      <div class="legend-item"><span class="swatch fine"></span>fine bin（原始 patch descriptor）</div>
+    </div>
+
+    <p>
+      β=1 时，不做平均。直接保留中心 patch 和周围 8 个邻居：
+    </p>
+
+    <div class="matrix-wrap">
+      <div class="matrix m7" id="fineGrid"></div>
+    </div>
+
+    <div class="eq">fine descriptor =
+[
+F(y-1,x-1), F(y-1,x), F(y-1,x+1),
+F(y,  x-1), F(y,  x), F(y,  x+1),
+F(y+1,x-1), F(y+1,x), F(y+1,x+1)
+]
+
+共 9 个 D 维向量
+→ 拼接后维度 = 9D</div>
+
+    <div class="good">
+      <b>为什么这里不平均？</b><br>
+      因为中心附近的空间结构非常重要：上、下、左、右分别是什么，需要保留下来。
+    </div>
+  </section>
+
+  <!-- Stage 3 -->
+  <section class="card stage" id="stage2">
+    <h2>步骤 3：β=2 新增“外层 3×3 Average Pooling”</h2>
+
+    <p>
+      现在要给中心 patch 增加更远处的上下文。做法不是直接再拿远处单个 patch，
+      而是先对 <b>整个 feature map</b> 做一个 <code>3×3, stride=1</code> 的滑动平均池化。
+    </p>
+
+    <div class="controls">
+      <button class="primary" onclick="movePoolWindow()">演示滑动窗口</button>
+      <button class="secondary" onclick="resetPoolDemo()">复位窗口</button>
+    </div>
+
+    <div class="legend">
+      <div class="legend-item"><span class="swatch pool"></span>当前 3×3 pooling 窗口</div>
+      <div class="legend-item"><span class="swatch coarse"></span>这个窗口的 pooled 输出位置</div>
+    </div>
+
+    <div class="matrix-wrap">
+      <div class="matrix m9" id="poolGrid"></div>
+    </div>
+
+    <div class="eq">A(i,j) = (1 / N_ij) · ΣΣ F(i+a, j+b)
+                   a,b ∈ {-1,0,1}
+
+普通内部位置:
+N_ij = 9
+
+所以 A(i,j) 仍然 ∈ R^D</div>
+
+    <div class="warn">
+      <b>非常关键：</b>
+      这个平均是“逐通道平均”。如果每个 patch descriptor 是 384 维，
+      那么 9 个 384 维向量平均后，结果仍然是一个 384 维向量。
+    </div>
+  </section>
+
+  <!-- Stage 4 -->
+  <section class="card stage" id="stage3">
+    <h2>步骤 4：对整个 feature map 滑动后，得到 pooled feature map A</h2>
+
+    <div class="layout2">
+      <div>
+        <h3>原始 feature map</h3>
+        <div class="eq">F ∈ R^(H' × W' × D)</div>
+        <p>每个位置描述一个单独 patch 的 DINO feature。</p>
+      </div>
+      <div>
+        <h3>3×3 AvgPool 后</h3>
+        <div class="eq">A ∈ R^(H' × W' × D)</div>
+        <p>每个位置描述“周围 3×3 patch 区域”的平均语义。</p>
+      </div>
+    </div>
+
+    <div class="comparison">
+      <div class="comp-panel">
+        <h3>F(i,j)：局部单 patch</h3>
+        <p>回答的问题更像：</p>
+        <div class="highlight-box">“这个 patch 自己是什么？”</div>
+      </div>
+      <div class="comp-panel">
+        <h3>A(i,j)：3×3 区域摘要</h3>
+        <p>回答的问题更像：</p>
+        <div class="highlight-box">“这个位置附近一小块区域整体是什么？”</div>
+      </div>
+    </div>
+
+    <div class="good">
+      这一步是 hierarchical binning 的核心之一：<b>把远处区域从“单 patch 表示”变成“区域摘要表示”</b>。
+    </div>
+  </section>
+
+  <!-- Stage 5 -->
+  <section class="card stage" id="stage4">
+    <h2>步骤 5：从 pooled map 中取距离中心 3 个 patch 的 8 个 coarse bins</h2>
+
+    <p>
+      β=2 不会使用中心位置的 pooled feature，因为中心附近已经由 9 个 fine bins 表达了。
+      它会在 <b>8 个方向</b> 上，按照 <b>3 patch 的偏移</b> 取 pooled descriptor。
+    </p>
+
+    <div class="legend">
+      <div class="legend-item"><span class="swatch center"></span>中心 X</div>
+      <div class="legend-item"><span class="swatch fine"></span>中心 3×3 fine</div>
+      <div class="legend-item"><span class="swatch coarse"></span>从 A 中采样的 8 个 coarse bins</div>
+    </div>
+
+    <div class="matrix-wrap">
+      <div class="matrix m7" id="coarseGrid"></div>
+    </div>
+
+    <div class="eq">C1 = A(y-3, x-3)
+C2 = A(y-3, x)
+C3 = A(y-3, x+3)
+C4 = A(y,   x+3)
+C5 = A(y+3, x+3)
+C6 = A(y+3, x)
+C7 = A(y+3, x-3)
+C8 = A(y,   x-3)</div>
+
+    <div class="warn">
+      注意：<b>C4 ≠ F(y,x+3)</b>。<br>
+      正确的是：<b>C4 = A(y,x+3)</b>，也就是“以 (y,x+3) 为中心的 3×3 patch 区域平均后的 descriptor”。
+    </div>
+  </section>
+
+  <!-- Stage 6 -->
+  <section class="card stage" id="stage5">
+    <h2>步骤 6：β=2 的最终 hierarchical descriptor</h2>
+
+    <p>最终，把两部分拼起来：</p>
+
+    <div class="flow">
+      <div class="box"><b>9 个 fine bins</b><br>中心 3×3 原始 patch features</div>
+      <div class="arrow">+</div>
+      <div class="box"><b>8 个 coarse bins</b><br>外围 3×3 AvgPool 区域摘要</div>
+      <div class="arrow">→</div>
+      <div class="box"><b>17 个 bins</b><br>最终 descriptor</div>
+    </div>
+
+    <div class="eq">tilde_f(y,x) =
+[
+  fine_1, fine_2, ..., fine_9,
+  C1, C2, ..., C8
+]
+
+总 bin 数 = 9 + 8 = 17
+
+若原始维度 D=384：
+β=2 descriptor 维度 = 17 × 384 = 6528</div>
+
+    <h3>β=1 与 β=2 对比</h3>
+    <div class="comparison">
+      <div class="comp-panel">
+        <span class="badge blue">β = 1</span>
+        <h3>中心局部结构</h3>
+        <p>9 个 fine bins</p>
+        <div class="bar"><div class="fill blue" style="width:53%"></div></div>
+        <p><b>维度：</b>9D</p>
+        <p><b>特点：</b>快、局部结构清晰、上下文范围较小。</p>
+      </div>
+      <div class="comp-panel">
+        <span class="badge green">β = 2</span>
+        <h3>中心细 + 外围粗</h3>
+        <p>9 fine + 8 coarse</p>
+        <div class="bar"><div class="fill green" style="width:100%"></div></div>
+        <p><b>维度：</b>17D</p>
+        <p><b>特点：</b>上下文更强、匹配更稳，但计算更慢。</p>
+      </div>
+    </div>
+
+    <div class="good">
+      <b>一句话总结：</b>
+      β=2 的外层 3×3 Average Pooling，不是为了提高中心点定位精度，
+      而是为了给中心 patch 增加“远处环境长什么样”的上下文信息，从而减少语义匹配歧义。
+    </div>
+  </section>
+
+  <!-- interactive calculator -->
+  <section class="card">
+    <h2>附加：交互式维度计算器</h2>
+    <div class="slider-row">
+      <label><b>原始 descriptor 维度 D：</b></label>
+      <input id="dSlider" type="range" min="64" max="1024" step="64" value="384" oninput="updateCalc()">
+      <span id="dValue" class="badge blue">384</span>
+    </div>
+    <div class="slider-row" style="margin-top:10px">
+      <label><b>β：</b></label>
+      <input id="bSlider" type="range" min="1" max="4" step="1" value="2" oninput="updateCalc()">
+      <span id="bValue" class="badge green">2</span>
+    </div>
+
+    <div class="layout3" style="margin-top:16px">
+      <div class="comp-panel">
+        <h3>bin 数量</h3>
+        <div id="binCount" style="font-size:30px;font-weight:800">17</div>
+        <small>公式：1 + 8β</small>
+      </div>
+      <div class="comp-panel">
+        <h3>最终 descriptor 维度</h3>
+        <div id="descDim" style="font-size:30px;font-weight:800">6528</div>
+        <small>公式：(1 + 8β)D</small>
+      </div>
+      <div class="comp-panel">
+        <h3>最外层 pooling 尺度</h3>
+        <div id="poolScale" style="font-size:30px;font-weight:800">3×3</div>
+        <small>β=2 时，新增层 k=1 → 3^1</small>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>最终总结</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>阶段</th>
+          <th>做什么</th>
+          <th>输出</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>原始 DINO</td><td>每个 patch 一个 D 维 descriptor</td><td>F(i,j)</td></tr>
+        <tr><td>β=1</td><td>中心 3×3 的 9 个 patch 分别保留</td><td>9 个 fine bins</td></tr>
+        <tr><td>3×3 AvgPool</td><td>在整个 feature map 上滑动，对每个位置的 3×3 descriptor 逐通道平均</td><td>pooled map A</td></tr>
+        <tr><td>β=2 外围采样</td><td>在距离中心 3 patch 的 8 个方向，从 A 中取值</td><td>8 个 coarse bins</td></tr>
+        <tr><td>最终拼接</td><td>9 fine + 8 coarse</td><td>17D hierarchical descriptor</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+let currentStage = 0;
+let autoTimer = null;
+const totalStages = 6;
+
+function goStage(i){
+  currentStage = Math.max(0, Math.min(totalStages-1, i));
+  document.querySelectorAll('.stage').forEach((el,idx)=>{
+    el.classList.toggle('visible', idx===currentStage);
+  });
+  document.querySelectorAll('.step').forEach((el,idx)=>{
+    el.classList.toggle('current', idx===currentStage);
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function nextStage(){goStage((currentStage+1)%totalStages)}
+function prevStage(){goStage((currentStage-1+totalStages)%totalStages)}
+function playAll(){
+  if(autoTimer){clearInterval(autoTimer);autoTimer=null;return}
+  autoTimer=setInterval(()=>nextStage(),2200);
+}
+function resetAll(){
+  if(autoTimer){clearInterval(autoTimer);autoTimer=null}
+  goStage(0);
+  resetPoolDemo();
+}
+
+function makeGrid(id, size, decorate){
+  const root=document.getElementById(id);
+  if(!root) return;
+  root.innerHTML='';
+  for(let r=0;r<size;r++){
+    for(let c=0;c<size;c++){
+      const div=document.createElement('div');
+      div.className='cell';
+      div.dataset.r=r;
+      div.dataset.c=c;
+      div.textContent=`F(${r},${c})`;
+      if(decorate) decorate(div,r,c);
+      root.appendChild(div);
+    }
+  }
+}
+
+makeGrid('baseGrid',7,(d,r,c)=>{
+  if(r===3 && c===3){
+    d.classList.add('center','flash');
+    d.innerHTML='X = F(3,3)<span class="tag">中心</span>';
+  }
+});
+
+makeGrid('fineGrid',7,(d,r,c)=>{
+  if(Math.abs(r-3)<=1 && Math.abs(c-3)<=1){
+    d.classList.add('fine');
+  }else{
+    d.classList.add('dim');
+  }
+  if(r===3 && c===3){
+    d.classList.remove('fine');
+    d.classList.add('center');
+    d.innerHTML='X<span class="tag">中心</span>';
+  }
+});
+
+let poolPos={r:3,c:5};
+function renderPool(){
+  makeGrid('poolGrid',9,(d,r,c)=>{
+    const inside = Math.abs(r-poolPos.r)<=1 && Math.abs(c-poolPos.c)<=1;
+    if(inside) d.classList.add('pool');
+    if(r===poolPos.r && c===poolPos.c){
+      d.classList.remove('pool');
+      d.classList.add('coarse');
+      d.innerHTML=`A(${r},${c})<span class="tag">pooled输出</span>`;
+    }
+  });
+}
+renderPool();
+
+const path=[
+  {r:2,c:2},{r:2,c:3},{r:2,c:4},{r:2,c:5},
+  {r:3,c:5},{r:4,c:5},{r:5,c:5},{r:5,c:4},{r:5,c:3}
+];
+let poolIndex=0;
+function movePoolWindow(){
+  poolIndex=(poolIndex+1)%path.length;
+  poolPos=path[poolIndex];
+  renderPool();
+}
+function resetPoolDemo(){
+  poolIndex=0;
+  poolPos={r:3,c:5};
+  renderPool();
+}
+
+makeGrid('coarseGrid',7,(d,r,c)=>{
+  const centerR=3, centerC=3;
+  const fine = Math.abs(r-centerR)<=1 && Math.abs(c-centerC)<=1;
+  const coarsePts = [
+    [0,0,'C1'],[0,3,'C2'],[0,6,'C3'],
+    [3,6,'C4'],[6,6,'C5'],[6,3,'C6'],
+    [6,0,'C7'],[3,0,'C8']
+  ];
+  if(fine) d.classList.add('fine');
+  const hit=coarsePts.find(x=>x[0]===r && x[1]===c);
+  if(hit){
+    d.classList.remove('fine');
+    d.classList.add('coarse');
+    d.innerHTML=`${hit[2]}<br><span class="smalltxt">来自 pooled map A</span>`;
+  }else if(!fine){
+    d.classList.add('dim');
+  }
+  if(r===centerR && c===centerC){
+    d.classList.remove('fine','dim');
+    d.classList.add('center');
+    d.innerHTML='X<span class="tag">中心</span>';
+  }
+});
+
+function updateCalc(){
+  const D=parseInt(document.getElementById('dSlider').value);
+  const beta=parseInt(document.getElementById('bSlider').value);
+  const bins=1+8*beta;
+  const dim=bins*D;
+  const k=Math.max(0,beta-1);
+  const scale=Math.pow(3,k);
+  document.getElementById('dValue').textContent=D;
+  document.getElementById('bValue').textContent=beta;
+  document.getElementById('binCount').textContent=bins;
+  document.getElementById('descDim').textContent=dim;
+  document.getElementById('poolScale').textContent=`${scale}×${scale}`;
+}
+updateCalc();
+
+// tooltip for cells
+const tip=document.getElementById('tooltip');
+document.addEventListener('mouseover',e=>{
+  const cell=e.target.closest('.cell');
+  if(!cell) return;
+  let text='这是一个 DINO patch descriptor。';
+  if(cell.classList.contains('center')) text='中心 patch X：最终 hierarchical descriptor 以它为参考位置。';
+  else if(cell.classList.contains('fine')) text='Fine bin：直接保留该 patch 的原始 DINO descriptor，不做平均。';
+  else if(cell.classList.contains('coarse')) text='Coarse bin：来自 pooled feature map A，代表一个 3×3 区域的平均语义。';
+  else if(cell.classList.contains('pool')) text='当前参与 3×3 Average Pooling 的原始 patch descriptor。';
+  tip.textContent=text;
+  tip.style.display='block';
+});
+document.addEventListener('mousemove',e=>{
+  if(tip.style.display==='block'){
+    tip.style.left=(e.clientX+14)+'px';
+    tip.style.top=(e.clientY+14)+'px';
+  }
+});
+document.addEventListener('mouseout',e=>{
+  if(e.target.closest('.cell')) tip.style.display='none';
+});
+</script>
+</body>
+</html>

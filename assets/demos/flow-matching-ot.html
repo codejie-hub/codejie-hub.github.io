@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>流匹配（OT 直线路径）轨迹可视化</title>
+  <title>Flow Matching 条件线性插值演示</title>
   <style>
     * { box-sizing: border-box; }
     html { min-height: 100%; margin: 0; background: #0d1117; }
@@ -223,8 +223,8 @@
   <main class="demo">
     <header class="header">
       <div>
-        <p class="eyebrow">Flow Matching / Optimal Transport Path</p>
-        <h1>流匹配直线路径</h1>
+        <p class="eyebrow">Flow Matching / Conditional Interpolation</p>
+        <h1>条件线性插值</h1>
       </div>
       <div class="phase" id="phase">源分布：二维高斯噪声</div>
     </header>
@@ -255,12 +255,13 @@
           <div class="legend-item"><span class="swatch noise"></span><span>起点噪声 p<sub>0</sub></span></div>
           <div class="legend-item"><span class="swatch target"></span><span>目标曲线 p<sub>1</sub></span></div>
           <div class="legend-item"><span class="swatch current"></span><span>当前粒子 x<sub>t</sub></span></div>
-          <div class="legend-item"><span class="swatch vector"></span><span>速度方向 v</span></div>
+          <div class="legend-item"><span class="swatch vector"></span><span>配对速度标签 u</span></div>
         </div>
 
         <p class="formula">
           <strong>x<sub>t</sub> = (1−t)x<sub>0</sub> + tx<sub>1</sub></strong><br />
-          v = x<sub>1</sub> − x<sub>0</sub>
+          u = x<sub>1</sub> − x<sub>0</sub><br />
+          随机配对插值，未求解 OT 或训练生成模型。
         </p>
       </aside>
 
@@ -340,7 +341,7 @@
       function getPhaseText(t) {
         if (t < 0.08) return "源分布：二维高斯噪声";
         if (t < 0.45) return "直线插值：沿配对路径移动";
-        if (t < 0.9) return "输运过程：速度场指向目标";
+        if (t < 0.9) return "条件插值：每对端点的速度恒定";
         return "目标分布：∞ 形数据曲线";
       }
 
