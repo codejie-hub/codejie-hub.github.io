@@ -1,0 +1,112 @@
+---
+layout: default
+---
+
+{% assign roadmap = site.data.roadmap %}
+{% assign paper_count = 0 %}
+{% for route in roadmap.routes %}
+  {% assign paper_count = paper_count | plus: route.papers.size %}
+{% endfor %}
+
+<article class="section-page roadmap-page" data-roadmap>
+  <header class="roadmap-hero">
+    <div class="roadmap-hero__copy">
+      <p class="section-page__eyebrow">Learning paths / Robotics</p>
+      <h1>机器人学习<span>ROADMAP</span></h1>
+      <p>把分散的论文，连成可以出发的研究路线。<br>从基础概念到代表方法，再走向第一个实验。</p>
+      <a class="roadmap-text-link" href="{{ roadmap.survey_url | relative_url }}">阅读完整研究综述 <span aria-hidden="true">↗</span></a>
+    </div>
+    <dl class="roadmap-stats" aria-label="路线图收录范围">
+      <div><dt>研究路线</dt><dd>{{ roadmap.routes.size | prepend: '0' }}</dd></div>
+      <div><dt>代表论文</dt><dd>{{ paper_count }}</dd></div>
+      <div><dt>选文范围</dt><dd>{{ roadmap.years }}</dd></div>
+    </dl>
+  </header>
+
+  <section class="roadmap-foundations" aria-labelledby="foundations-title">
+    <div class="roadmap-section-heading">
+      <h2 id="foundations-title"><span class="roadmap-section-tag">START</span> 建立共同基础</h2>
+      <p>按需补齐，不必顺序读完。</p>
+    </div>
+    <div class="roadmap-foundation-grid">
+      {% for foundation in roadmap.foundations %}
+        <section class="roadmap-foundation">
+          <span class="roadmap-foundation__number" aria-hidden="true">{{ foundation.number }}</span>
+          <h3>{{ foundation.title }}</h3>
+          <p>{{ foundation.description }}</p>
+          <div class="roadmap-foundation__links">
+            {% for link in foundation.links %}
+              <a href="{{ link.url | relative_url }}">{{ link.title }} <span aria-hidden="true">↗</span></a>
+            {% endfor %}
+          </div>
+        </section>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="roadmap-explorer" aria-labelledby="routes-title">
+    <div class="roadmap-section-heading">
+      <h2 id="routes-title"><span class="roadmap-section-tag">EXPLORE</span> 选择你的研究方向</h2>
+      <p>连线表示建议阅读顺序，年份标注首次公开时间。</p>
+    </div>
+
+    <div class="roadmap-controls" data-roadmap-controls hidden>
+      <div class="roadmap-junction">
+        <button class="roadmap-all" type="button" data-roadmap-route="all" aria-pressed="true" aria-controls="roadmap-tracks">全部路线 <span aria-hidden="true">↓</span></button>
+      </div>
+      <div class="roadmap-branches" role="group" aria-label="筛选研究路线">
+        {% for route in roadmap.routes %}
+          <button type="button" class="roadmap-branch" style="--route-color: {{ route.color }}" data-roadmap-route="{{ route.id }}" aria-pressed="false" aria-controls="roadmap-tracks">
+            <span class="roadmap-branch__number">{{ route.number }}</span>
+            <span>{{ route.label }}</span>
+          </button>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="roadmap-legend">
+      <p role="status" aria-live="polite" aria-atomic="true" data-roadmap-status>{{ roadmap.routes.size }} 条路线 · {{ paper_count }} 篇论文</p>
+      <span><i class="roadmap-note-dot" aria-hidden="true"></i> 已有站内精读</span>
+    </div>
+
+    <div class="roadmap-tracks" id="roadmap-tracks">
+      {% for route in roadmap.routes %}
+        <section class="roadmap-track" id="{{ route.id }}" style="--route-color: {{ route.color }}" data-roadmap-track="{{ route.id }}" data-route-label="{{ route.label }}" aria-labelledby="title-{{ route.id }}">
+          <header class="roadmap-track__heading">
+            <span class="roadmap-track__number" aria-hidden="true">{{ route.number }}</span>
+            <div>
+              <h3 id="title-{{ route.id }}">{{ route.label }}</h3>
+              <p>{{ route.question }}</p>
+              <a href="{{ roadmap.survey_url | relative_url }}#route-{{ route.id }}">方向综述 <span aria-hidden="true">↗</span></a>
+            </div>
+          </header>
+          <div class="roadmap-track__body">
+            <ol class="roadmap-steps" style="--step-count: {{ route.papers.size }}" aria-label="{{ route.label }}建议阅读顺序">
+              {% for paper in route.papers %}
+                <li class="roadmap-step{% if paper.note %} roadmap-step--noted{% endif %}" data-roadmap-paper>
+                  <span class="roadmap-step__dot" aria-hidden="true"></span>
+                  <div class="roadmap-step__meta"><span>{{ paper.year }}</span>{% if paper.note %}<span class="roadmap-step__badge">精读</span>{% endif %}</div>
+                  <h4><a href="{% if paper.note %}{{ paper.note | relative_url }}{% else %}{{ paper.url }}{% endif %}">{{ paper.title }}</a></h4>
+                  <p>{{ paper.topic }}</p>
+                  <div class="roadmap-step__links">
+                    <a href="{{ paper.url }}" aria-label="{{ paper.title }} 原论文">论文 <span aria-hidden="true">↗</span></a>
+                    <a href="{{ paper.code }}" aria-label="{{ paper.title }} 官方代码">代码 <span aria-hidden="true">↗</span></a>
+                    {% if paper.note %}<a href="{{ paper.note | relative_url }}" class="roadmap-step__note" aria-label="{{ paper.title }} 站内精读">精读 <span aria-hidden="true">→</span></a>{% endif %}
+                  </div>
+                </li>
+              {% endfor %}
+            </ol>
+            <p class="roadmap-experiment"><span>第一个实验</span>{{ route.experiment }}</p>
+          </div>
+        </section>
+      {% endfor %}
+    </div>
+  </section>
+
+  <aside class="roadmap-next" aria-labelledby="roadmap-next-title">
+    <div><p class="section-page__eyebrow">Read → Compare → Experiment</p><h2 id="roadmap-next-title">从一条路线，走向一个明确的问题。</h2><p>先固定任务和数据预算，再比较方法。代码、权重、训练数据与完整复现条件，需要分别确认。</p></div>
+    <a href="{{ roadmap.survey_url | relative_url }}#research-starting-points">查看实验与复现建议 <span aria-hidden="true">→</span></a>
+  </aside>
+</article>
+
+<script src="{{ '/assets/js/roadmap.js' | relative_url }}" defer></script>

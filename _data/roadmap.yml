@@ -1,0 +1,208 @@
+title: 机器人学习路线图
+survey_url: /posts/robot-manipulation-survey/
+years: 2023–2026
+foundations:
+  - number: "01"
+    title: 运动与控制
+    description: 理解动作如何落到机器人上
+    links:
+      - {title: 机器人运动学, url: /posts/robot-kinematics/}
+      - {title: PID 与 MPC, url: /posts/pid-mpc-control/}
+  - number: "02"
+    title: 视觉与语言
+    description: 理解多模态信息怎样融合
+    links:
+      - {title: Transformer, url: /posts/transformer/}
+      - {title: Robot + LLM, url: /posts/roboLLM/}
+  - number: "03"
+    title: 生成式策略
+    description: 从观测生成连续动作序列
+    links:
+      - {title: Diffusion Policy, url: /posts/diffusion-policy/}
+      - {title: Flow Matching, url: /posts/flowmatching/}
+  - number: "04"
+    title: 奖励与交互
+    description: 理解策略如何从执行中改进
+    links:
+      - {title: 强化学习基础, url: /posts/rl-base/}
+      - {title: HIL-SERL, url: /posts/hilserl/}
+
+routes:
+  - id: geometry
+    number: "01"
+    label: 三维与生成策略
+    color: "#4d6bd8"
+    question: 从示范出发，让策略适应空间变化。
+    experiment: 固定示范数量，分别改变物体位置、方向和尺度，比较表示与几何先验的贡献。
+    papers:
+      - title: Diffusion Policy
+        year: 2023
+        topic: 条件去噪与动作序列
+        url: https://arxiv.org/abs/2303.04137
+        code: https://github.com/real-stanford/diffusion_policy
+        note: /posts/diffusion-policy/
+      - title: ACT
+        year: 2023
+        topic: 动作分块与时间集成
+        url: https://arxiv.org/abs/2304.13705
+        code: https://github.com/tonyzhaozh/act
+      - title: DP3
+        year: 2024
+        topic: 简洁点云表示
+        url: https://arxiv.org/abs/2403.03954
+        code: https://github.com/YanjieZe/3D-Diffusion-Policy
+      - title: 3D Diffuser Actor
+        year: 2024
+        topic: 语言与三维场景
+        url: https://arxiv.org/abs/2402.10885
+        code: https://github.com/nickgkan/3d_diffuser_actor
+      - title: EquiBot
+        year: 2024
+        topic: 几何等变性
+        url: https://arxiv.org/abs/2407.01479
+        code: https://github.com/yjy0625/equibot
+      - title: Consistency Policy
+        year: 2024
+        topic: 少步生成与加速
+        url: https://arxiv.org/abs/2405.07503
+        code: https://github.com/Aaditya-Prasad/Consistency-Policy
+
+  - id: vla
+    number: "02"
+    label: VLA 与通用策略
+    color: "#8060ba"
+    question: 把视觉语言知识转化为可执行的动作。
+    experiment: 固定数据与评测协议，对比动作分块、微调方式、闭环延迟和任务成功率。
+    papers:
+      - title: OpenVLA-OFT
+        year: 2025
+        topic: 动作接口与高效微调
+        url: https://arxiv.org/abs/2502.19645
+        code: https://github.com/moojink/openvla-oft
+      - title: SmolVLA
+        year: 2025
+        topic: 轻量模型与异步执行
+        url: https://arxiv.org/abs/2506.01844
+        code: https://github.com/huggingface/lerobot
+      - title: π0.5
+        year: 2025
+        topic: 异构共训练与泛化
+        url: https://arxiv.org/abs/2504.16054
+        code: https://github.com/Physical-Intelligence/openpi
+        note: /posts/pi0.5/
+      - title: MolmoAct2
+        year: 2026
+        topic: 空间推理与动作生成
+        url: https://arxiv.org/abs/2605.02881
+        code: https://github.com/allenai/molmoact2
+      - title: LingBot-VLA 2.0
+        year: 2026
+        topic: 跨本体表示与迁移
+        url: https://arxiv.org/abs/2607.06403
+        code: https://github.com/Robbyant/lingbot-vla-v2
+
+  - id: planning
+    number: "03"
+    label: 规划与世界模型
+    color: "#178578"
+    question: 用几何约束或未来预测帮助选择动作。
+    experiment: 比较加入推理前后的成功率、恢复能力和完整闭环延迟，检验预测是否真正改善控制。
+    papers:
+      - title: ReKep
+        year: 2024
+        topic: 关系关键点约束
+        url: https://arxiv.org/abs/2409.01652
+        code: https://github.com/huangwl18/ReKep
+      - title: Cosmos Policy
+        year: 2026
+        topic: 动作与未来状态预测
+        url: https://arxiv.org/abs/2601.16163
+        code: https://github.com/NVlabs/cosmos-policy
+      - title: GlanceWAM
+        year: 2026
+        topic: 异步想象与快速控制
+        url: https://arxiv.org/abs/2608.23927
+        code: https://github.com/linhanwang/GlanceWAM
+
+  - id: embodiment
+    number: "04"
+    label: 双臂与人形操作
+    color: "#b8762e"
+    question: 让数据、动作表示与机器人本体对齐。
+    experiment: 从少量双臂任务开始，比较示范规模、预训练初始化和本体适配的作用。
+    papers:
+      - title: Mobile ALOHA
+        year: 2024
+        topic: 移动双臂遥操作
+        url: https://arxiv.org/abs/2401.02117
+        code: https://github.com/MarkFzp/mobile-aloha
+      - title: RDT-1B
+        year: 2024
+        topic: 双臂扩散基础模型
+        url: https://arxiv.org/abs/2410.07864
+        code: https://github.com/thu-ml/RoboticsDiffusionTransformer
+      - title: iDP3
+        year: 2024
+        topic: 本体视角三维策略
+        url: https://arxiv.org/abs/2410.10803
+        code: https://github.com/YanjieZe/Improved-3D-Diffusion-Policy
+
+  - id: contact
+    number: "05"
+    label: 灵巧手与触觉
+    color: "#bd647c"
+    question: 从跟踪动作，到在接触中及时纠偏。
+    experiment: 选择接触明确的任务，加入可控扰动，记录恢复时间以及设备允许测量的接触力峰值。
+    papers:
+      - title: DexTrack
+        year: 2025
+        topic: 人类参考与灵巧跟踪
+        url: https://arxiv.org/abs/2502.09614
+        code: https://github.com/Meowuu7/DexTrack
+      - title: Reactive Diffusion Policy
+        year: 2025
+        topic: 快慢视觉触觉反馈
+        url: https://arxiv.org/abs/2503.02881
+        code: https://github.com/xiaoxiaoxh/reactive_diffusion_policy
+
+  - id: rl
+    number: "06"
+    label: 强化学习与纠错
+    color: "#688638"
+    question: 通过交互和人的纠正改进已有策略。
+    experiment: 固定初始策略和交互预算，分别观察成功率、失败恢复与人工干预次数。
+    papers:
+      - title: HIL-SERL
+        year: 2024
+        topic: 人在回路与真机学习
+        url: https://arxiv.org/abs/2410.21845
+        code: https://github.com/rail-berkeley/hil-serl
+        note: /posts/hilserl/
+      - title: SimpleVLA-RL
+        year: 2025
+        topic: VLA 强化学习后训练
+        url: https://arxiv.org/abs/2509.09674
+        code: https://github.com/PRIME-RL/SimpleVLA-RL
+
+  - id: data
+    number: "07"
+    label: 数据与评测基准
+    color: "#51809c"
+    question: 扩展示范覆盖，并检验真实的泛化能力。
+    experiment: 分开训练与测试的物体、布局和随机化条件，比较数据规模与多样性的作用。
+    papers:
+      - title: UMI
+        year: 2024
+        topic: 手持示范采集
+        url: https://arxiv.org/abs/2402.10329
+        code: https://github.com/real-stanford/universal_manipulation_interface
+      - title: DexMimicGen
+        year: 2024
+        topic: 少量示范的仿真扩展
+        url: https://arxiv.org/abs/2410.24185
+        code: https://github.com/NVlabs/dexmimicgen
+      - title: RoboTwin 2.0
+        year: 2025
+        topic: 双臂数据生成与基准
+        url: https://arxiv.org/abs/2506.18088
+        code: https://github.com/RoboTwin-Platform/RoboTwin

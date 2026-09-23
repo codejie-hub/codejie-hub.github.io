@@ -125,6 +125,20 @@ refactor: true
       </ol>
     </section>
 
+    <section class="home-section home-roadmap" aria-labelledby="home-roadmap-title">
+      <p class="section-page__eyebrow">Research roadmap</p>
+      <div class="home-section__head">
+        <h2 id="home-roadmap-title">从论文出发，找到你的研究路线</h2>
+        <a href="{{ '/roadmap/' | relative_url }}">探索 ROADMAP →</a>
+      </div>
+      <p>七条方向，24 篇代表论文。连接基础知识、专题精读与第一个实验。</p>
+      <nav class="home-roadmap__routes" aria-label="研究路线快捷入口">
+        {% for route in site.data.roadmap.routes %}
+          <a href="{{ '/roadmap/' | relative_url }}#{{ route.id }}" style="--route-color: {{ route.color }}">{{ route.label }}</a>
+        {% endfor %}
+      </nav>
+    </section>
+
     <section class="home-section" aria-labelledby="featured-heading">
       <div class="home-section__head">
         <h2 id="featured-heading">精选文章</h2>
