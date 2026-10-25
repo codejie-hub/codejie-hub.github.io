@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+<title id="title"></title><desc id="desc">。根据文章整理的教学示意。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="context-stroke"/></marker></defs>
+<style>text{font-family:'Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Arial,sans-serif}</style>
+<rect width="100%" height="100%" fill="white"/>
+<rect x="0" y="0" width="1200" height="630" rx="0" fill="#f7f9fc" stroke="none" stroke-width="2"/>
+<rect x="48" y="65" width="8" height="500" rx="4" fill="#218578" stroke="none" stroke-width="2"/>
+<text x="86" y="115" font-size="20" fill="#218578" text-anchor="start" font-weight="700">CODEJIE  /  RESEARCH NOTES</text>
+<text x="86" y="185" font-size="25" fill="#64748b" text-anchor="start" font-weight="400">视觉伺服</text>
+<text x="86" y="285" font-size="61" fill="#253247" text-anchor="start" font-weight="700">视觉伺服</text>
+<text x="88" y="425" font-size="24" fill="#637084" text-anchor="start" font-weight="400">IBVS · ViT-VS</text>
+<text x="88" y="463" font-size="24" fill="#637084" text-anchor="start" font-weight="400">CNS</text>
+<rect x="705" y="145" width="455" height="360" rx="14" fill="#fff" stroke="#e0e6ee" stroke-width="2"/>
+<g transform="translate(710 175) scale(0.4838709677419355)"><rect width="780" height="620" fill="white"/>
+<text x="40" y="52" font-size="30" fill="#253247" text-anchor="start" font-weight="700">针孔投影：相机沿 +X 平移</text>
+<text x="40" y="88" font-size="19" fill="#637084" text-anchor="start" font-weight="400">X 在图中竖直向上，Z 为向右的光轴；归一化像坐标 x=X/Z</text>
+<path d="M110,300 L690,300" fill="none" stroke="#4264ad" stroke-width="2" stroke-dasharray="8 6"/>
+<path d="M110,230 L690,230" fill="none" stroke="#198477" stroke-width="2" stroke-dasharray="8 6"/>
+<circle cx="110" cy="300" r="7" fill="#4264ad" stroke="none" stroke-width="3"/>
+<circle cx="110" cy="230" r="7" fill="#198477" stroke="none" stroke-width="3"/>
+<path d="M110,300 L110,238" fill="none" stroke="#b15e7b" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="40" y="260" font-size="24" fill="#b15e7b" text-anchor="start" font-weight="400">+vₓ</text>
+<path d="M300,125 L300,420" fill="none" stroke="#9aa9b9" stroke-width="3"/>
+<circle cx="620" cy="150" r="8" fill="#b57836" stroke="none" stroke-width="3"/>
+<text x="575" y="125" font-size="24" fill="#b57836" text-anchor="start" font-weight="400">静止点 P</text>
+<path d="M110,300 L620,150" fill="none" stroke="#4264ad" stroke-width="3"/>
+<path d="M110,230 L620,150" fill="none" stroke="#198477" stroke-width="3"/>
+<circle cx="300" cy="244" r="6" fill="#4264ad" stroke="none" stroke-width="3"/>
+<circle cx="300" cy="200" r="6" fill="#198477" stroke="none" stroke-width="3"/>
+<path d="M325,244 L325,300" fill="none" stroke="#4264ad" stroke-width="4"/>
+<text x="350" y="285" font-size="22" fill="#4264ad" text-anchor="start" font-weight="400">原像高</text>
+<path d="M325,200 L325,230" fill="none" stroke="#198477" stroke-width="4"/>
+<text x="350" y="212" font-size="22" fill="#198477" text-anchor="start" font-weight="400">新像高</text>
+<text x="110" y="355" font-size="22" fill="#253247" text-anchor="start" font-weight="400">相机中心</text>
+<text x="645" y="335" font-size="22" fill="#253247" text-anchor="start" font-weight="400">+Z 光轴</text>
+<text x="390" y="475" font-size="27" fill="#253247" text-anchor="middle" font-weight="400">x_new = (X − ΔX) / Z &lt; X / Z</text>
+<text x="390" y="520" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">像点相对各自光轴的坐标减小</text>
+<path d="M40,564 L740,564" fill="none" stroke="#e2e7ef" stroke-width="1"/>
+<text x="40" y="596" font-size="18" fill="#69778a" text-anchor="start" font-weight="400">理想平移截面，Z 不变；颜色区分移动前后的相机中心、光轴与投影射线。</text>
+</g>
+<text x="88" y="565" font-size="19" fill="#218578" text-anchor="start" font-weight="400">方法理解  /  公式推导  /  工程笔记</text>
+</svg>

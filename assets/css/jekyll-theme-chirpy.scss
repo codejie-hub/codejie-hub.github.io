@@ -1,14 +1,11 @@
 ---
 ---
 
-/* prettier-ignore */
-@use 'main
-{%- if jekyll.environment == 'production' -%}
-  .bundle
-{%- endif -%}
-';
+/* Include Bootstrap in both preview and production to avoid environment-dependent CSS caches. */
+@use 'main.bundle';
 
 @use 'roadmap';
+@use 'content';
 
 /* CodeJie editorial theme — inspired by a restrained academic portfolio style
    while preserving the Jekyll/Chirpy content system. */

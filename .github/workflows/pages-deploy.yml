@@ -50,6 +50,16 @@ jobs:
         env:
           JEKYLL_ENV: "production"
 
+      - name: Setup Python for content checks
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Check content and media
+        run: |
+          python -m pip install -r tools/requirements-content.txt
+          python tools/check-content.py --site _site
+
       - name: Test site
         run: |
           bundle exec htmlproofer _site \

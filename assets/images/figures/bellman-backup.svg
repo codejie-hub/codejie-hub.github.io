@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="600" viewBox="0 0 1000 600" role="img" aria-labelledby="title desc">
+<title id="title">Bellman Backup：奖励与后续价值分开</title><desc id="desc">给定策略下，对动作和状态转移求期望。根据文章整理的教学示意。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="context-stroke"/></marker></defs>
+<style>text{font-family:'Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Arial,sans-serif}</style>
+<rect width="100%" height="100%" fill="white"/>
+<text x="40" y="52" font-size="30" fill="#253247" text-anchor="start" font-weight="700">Bellman Backup：奖励与后续价值分开</text>
+<text x="40" y="88" font-size="19" fill="#637084" text-anchor="start" font-weight="400">给定策略下，对动作和状态转移求期望</text>
+<circle cx="125" cy="290" r="55" fill="#edf2fa" stroke="#4264ad" stroke-width="3"/>
+<text x="125" y="300" font-size="30" fill="#4264ad" text-anchor="middle" font-weight="400">s</text>
+<rect x="340" y="150" width="230" height="90" rx="12" fill="#f8fafc" stroke="#198477" stroke-width="2"/>
+<text x="455.0" y="187.0" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">动作 a₁</text>
+<text x="455.0" y="221.0" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">概率 π(a₁|s)</text>
+<rect x="340" y="355" width="230" height="90" rx="12" fill="#f8fafc" stroke="#b15e7b" stroke-width="2"/>
+<text x="455.0" y="392.0" font-size="24" fill="#b15e7b" text-anchor="middle" font-weight="400">动作 a₂</text>
+<text x="455.0" y="426.0" font-size="24" fill="#b15e7b" text-anchor="middle" font-weight="400">概率 π(a₂|s)</text>
+<path d="M180,265 L335,195" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M180,320 L335,400" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="735" y="150" width="225" height="90" rx="12" fill="#f8fafc" stroke="#198477" stroke-width="2"/>
+<text x="847.5" y="187.0" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">r + γV(s′)</text>
+<text x="847.5" y="221.0" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">按 P(s′|s,a) 加权</text>
+<path d="M570,195 L730,195" fill="none" stroke="#198477" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="735" y="355" width="225" height="90" rx="12" fill="#f8fafc" stroke="#b15e7b" stroke-width="2"/>
+<text x="847.5" y="392.0" font-size="24" fill="#b15e7b" text-anchor="middle" font-weight="400">r + γV(s′)</text>
+<text x="847.5" y="426.0" font-size="24" fill="#b15e7b" text-anchor="middle" font-weight="400">按 P(s′|s,a) 加权</text>
+<path d="M570,400 L730,400" fill="none" stroke="#b15e7b" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="500" y="515" font-size="29" fill="#253247" text-anchor="middle" font-weight="400">Vπ(s) = Eπ[r + γVπ(s′) | s]</text>
+<path d="M40,544 L960,544" fill="none" stroke="#e2e7ef" stroke-width="1"/>
+<text x="40" y="576" font-size="18" fill="#69778a" text-anchor="start" font-weight="400">策略评价求期望；Bellman 最优方程对动作取最大值，不混用二者。</text>
+</svg>

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+<title id="title"></title><desc id="desc">。根据文章整理的教学示意。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="context-stroke"/></marker></defs>
+<style>text{font-family:'Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Arial,sans-serif}</style>
+<rect width="100%" height="100%" fill="white"/>
+<rect x="0" y="0" width="1200" height="630" rx="0" fill="#f7f9fc" stroke="none" stroke-width="2"/>
+<rect x="48" y="65" width="8" height="500" rx="4" fill="#5268b0" stroke="none" stroke-width="2"/>
+<text x="86" y="115" font-size="20" fill="#5268b0" text-anchor="start" font-weight="700">CODEJIE  /  RESEARCH NOTES</text>
+<text x="86" y="185" font-size="25" fill="#64748b" text-anchor="start" font-weight="400">机器人学习与 VLA</text>
+<text x="86" y="285" font-size="61" fill="#253247" text-anchor="start" font-weight="700">Diffusion Policy</text>
+<text x="88" y="425" font-size="24" fill="#637084" text-anchor="start" font-weight="400">多峰动作 · 条件去噪</text>
+<text x="88" y="463" font-size="24" fill="#637084" text-anchor="start" font-weight="400">滚动执行</text>
+<rect x="705" y="145" width="455" height="360" rx="14" fill="#fff" stroke="#e0e6ee" stroke-width="2"/>
+<g transform="translate(710 175) scale(0.43)"><rect width="1000" height="600" fill="white"/>
+<text x="40" y="52" font-size="30" fill="#253247" text-anchor="start" font-weight="700">多峰动作：均值可能不是可行策略</text>
+<text x="40" y="88" font-size="19" fill="#637084" text-anchor="start" font-weight="400">定性绕行例子，不表示论文实验分布</text>
+<circle cx="230" cy="300" r="60" fill="#e7e9ef" stroke="#8b97a7" stroke-width="3"/>
+<circle cx="230" cy="470" r="10" fill="#253247" stroke="none" stroke-width="3"/>
+<circle cx="230" cy="135" r="10" fill="#198477" stroke="none" stroke-width="3"/>
+<path d="M230.00,470.00 L120.00,380.00 L125.00,220.00 L230.00,135.00" fill="none" stroke="#4264ad" stroke-width="5"/>
+<path d="M230.00,470.00 L345.00,380.00 L340.00,220.00 L230.00,135.00" fill="none" stroke="#b15e7b" stroke-width="5"/>
+<path d="M230,460 L230,150" fill="none" stroke="#b57836" stroke-width="3" stroke-dasharray="8 6"/>
+<text x="230" y="525" font-size="23" fill="#253247" text-anchor="middle" font-weight="400">左 / 右绕行与均值路径</text>
+<path d="M550,430 L930,430" fill="none" stroke="#8b97a7" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M550,430 L550,185" fill="none" stroke="#8b97a7" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="926" y="463" font-size="20" fill="#253247" text-anchor="end" font-weight="400">动作方向</text>
+<text x="553" y="173" font-size="20" fill="#253247" text-anchor="start" font-weight="400">密度（示意）</text>
+<path d="M550.00,429.03 L553.50,428.54 L557.00,427.85 L560.50,426.89 L564.00,425.56 L567.50,423.77 L571.00,421.40 L574.50,418.32 L578.00,414.40 L581.50,409.51 L585.00,403.52 L588.50,396.35 L592.00,387.94 L595.50,378.29 L599.00,367.46 L602.50,355.61 L606.00,342.96 L609.50,329.83 L613.00,316.61 L616.50,303.75 L620.00,291.73 L623.50,281.06 L627.00,272.19 L630.50,265.53 L634.00,261.40 L637.50,260.00 L641.00,261.40 L644.50,265.53 L648.00,272.19 L651.50,281.06 L655.00,291.73 L658.50,303.75 L662.00,316.61 L665.50,329.83 L669.00,342.96 L672.50,355.61 L676.00,367.46 L679.50,378.29 L683.00,387.94 L686.50,396.35 L690.00,403.52 L693.50,409.50 L697.00,414.39 L700.50,418.31 L704.00,421.38 L707.50,423.75 L711.00,425.52 L714.50,426.83 L718.00,427.75 L721.50,428.38 L725.00,428.77 L728.50,428.95 L732.00,428.95 L735.50,428.77 L739.00,428.38 L742.50,427.75 L746.00,426.83 L749.50,425.52 L753.00,423.75 L756.50,421.38 L760.00,418.31 L763.50,414.39 L767.00,409.50 L770.50,403.52 L774.00,396.35 L777.50,387.94 L781.00,378.29 L784.50,367.46 L788.00,355.61 L791.50,342.96 L795.00,329.83 L798.50,316.61 L802.00,303.75 L805.50,291.73 L809.00,281.06 L812.50,272.19 L816.00,265.53 L819.50,261.40 L823.00,260.00 L826.50,261.40 L830.00,265.53 L833.50,272.19 L837.00,281.06 L840.50,291.73 L844.00,303.75 L847.50,316.61 L851.00,329.83 L854.50,342.96 L858.00,355.61 L861.50,367.46 L865.00,378.29 L868.50,387.94 L872.00,396.35 L875.50,403.52 L879.00,409.51 L882.50,414.40 L886.00,418.32 L889.50,421.40 L893.00,423.77 L896.50,425.56 L900.00,426.89" fill="none" stroke="#198477" stroke-width="4"/>
+<path d="M730,430 L730,240" fill="none" stroke="#b57836" stroke-width="3" stroke-dasharray="8 6"/>
+<text x="730" y="215" font-size="23" fill="#b57836" text-anchor="middle" font-weight="400">均值</text>
+<path d="M40,544 L960,544" fill="none" stroke="#e2e7ef" stroke-width="1"/>
+<text x="40" y="576" font-size="18" fill="#69778a" text-anchor="start" font-weight="400">多峰建模提供表达不同动作模式的能力，不自动保证碰撞约束满足。</text>
+</g>
+<text x="88" y="565" font-size="19" fill="#5268b0" text-anchor="start" font-weight="400">方法理解  /  公式推导  /  工程笔记</text>
+</svg>

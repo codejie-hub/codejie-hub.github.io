@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="600" viewBox="0 0 1000 600" role="img" aria-labelledby="title desc">
+<title id="title">π₀：视觉语言表征与连续动作生成</title><desc id="desc">观测与指令提供条件，Action Expert 预测动作速度场。根据文章整理的教学示意。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="context-stroke"/></marker></defs>
+<style>text{font-family:'Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Arial,sans-serif}</style>
+<rect width="100%" height="100%" fill="white"/>
+<text x="40" y="52" font-size="30" fill="#253247" text-anchor="start" font-weight="700">π₀：视觉语言表征与连续动作生成</text>
+<text x="40" y="88" font-size="19" fill="#637084" text-anchor="start" font-weight="400">观测与指令提供条件，Action Expert 预测动作速度场</text>
+<rect x="40" y="145" width="250" height="105" rx="12" fill="#f8fafc" stroke="#4264ad" stroke-width="2"/>
+<text x="165.0" y="189.5" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">图像 + 语言指令</text>
+<text x="165.0" y="223.5" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">视觉语言骨干</text>
+<rect x="40" y="355" width="250" height="95" rx="12" fill="#f8fafc" stroke="#198477" stroke-width="2"/>
+<text x="165.0" y="394.5" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">机器人状态</text>
+<text x="165.0" y="428.5" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">本体条件</text>
+<rect x="400" y="235" width="260" height="125" rx="12" fill="#f8fafc" stroke="#b15e7b" stroke-width="2"/>
+<text x="530.0" y="289.5" font-size="24" fill="#b15e7b" text-anchor="middle" font-weight="400">Action Expert</text>
+<text x="530.0" y="323.5" font-size="24" fill="#b15e7b" text-anchor="middle" font-weight="400">vθ(观测, 动作, t)</text>
+<rect x="750" y="235" width="210" height="125" rx="12" fill="#f8fafc" stroke="#b57836" stroke-width="2"/>
+<text x="855.0" y="289.5" font-size="24" fill="#b57836" text-anchor="middle" font-weight="400">积分采样</text>
+<text x="855.0" y="323.5" font-size="24" fill="#b57836" text-anchor="middle" font-weight="400">连续动作块</text>
+<path d="M290,195 L400,265" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M290,400 L400,330" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M660,295 L745,295" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="530" y="160" font-size="24" fill="#253247" text-anchor="middle" font-weight="400">噪声动作 + 流时间 t</text>
+<path d="M530,178 L530,230" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M40,544 L960,544" fill="none" stroke="#e2e7ef" stroke-width="1"/>
+<text x="40" y="576" font-size="18" fill="#69778a" text-anchor="start" font-weight="400">图为方法结构概括；张量维度与具体本体配置以正文和官方实现为准。</text>
+</svg>

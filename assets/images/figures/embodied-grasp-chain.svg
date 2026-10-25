@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="500" viewBox="0 0 960 500" role="img" aria-labelledby="title desc">
+<title id="title">抓取坐标链：从像素到法兰</title><desc id="desc">Tᴮ꜀ 将相机系坐标变换到基座系；所有位姿的方向约定保持一致。。根据文章整理的教学示意。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="context-stroke"/></marker></defs>
+<style>text{font-family:'Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Arial,sans-serif}</style>
+<rect width="100%" height="100%" fill="white"/>
+<text x="40" y="52" font-size="30" fill="#253247" text-anchor="start" font-weight="700">抓取坐标链：从像素到法兰</text>
+<text x="40" y="88" font-size="19" fill="#637084" text-anchor="start" font-weight="400">Tᴮ꜀ 将相机系坐标变换到基座系；所有位姿的方向约定保持一致。</text>
+<rect x="35" y="145" width="200" height="105" rx="12" fill="#f8fafc" stroke="#8064a8" stroke-width="2"/>
+<text x="135.0" y="189.5" font-size="24" fill="#8064a8" text-anchor="middle" font-weight="400">像素 + 深度</text>
+<text x="135.0" y="223.5" font-size="24" fill="#8064a8" text-anchor="middle" font-weight="400">(u, v, z)</text>
+<rect x="270" y="145" width="200" height="105" rx="12" fill="#f8fafc" stroke="#8064a8" stroke-width="2"/>
+<text x="370.0" y="189.5" font-size="24" fill="#8064a8" text-anchor="middle" font-weight="400">相机点云</text>
+<text x="370.0" y="223.5" font-size="24" fill="#8064a8" text-anchor="middle" font-weight="400">pᶜ = z K⁻¹ ũ</text>
+<path d="M240,197 L262,197" fill="none" stroke="#8064a8" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="505" y="145" width="200" height="105" rx="12" fill="#f8fafc" stroke="#8064a8" stroke-width="2"/>
+<text x="605.0" y="189.5" font-size="24" fill="#8064a8" text-anchor="middle" font-weight="400">抓取候选</text>
+<text x="605.0" y="223.5" font-size="24" fill="#8064a8" text-anchor="middle" font-weight="400">Tᶜɢ + 开度</text>
+<path d="M475,197 L497,197" fill="none" stroke="#8064a8" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="740" y="145" width="200" height="105" rx="12" fill="#f8fafc" stroke="#4264ad" stroke-width="2"/>
+<text x="840.0" y="189.5" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">基座目标</text>
+<text x="840.0" y="223.5" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">Tᴮɢ = Tᴮ꜀ Tᶜɢ</text>
+<path d="M710,197 L732,197" fill="none" stroke="#8064a8" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="310" y="310" width="360" height="80" rx="12" fill="#f8fafc" stroke="#198477" stroke-width="2"/>
+<text x="490.0" y="358.0" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">法兰目标：Tᴮꜰ = Tᴮɢ (Tꜰɢ)⁻¹</text>
+<path d="M840,255 L840,350" fill="none" stroke="#4264ad" stroke-width="3"/>
+<path d="M840,350 L680,350" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="145" y="325" font-size="21" fill="#637084" text-anchor="middle" font-weight="400">TCP 与法兰</text>
+<text x="145" y="357" font-size="21" fill="#637084" text-anchor="middle" font-weight="400">可能不是同一点</text>
+<path d="M40,444 L920,444" fill="none" stroke="#e2e7ef" stroke-width="1"/>
+<text x="40" y="476" font-size="18" fill="#69778a" text-anchor="start" font-weight="400">先检查单位、曝光时间与外参；再检查夹爪轴序和工具中心偏置。</text>
+</svg>

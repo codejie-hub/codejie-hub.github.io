@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+<title id="title">离线强化学习</title><desc id="desc">数据支持与策略改进。根据文章整理的教学示意。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="context-stroke"/></marker></defs>
+<style>text{font-family:'Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Arial,sans-serif}</style>
+<rect width="100%" height="100%" fill="white"/>
+<rect x="0" y="0" width="1200" height="630" rx="0" fill="#f5f7fb" stroke="none" stroke-width="2"/>
+<rect x="0" y="0" width="22" height="630" rx="0" fill="#6f8844" stroke="none" stroke-width="2"/>
+<text x="80" y="95" font-size="22" fill="#6f8844" text-anchor="start" font-weight="700">CODEJIE  /  EMBODIED INTELLIGENCE</text>
+<text x="80" y="174" font-size="25" fill="#637084" text-anchor="start" font-weight="400">具身学习系列  05  /  强化学习</text>
+<text x="76" y="290" font-size="58" fill="#253247" text-anchor="start" font-weight="700">离线强化学习</text>
+<text x="80" y="360" font-size="32" fill="#637084" text-anchor="start" font-weight="400">数据支持与策略改进</text>
+<path d="M80,425 L620,425" fill="none" stroke="#d7dfe9" stroke-width="2"/>
+<text x="80" y="480" font-size="25" fill="#6f8844" text-anchor="start" font-weight="400">原理推导  ·  数值算例  ·  学习实验</text>
+<text x="80" y="566" font-size="19" fill="#748196" text-anchor="start" font-weight="400">LEARN  /  REASON  /  BUILD</text>
+<rect x="735" y="160" width="395" height="340" rx="24" fill="white" stroke="#dce3ee" stroke-width="2"/>
+<text x="1090" y="215" font-size="32" fill="#6f8844" text-anchor="end" font-weight="700">05</text>
+<rect x="795" y="345" width="55" height="65" rx="6" fill="#6f8844" stroke="none" stroke-width="2"/>
+<rect x="885" y="290" width="55" height="120" rx="6" fill="#6f8844" stroke="none" stroke-width="2"/>
+<rect x="975" y="245" width="55" height="165" rx="6" fill="#b15e7b" stroke="none" stroke-width="2"/>
+<path d="M785,410 L1085,410" fill="none" stroke="#b6c2d2" stroke-width="2"/>
+<text x="930" y="455" font-size="18" fill="#6f8844" text-anchor="middle" font-weight="400">SUPPORT → VALUE → POLICY</text>
+</svg>

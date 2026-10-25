@@ -1,0 +1,41 @@
+{% include lang.html %}
+{% assign note_posts = include.posts %}
+<section class="note-browser" data-note-browser data-prefix="{{ include.prefix }}" data-roadmap-url="{{ '/roadmap/' | relative_url }}">
+  <div data-note-controls hidden>
+    <nav class="blog-filter" aria-label="按主题筛选">
+      <button class="blog-filter__button is-active" type="button" data-note-domain="all" aria-pressed="true">全部主题 <span data-filter-count>{{ note_posts.size }}</span></button>
+      {% for domain in site.data.domains %}
+        {% assign domain_count = 0 %}
+        {% for post in note_posts %}{% if post.categories contains domain.name %}{% assign domain_count = domain_count | plus: 1 %}{% endif %}{% endfor %}
+        <button id="{{ include.prefix }}-domain-{{ domain.slug }}" class="blog-filter__button" type="button" data-note-domain="{{ domain.slug }}" aria-pressed="false">{{ domain.name }} <span data-filter-count>{{ domain_count }}</span></button>
+      {% endfor %}
+    </nav>
+    <nav class="blog-filter note-type-filter" aria-label="按内容类型筛选">
+      <button class="blog-filter__button is-active" type="button" data-note-type="all" aria-pressed="true">全部类型 <span data-filter-count>{{ note_posts.size }}</span></button>
+      {% for type in site.data.content_types %}
+        {% assign typed_posts = note_posts | where: 'content_type', type[0] %}
+        {% if typed_posts.size > 0 %}<button id="type={{ type[0] }}" class="blog-filter__button" type="button" data-note-type="{{ type[0] }}" aria-pressed="false">{{ type[1].label }} <span data-filter-count>{{ typed_posts.size }}</span></button>{% endif %}
+      {% endfor %}
+    </nav>
+  </div>
+  <noscript><p>按主题浏览：<a href="{{ '/categories/' | relative_url }}">分类索引</a>。以下保留全部文章。</p></noscript>
+  <div class="blog-list-heading" aria-live="polite" aria-atomic="true">
+    <h2 data-note-heading>{{ include.label }}</h2>
+    <span data-note-count>{{ note_posts.size }} 篇</span>
+  </div>
+  <div class="paper-note-list">
+    {% for post in note_posts %}
+      {% assign post_domain = site.data.domains | where: 'name', post.categories[0] | first %}
+      <article class="paper-note" data-note-card data-domain="{{ post_domain.slug }}" data-type="{{ post.content_type }}">
+        <div class="paper-note__index" data-note-index>{{ forloop.index | prepend: '0' | slice: -2, 2 }}</div>
+        <div class="paper-note__body">
+          <p class="paper-note__meta">{% include datetime.html date=post.date lang=lang %} · {{ post_domain.name }} · {{ site.data.content_types[post.content_type].label }}</p>
+          <h2><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
+          <p>{{ post.description | default: post.excerpt | strip_html | strip_newlines | truncate: 180 }}</p>
+          <a class="paper-note__link" href="{{ post.url | relative_url }}">阅读{{ site.data.content_types[post.content_type].label }} →</a>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+  <div class="blog-empty" data-note-empty hidden><strong>这个组合下暂时没有文章</strong><span>可以选择其他主题或内容类型。</span></div>
+</section>

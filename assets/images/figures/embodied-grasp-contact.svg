@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="500" viewBox="0 0 960 500" role="img" aria-labelledby="title desc">
+<title id="title">夹持受力：摩擦锥与空间力矩</title><desc id="desc">左：理想平面受力。右：两个点接触无法抵抗绕连线的扭矩。。根据文章整理的教学示意。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="context-stroke"/></marker></defs>
+<style>text{font-family:'Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Arial,sans-serif}</style>
+<rect width="100%" height="100%" fill="white"/>
+<text x="40" y="52" font-size="30" fill="#253247" text-anchor="start" font-weight="700">夹持受力：摩擦锥与空间力矩</text>
+<text x="40" y="88" font-size="19" fill="#637084" text-anchor="start" font-weight="400">左：理想平面受力。右：两个点接触无法抵抗绕连线的扭矩。</text>
+<rect x="40" y="120" width="430" height="290" rx="12" fill="#f3f6fa" stroke="#d7dfe9" stroke-width="2"/>
+<rect x="490" y="120" width="430" height="290" rx="12" fill="#f3f6fa" stroke="#d7dfe9" stroke-width="2"/>
+<rect x="185" y="195" width="140" height="125" rx="15" fill="#eef0fa" stroke="#8064a8" stroke-width="2"/>
+<rect x="145" y="210" width="25" height="95" rx="4" fill="#d8dfeb" stroke="none" stroke-width="2"/>
+<rect x="340" y="210" width="25" height="95" rx="4" fill="#d8dfeb" stroke="none" stroke-width="2"/>
+<path d="M170 255 L235 220 L235 290 Z" fill="#198477" opacity=".18"/>
+<path d="M340 255 L275 220 L275 290 Z" fill="#198477" opacity=".18"/>
+<path d="M95,255 L175,255" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="95" y="232" font-size="22" fill="#4264ad" text-anchor="start" font-weight="400">N</text>
+<path d="M415,255 L335,255" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="410" y="232" font-size="22" fill="#4264ad" text-anchor="start" font-weight="400">N</text>
+<path d="M255,310 L255,370" fill="none" stroke="#b15e7b" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="278" y="360" font-size="23" fill="#b15e7b" text-anchor="start" font-weight="400">mg</text>
+<text x="255" y="160" font-size="25" fill="#198477" text-anchor="middle" font-weight="400">|fₜ| ≤ μN</text>
+<ellipse cx="705" cy="245" rx="105" ry="70" transform="rotate(0 705 245)" fill="#8064a8" fill-opacity=".10" stroke="#8064a8" stroke-width="3"/>
+<circle cx="600" cy="245" r="8" fill="#198477" stroke="none" stroke-width="3"/>
+<circle cx="810" cy="245" r="8" fill="#198477" stroke="none" stroke-width="3"/>
+<path d="M545,245 L865,245" fill="none" stroke="#4264ad" stroke-width="3" stroke-dasharray="8 6"/>
+<path d="M720 187 C765 162 775 321 720 300" fill="none" stroke="#b15e7b" stroke-width="4" marker-end="url(#arrow)"/>
+<text x="705" y="365" font-size="21" fill="#b15e7b" text-anchor="middle" font-weight="400">绕接触连线的扭矩：缺少约束</text>
+<path d="M40,444 L920,444" fill="none" stroke="#e2e7ef" stroke-width="1"/>
+<text x="40" y="476" font-size="18" fill="#69778a" text-anchor="start" font-weight="400">点接触与软指面接触模型不同；几何可行还应结合载荷、力矩与执行器上限。</text>
+</svg>

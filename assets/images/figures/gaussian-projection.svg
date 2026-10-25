@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="600" viewBox="0 0 1000 600" role="img" aria-labelledby="title desc">
+<title id="title">Splatting：从三维高斯到二维像素</title><desc id="desc">投影足迹 → 深度排序 → 前向透明度合成。根据文章整理的教学示意。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="context-stroke"/></marker></defs>
+<style>text{font-family:'Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Arial,sans-serif}</style>
+<rect width="100%" height="100%" fill="white"/>
+<text x="40" y="52" font-size="30" fill="#253247" text-anchor="start" font-weight="700">Splatting：从三维高斯到二维像素</text>
+<text x="40" y="88" font-size="19" fill="#637084" text-anchor="start" font-weight="400">投影足迹 → 深度排序 → 前向透明度合成</text>
+<ellipse cx="170" cy="245" rx="95" ry="52" transform="rotate(-25 170 245)" fill="#4264ad" fill-opacity=".10" stroke="#4264ad" stroke-width="3"/>
+<ellipse cx="170" cy="300" rx="65" ry="38" transform="rotate(20 170 300)" fill="#198477" fill-opacity=".10" stroke="#198477" stroke-width="3"/>
+<text x="170" y="405" font-size="24" fill="#253247" text-anchor="middle" font-weight="400">三维高斯</text>
+<path d="M290,285 L380,285" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="400" y="160" width="205" height="225" rx="12" fill="#fafbfd" stroke="#d7dfe9" stroke-width="2"/>
+<ellipse cx="500" cy="245" rx="72" ry="37" transform="rotate(-10 500 245)" fill="#4264ad" fill-opacity=".10" stroke="#4264ad" stroke-width="3"/>
+<ellipse cx="505" cy="275" rx="50" ry="25" transform="rotate(20 505 275)" fill="#198477" fill-opacity=".10" stroke="#198477" stroke-width="3"/>
+<text x="500" y="435" font-size="24" fill="#253247" text-anchor="middle" font-weight="400">屏幕空间足迹</text>
+<path d="M625,285 L710,285" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="730" y="190" width="225" height="170" rx="12" fill="#f8fafc" stroke="#b57836" stroke-width="2"/>
+<text x="842.5" y="251.0" font-size="24" fill="#b57836" text-anchor="middle" font-weight="400">按深度合成</text>
+<text x="842.5" y="285.0" font-size="24" fill="#b57836" text-anchor="middle" font-weight="400">Σ Tᵢ αᵢ cᵢ</text>
+<text x="842.5" y="319.0" font-size="24" fill="#b57836" text-anchor="middle" font-weight="400">Tᵢ = ∏ⱼ＜ᵢ(1−αⱼ)</text>
+<path d="M40,544 L960,544" fill="none" stroke="#e2e7ef" stroke-width="1"/>
+<text x="40" y="576" font-size="18" fill="#69778a" text-anchor="start" font-weight="400">图为渲染链路示意；实际屏幕协方差还涉及相机变换与投影局部线性化。</text>
+</svg>

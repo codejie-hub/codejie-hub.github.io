@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+<title id="title"></title><desc id="desc">。根据文章整理的教学示意。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="context-stroke"/></marker></defs>
+<style>text{font-family:'Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Arial,sans-serif}</style>
+<rect width="100%" height="100%" fill="white"/>
+<rect x="0" y="0" width="1200" height="630" rx="0" fill="#f7f9fc" stroke="none" stroke-width="2"/>
+<rect x="48" y="65" width="8" height="500" rx="4" fill="#6f8844" stroke="none" stroke-width="2"/>
+<text x="86" y="115" font-size="20" fill="#6f8844" text-anchor="start" font-weight="700">CODEJIE  /  RESEARCH NOTES</text>
+<text x="86" y="185" font-size="25" fill="#64748b" text-anchor="start" font-weight="400">强化学习</text>
+<text x="86" y="285" font-size="61" fill="#253247" text-anchor="start" font-weight="700">HIL-SERL</text>
+<text x="88" y="425" font-size="24" fill="#637084" text-anchor="start" font-weight="400">人工纠偏 · 回放学习</text>
+<text x="88" y="463" font-size="24" fill="#637084" text-anchor="start" font-weight="400">真机控制</text>
+<rect x="705" y="145" width="455" height="360" rx="14" fill="#fff" stroke="#e0e6ee" stroke-width="2"/>
+<g transform="translate(710 175) scale(0.43)"><rect width="1000" height="600" fill="white"/>
+<text x="40" y="52" font-size="30" fill="#253247" text-anchor="start" font-weight="700">HIL-SERL：价值学习与策略更新</text>
+<text x="40" y="88" font-size="19" fill="#637084" text-anchor="start" font-weight="400">训练数据来自示范与在线交互；图省略双 Critic 等实现细节</text>
+<rect x="40" y="145" width="265" height="100" rx="12" fill="#f8fafc" stroke="#4264ad" stroke-width="2"/>
+<text x="172.5" y="187.0" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">回放转移</text>
+<text x="172.5" y="221.0" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">(s,a,r,s′,done)</text>
+<rect x="390" y="145" width="260" height="100" rx="12" fill="#f8fafc" stroke="#198477" stroke-width="2"/>
+<text x="520.0" y="187.0" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">Critic 目标</text>
+<text x="520.0" y="221.0" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">r + γ(1−done)V_target</text>
+<rect x="735" y="145" width="225" height="100" rx="12" fill="#f8fafc" stroke="#198477" stroke-width="2"/>
+<text x="847.5" y="187.0" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">Critic 回归</text>
+<text x="847.5" y="221.0" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">Q(s,a) → 目标</text>
+<path d="M305,195 L385,195" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M650,195 L730,195" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="390" y="365" width="350" height="110" rx="12" fill="#f8fafc" stroke="#b15e7b" stroke-width="2"/>
+<text x="565.0" y="412.0" font-size="24" fill="#b15e7b" text-anchor="middle" font-weight="400">Actor 更新</text>
+<text x="565.0" y="446.0" font-size="24" fill="#b15e7b" text-anchor="middle" font-weight="400">熵正则目标：α logπ − Q</text>
+<path d="M845,250 L740,395" fill="none" stroke="#198477" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M305,245 L390,390" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="145" y="410" font-size="24" fill="#b57836" text-anchor="start" font-weight="400">人的纠偏</text>
+<text x="145" y="448" font-size="22" fill="#b57836" text-anchor="start" font-weight="400">改变经验分布</text>
+<path d="M40,544 L960,544" fill="none" stroke="#e2e7ef" stroke-width="1"/>
+<text x="40" y="576" font-size="18" fill="#69778a" text-anchor="start" font-weight="400">成功分类器提供奖励；人工接管片段参与回放学习，并非单独的在线模仿梯度。</text>
+</g>
+<text x="88" y="565" font-size="19" fill="#6f8844" text-anchor="start" font-weight="400">方法理解  /  公式推导  /  工程笔记</text>
+</svg>

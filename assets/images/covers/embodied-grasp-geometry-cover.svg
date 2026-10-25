@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+<title id="title">三维抓取几何</title><desc id="desc">从深度到可执行位姿。根据文章整理的教学示意。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="context-stroke"/></marker></defs>
+<style>text{font-family:'Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Arial,sans-serif}</style>
+<rect width="100%" height="100%" fill="white"/>
+<rect x="0" y="0" width="1200" height="630" rx="0" fill="#f5f7fb" stroke="none" stroke-width="2"/>
+<rect x="0" y="0" width="22" height="630" rx="0" fill="#8064a8" stroke="none" stroke-width="2"/>
+<text x="80" y="95" font-size="22" fill="#8064a8" text-anchor="start" font-weight="700">CODEJIE  /  EMBODIED INTELLIGENCE</text>
+<text x="80" y="174" font-size="25" fill="#637084" text-anchor="start" font-weight="400">具身学习系列  02  /  三维视觉</text>
+<text x="76" y="290" font-size="58" fill="#253247" text-anchor="start" font-weight="700">三维抓取几何</text>
+<text x="80" y="360" font-size="32" fill="#637084" text-anchor="start" font-weight="400">从深度到可执行位姿</text>
+<path d="M80,425 L620,425" fill="none" stroke="#d7dfe9" stroke-width="2"/>
+<text x="80" y="480" font-size="25" fill="#8064a8" text-anchor="start" font-weight="400">原理推导  ·  数值算例  ·  学习实验</text>
+<text x="80" y="566" font-size="19" fill="#748196" text-anchor="start" font-weight="400">LEARN  /  REASON  /  BUILD</text>
+<rect x="735" y="160" width="395" height="340" rx="24" fill="white" stroke="#dce3ee" stroke-width="2"/>
+<text x="1090" y="215" font-size="32" fill="#8064a8" text-anchor="end" font-weight="700">02</text>
+<circle cx="945.0" cy="340.0" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="905.0903696803864" cy="352.76625411241673" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="927.6161754123063" cy="319.1506269254567" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="944.5428939899933" cy="357.8472481100429" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="891.5206129029997" cy="335.8510226068931" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="955.085482878307" cy="326.6088929022754" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="915.3487132324265" cy="365.10951608330157" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="907.2545414154117" cy="316.0674814803547" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="962.3800210669141" cy="349.5645111628006" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="887.096657228521" cy="350.9418891104969" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="942.8731827384393" cy="313.28982083575073" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="937.9172835695256" cy="368.8685187700573" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="886.7253123925095" cy="324.4575290579034" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="969.1883357555243" cy="333.2152216881749" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="898.4144015484098" cy="366.44175318319645" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="918.9715175355285" cy="307.2934954375176" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="961.6849465263415" cy="361.66853022694755" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="876.1787334662996" cy="341.3918403345874" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="960.2509427052056" cy="315.47690657592364" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="922.6315127436952" cy="375.31971356666094" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="892.1574255921083" cy="312.40931220331083" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="976.6075647532865" cy="344.88901041758555" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="881.6072697043658" cy="361.0976257294048" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="936.8019938706349" cy="303.4217629466581" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="951.9517880249371" cy="372.9915827951092" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="872.6172860771665" cy="328.2647910875647" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="975.5800442887061" cy="323.68257232454596" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="903.1849354101616" cy="376.3867085801468" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="905.7497779693047" cy="302.41417360063906" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="976.0433740905801" cy="358.8275291169317" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="868.57004061748" cy="350.3657413675911" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="956.9520772057264" cy="305.3020317010126" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="935.0253580575794" cy="381.1240997345941" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="877.4398173006809" cy="314.1520171832957" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="985.6152456279877" cy="336.53811052638247" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="883.2380173083143" cy="371.5189653868008" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="925.3845231642687" cy="296.6008346906452" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="966.9830310757551" cy="372.4848167454595" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="862.1267902080308" cy="335.85901563268953" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="975.807960057043" cy="313.0872927624736" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="913.4033945080756" cy="384.25192846726446" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="890.5582590328635" cy="301.55960171693596" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="988.0138567440586" cy="352.16190833540526" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="866.3203301945414" cy="360.9974231223782" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="948.193888060262" cy="296.4233642277073" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="950.1431566783638" cy="383.44016803535715" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="864.073602496645" cy="319.6996803856751" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="990.0062334656817" cy="326.05658863937487" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="890.2619221501269" cy="381.32468750479444" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="910.6348586858719" cy="292.7583348053616" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="981.5835213865976" cy="368.24570775284707" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="855.5311879576509" cy="345.9678484878735" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="970.7840395703365" cy="302.49325509868885" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="927.4478361123064" cy="389.6429757872074" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<circle cx="874.9569215019521" cy="304.31193165210135" r="3" fill="#8064a8" stroke="none" stroke-width="3"/>
+<path d="M840.00,285.00 L825.00,285.00 L825.00,400.00 L855.00,400.00" fill="none" stroke="#8064a8" stroke-width="9"/>
+<path d="M1010.00,285.00 L1025.00,285.00 L1025.00,400.00 L995.00,400.00" fill="none" stroke="#8064a8" stroke-width="9"/>
+<path d="M930,335 L995,310" fill="none" stroke="#198477" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M930,335 L930,260" fill="none" stroke="#b15e7b" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="930" y="450" font-size="20" fill="#8064a8" text-anchor="middle" font-weight="400">PIXEL → POINT → POSE</text>
+</svg>

@@ -1,0 +1,187 @@
+/* Article media and shared content browsing. Keep paper figures in their original colors. */
+.site-header .dropdown { position: relative; }
+.site-header .theme-menu {
+  position: absolute;
+  z-index: 1100;
+  top: calc(100% + 10px);
+  right: 0;
+  display: none;
+  min-width: 190px;
+  margin: 0;
+  padding: 7px;
+  list-style: none;
+  border: 1px solid var(--cj-border);
+  border-radius: 8px;
+  background: var(--cj-surface);
+  box-shadow: var(--cj-shadow-soft);
+}
+.site-header .theme-menu.show { display: block; }
+.site-header .theme-menu .dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 9px 12px;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--cj-text);
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+}
+.site-header .theme-menu .dropdown-item:hover { background: var(--cj-code-bg); }
+.site-header .theme-menu i { width: 20px; margin-right: 6px; }
+.layout-post article[data-toc] > .content {
+  max-width: 740px;
+  margin-inline: auto;
+  counter-reset: article-figure demo-figure;
+}
+.post-classification {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin: 8px 0 18px;
+  font-size: .82rem;
+  color: var(--cj-muted);
+}
+.post-classification a, .note-type-label {
+  padding: 3px 9px;
+  border: 1px solid var(--cj-border);
+  border-radius: 5px;
+  color: var(--cj-muted);
+  font-size: .78rem;
+}
+.note-browser [hidden], .demo-frame__mount:empty { display: none !important; }
+.note-browser .note-type-filter { margin-top: 16px; padding-bottom: 18px; }
+.note-browser .blog-list-heading h2 { margin: 0; font-size: 1.4rem; }
+.topic-index { display: grid; gap: 32px; }
+.topic-index__group { padding: 20px 0; border-top: 1px solid var(--cj-border); }
+.topic-index__group h2 { font-size: 1.3rem; }
+.topic-index__group h2 small { margin-left: 8px; color: var(--cj-muted); font-size: .8rem; font-weight: 400; }
+.topic-index__group > p { color: var(--cj-muted); }
+.topic-index__group li { margin: 12px 0; line-height: 1.8; }
+.topic-index__group .note-type-label { display: inline-block; margin-left: 6px; line-height: 1.4; }
+.article-figure {
+  --figure-width: 740px;
+  width: 100%;
+  max-width: min(100%, var(--figure-width), var(--figure-natural-width, 740px));
+  margin: 1.8rem auto 2rem;
+  break-inside: avoid;
+  scroll-margin-top: 100px;
+}
+.article-figure--small { --figure-width: 320px; }
+.article-figure--medium { --figure-width: 520px; }
+.article-figure:not([data-appendix]) { counter-increment: article-figure; }
+.article-figure__link {
+  display: block;
+  overflow: hidden;
+  padding: 10px;
+  border: 1px solid var(--cj-border) !important;
+  border-radius: 8px;
+  background: #fff;
+  text-decoration: none !important;
+}
+article .content .article-figure img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto !important;
+  margin: 0;
+  border-radius: 0;
+  background: #fff;
+  object-fit: contain;
+  filter: none;
+}
+.article-figure figcaption, .demo-frame figcaption {
+  display: block;
+  margin: 10px 0 0;
+  color: var(--cj-muted);
+  font-size: 14px;
+  line-height: 1.65;
+  text-align: left;
+}
+.figure-number, .demo-number { color: var(--cj-text); font-weight: 600; }
+.article-figure:not([data-appendix]) .figure-number:empty::before { content: '图 ' counter(article-figure) ' · '; }
+.article-figure[data-appendix] .figure-number:empty::before { content: '附录图 · '; }
+.figure-source { color: var(--cj-muted); }
+article .content details.media-archive, article .content details:has([data-appendix]) {
+  margin: 20px 0;
+  padding: 14px 16px;
+  border: 1px solid var(--cj-border);
+  border-radius: 8px;
+  background: var(--cj-code-bg);
+}
+article .content details summary { cursor: pointer; font-size: .9rem; line-height: 1.7; }
+.media-archive .article-figure { margin-block: 18px 8px; }
+.mermaid-figure { overflow: visible; }
+.mermaid-figure pre, .mermaid-figure .mermaid {
+  overflow-x: auto;
+  padding: 14px;
+  border: 1px solid var(--cj-border);
+  border-radius: 8px;
+  background: #fff;
+}
+.mermaid-figure .node :is(rect, polygon, circle, ellipse) { fill: #f3f7fc !important; stroke: #4264ad !important; }
+.mermaid-figure .cluster rect { fill: #fafbfd !important; stroke: #b5c5db !important; }
+.mermaid-figure .flowchart-link { stroke: #65778f !important; }
+.mermaid-figure marker path { fill: #65778f !important; stroke: #65778f !important; }
+.mermaid-figure :is(.label, .nodeLabel, .cluster-label, .edgeLabel) {
+  color: #253247 !important;
+  fill: #253247 !important;
+  font-family: Inter, 'Microsoft YaHei', 'PingFang SC', system-ui, sans-serif !important;
+  font-size: 14px !important;
+}
+.mermaid-figure .edgeLabel span { background: #fff !important; color: #253247 !important; }
+.mermaid-figure svg { display: block; max-width: none !important; width: var(--mermaid-readable-width, 480px); height: auto; margin-inline: auto; }
+.mermaid-figure::after { content: '复杂流程图可在图内左右滑动'; display: block; margin-top: 6px; color: var(--cj-muted); font-size: 12px; }
+figure.demo-frame {
+  position: relative;
+  max-width: 100%;
+  margin: 1.8rem 0 2rem;
+  counter-increment: demo-figure;
+  scroll-margin-top: 100px;
+}
+.demo-frame__preview {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border: 1px solid var(--cj-border) !important;
+  border-radius: 8px;
+  background: #111827;
+}
+article .content .demo-frame__preview img { display: block; width: 100%; height: auto; margin: 0; border-radius: 0; }
+.demo-frame__open {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  padding: 8px 12px;
+  border-radius: 5px;
+  background: #fff;
+  color: #18212f;
+  box-shadow: 0 2px 8px #0003;
+  font-size: .85rem;
+  font-weight: 600;
+}
+figure.demo-frame .demo-frame__mount iframe { display: block; width: 100%; height: var(--demo-height-desktop, 520px); border: 1px solid var(--cj-border); border-radius: 8px; }
+.demo-frame[data-loaded] .demo-frame__preview { display: none; }
+.demo-frame[data-failed] .demo-frame__preview { display: block; }
+.demo-frame[data-failed] .demo-frame__mount { display: none; }
+.demo-number:empty::before { content: '演示 ' counter(demo-figure) ' · '; }
+.demo-frame figcaption a { white-space: nowrap; }
+@media (min-width: 768px) {
+  .demo-frame__preview { height: var(--demo-height-desktop, 520px); }
+  article .content .demo-frame__preview img { height: 100% !important; object-fit: contain; }
+  figure.demo-frame[data-mounted]:not([data-failed]) .demo-frame__preview { display: none; }
+}
+@media (max-width: 767.98px) {
+  .demo-frame__mount { display: none; }
+  .demo-frame[data-loaded] .demo-frame__preview { display: block; }
+  .article-figure__link { padding: 6px; }
+  .article-figure figcaption, .demo-frame figcaption { font-size: 13px; }
+}
+@media (max-width: 575.98px) {
+  .layout-post article[data-toc] { padding: 16px !important; }
+  .article-figure { margin-block: 1.4rem 1.6rem; }
+  .note-browser .paper-note { grid-template-columns: 28px minmax(0, 1fr); gap: 12px; }
+  .note-browser .blog-list-heading { align-items: center; }
+}

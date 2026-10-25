@@ -1,0 +1,18 @@
+---
+layout: default
+refactor: true
+---
+<article class="section-page">
+  <header class="section-page__header"><p class="section-page__eyebrow">Topics</p><h1>{{ page.title }}</h1><p>按主要问题组织文章；同一方法涉及的其他领域通过标签与路线图连接。</p></header>
+  <div class="topic-index">
+    {% for domain in site.data.domains %}
+      {% assign topic_posts = site.categories[domain.name] %}
+      {% capture topic_url %}/categories/{{ domain.name | slugify | url_encode }}/{% endcapture %}
+      <section class="topic-index__group">
+        <h2><a href="{{ topic_url | relative_url }}">{{ domain.name }}</a> <small>{{ topic_posts.size }} 篇</small></h2>
+        <p>{{ domain.description }}</p>
+        <ul>{% for post in topic_posts %}<li><a href="{{ post.url | relative_url }}">{{ post.title }}</a> <span class="note-type-label">{{ site.data.content_types[post.content_type].label }}</span></li>{% endfor %}</ul>
+      </section>
+    {% endfor %}
+  </div>
+</article>

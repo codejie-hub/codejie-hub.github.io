@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="650" viewBox="0 0 1000 650" role="img" aria-labelledby="title desc">
+<title id="title">π0.5：可见性阻止跨动作标签泄漏</title><desc id="desc">蓝色可见；浅灰屏蔽；每个分组用 3 个示意 Token 表示。根据文章整理的教学示意。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="context-stroke"/></marker></defs>
+<style>text{font-family:'Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Arial,sans-serif}</style>
+<rect width="100%" height="100%" fill="white"/>
+<text x="40" y="52" font-size="30" fill="#253247" text-anchor="start" font-weight="700">π0.5：可见性阻止跨动作标签泄漏</text>
+<text x="40" y="88" font-size="19" fill="#637084" text-anchor="start" font-weight="400">蓝色可见；浅灰屏蔽；每个分组用 3 个示意 Token 表示</text>
+<rect x="130" y="160" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="166" y="160" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="202" y="160" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="238" y="160" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="274" y="160" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="310" y="160" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="346" y="160" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="382" y="160" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="418" y="160" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="130" y="196" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="166" y="196" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="202" y="196" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="238" y="196" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="274" y="196" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="310" y="196" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="346" y="196" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="382" y="196" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="418" y="196" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="130" y="232" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="166" y="232" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="202" y="232" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="238" y="232" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="274" y="232" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="310" y="232" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="346" y="232" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="382" y="232" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="418" y="232" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="130" y="268" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="166" y="268" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="202" y="268" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="238" y="268" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="274" y="268" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="310" y="268" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="346" y="268" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="382" y="268" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="418" y="268" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="130" y="304" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="166" y="304" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="202" y="304" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="238" y="304" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="274" y="304" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="310" y="304" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="346" y="304" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="382" y="304" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="418" y="304" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="130" y="340" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="166" y="340" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="202" y="340" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="238" y="340" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="274" y="340" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="310" y="340" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="346" y="340" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="382" y="340" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="418" y="340" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="130" y="376" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="166" y="376" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="202" y="376" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="238" y="376" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="274" y="376" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="310" y="376" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="346" y="376" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="382" y="376" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="418" y="376" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="130" y="412" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="166" y="412" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="202" y="412" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="238" y="412" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="274" y="412" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="310" y="412" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="346" y="412" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="382" y="412" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="418" y="412" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="130" y="448" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="166" y="448" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="202" y="448" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="238" y="448" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="274" y="448" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="310" y="448" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="346" y="448" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="382" y="448" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="418" y="448" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<text x="184" y="140" font-size="19" fill="#253247" text-anchor="middle" font-weight="400">P 前缀</text>
+<text x="113" y="220" font-size="19" fill="#253247" text-anchor="end" font-weight="400">P 前缀</text>
+<text x="292" y="140" font-size="19" fill="#253247" text-anchor="middle" font-weight="400">D 离散动作</text>
+<text x="113" y="328" font-size="19" fill="#253247" text-anchor="end" font-weight="400">D 离散动作</text>
+<text x="400" y="140" font-size="19" fill="#253247" text-anchor="middle" font-weight="400">F 连续动作</text>
+<text x="113" y="436" font-size="19" fill="#253247" text-anchor="end" font-weight="400">F 连续动作</text>
+<text x="745" y="240" font-size="23" fill="#253247" text-anchor="middle" font-weight="400">行：Query，列：Key</text>
+<text x="745" y="285" font-size="23" fill="#253247" text-anchor="middle" font-weight="400">前缀 P 不读取动作</text>
+<text x="745" y="330" font-size="23" fill="#253247" text-anchor="middle" font-weight="400">D 只因果读取 D</text>
+<text x="745" y="375" font-size="23" fill="#253247" text-anchor="middle" font-weight="400">F 不读取真实 D</text>
+<text x="745" y="420" font-size="23" fill="#253247" text-anchor="middle" font-weight="400">F 块内双向可见</text>
+<path d="M40,594 L960,594" fill="none" stroke="#e2e7ef" stroke-width="1"/>
+<text x="40" y="626" font-size="18" fill="#69778a" text-anchor="start" font-weight="400">离散目标使用移位输入；图中的自注意力对角线不等于读取当前位置待预测答案。</text>
+</svg>

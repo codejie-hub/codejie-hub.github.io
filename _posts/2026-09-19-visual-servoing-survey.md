@@ -2,10 +2,11 @@
 title: "【论文调研】视觉伺服：从 IBVS 推导到 ViT-VS 与 CNS"
 date: 2026-09-19 12:00:00 +0800
 categories: [视觉伺服]
-tags: [paper-notes, visual-servoing, ibvs, pbvs, vit-vs, cns, dinov2, robot-control]
+content_type: survey
+tags: [visual-servoing, ibvs, pbvs, vit-vs, cns, dinov2, robot-control]
 description: 从针孔投影推导图像交互矩阵、阻尼伪逆与手眼速度变换，系统整理 ViT-VS 的语义匹配、分层特征分箱和实验结果，补充 CNS 的对应图、时序控制与距离解耦，并讨论动态目标、时延、精定位和复现实验。
 image:
-  path: /assets/images/posts/placeholders/robotics.svg
+  path: /assets/images/covers/visual-servoing-survey-cover.jpg
   alt: 视觉伺服基础与 ViT-VS、CNS 论文调研笔记
 math: true
 mermaid: true
@@ -53,6 +54,8 @@ mermaid: true
 
 ### 1.1 一个闭环里有三个不同的问题
 
+<figure class="article-figure mermaid-figure" data-mermaid-figure markdown="1">
+
 ```mermaid
 flowchart TD
     A["期望图像 / 目标特征"] --> C["视觉前端：检测、描述与匹配"]
@@ -64,6 +67,9 @@ flowchart TD
     G --> B
 ```
 
+
+<figcaption><span class="figure-number" aria-hidden="true"></span>视觉前端、控制器与机器人执行共同形成视觉反馈闭环。</figcaption>
+</figure>
 三个环节分别回答：
 
 1. **感知：**两张图里哪些位置具有可比较的意义？
@@ -372,6 +378,8 @@ $$
 **目标在图像右下方时，相机向自身右下方移动，目标投影才会回到中心。** 在这个明确约定下，直接写 $$v_x=-K(u-u^\star)$$ 会把方向写反。
 
 这个例子只控制两个平移自由度，不能据此声称“一个图像点足以确定六自由度运动”。
+
+{% include figure.html src="/assets/images/figures/camera-projection.svg" id="fig-camera-projection" alt="静止三维点在针孔模型下投影到归一化像平面" caption="静止三维点在针孔模型下投影到归一化像平面；相机沿 +X 平移时，相机系的 X 与归一化像坐标 x 减小。图中 X 轴画为竖直方向。" size="medium" width="780" height="620" source="根据正文整理的教学示意" %}
 
 ## 3. 从图像误差到六维速度
 
@@ -889,6 +897,8 @@ $$
 
 并加入关节速度、下一步关节位置等约束。这比事后逐分量裁剪速度更容易保留原任务方向，但仍需处理建模误差和求解时限。
 
+{% include figure.html src="/assets/images/figures/servo-velocity-chain.svg" id="fig-servo-velocity-chain" alt="特征误差先映射为相机速度，再按坐标系与参考点约定转换到机器人执行量" caption="特征误差先映射为相机速度，再按坐标系与参考点约定转换到机器人执行量；速度变换是否需要杠杆臂项取决于参考点。" size="full" width="1000" height="600" source="根据正文整理的教学示意" %}
+
 ## 5. P、PI、PID 与 MPC：在同一模型上理解
 
 ### 5.1 常见 IBVS 控制律本身就带有比例反馈
@@ -1086,8 +1096,7 @@ $$
 
 这种泛化也有代价：**语义相近的部位，不一定是同一三维物理点。** 经典点特征 IBVS 的几何假设，在跨实例语义对应中只是一种近似。
 
-![ViT-VS 的特征提取、对应筛选与控制流程]({{ '/assets/images/posts/visual-servoing/vit-vs-pipeline.png' | relative_url }})
-_原材料收录的 ViT-VS 流程图；结合论文方法部分阅读。_
+{% include figure.html src="/assets/images/posts/visual-servoing/previews/vit-vs-pipeline.webp" original="/assets/images/posts/visual-servoing/vit-vs-pipeline.png" alt="ViT-VS 原论文图 2：左侧为视觉控制闭环，右上为对应匹配，右下为初始旋转补偿。" caption="ViT-VS 原论文图 2：左侧为视觉控制闭环，右上为对应匹配，右下为初始旋转补偿。" size="full" width="1280" height="721" source_url="https://arxiv.org/html/2503.04545v1" source="原论文" %}
 
 ### 6.2 Patch 描述子不是整幅图的单个向量
 
@@ -1247,8 +1256,12 @@ $$
 
 这给出了维度公式的递推过程，也解释了为何不能把外围每个粗区域内部的九个向量再全部计入最终维度。
 
-![分层特征分箱学习示意图]({{ '/assets/images/posts/visual-servoing/feature-binning.png' | relative_url }})
-_原笔记示意图。图中的 ViT-L/14 标签用于举例；本文讨论的典型实验配置为 ViT-S/14。分箱原理与具体 backbone 应分开理解。_
+{% include figure.html src="/assets/images/figures/feature-binning-readable.svg" id="fig-feature-binning-readable" alt="分箱的两步：先构造中心细邻域与外围粗区域，再按固定顺序拼接" caption="分箱的两步：先构造中心细邻域与外围粗区域，再按固定顺序拼接；外围粗区域内部先平均池化。" size="full" width="1000" height="790" source="根据正文整理的教学示意" %}
+
+<details class="media-archive">
+<summary>展开原笔记分箱图与配置说明</summary>
+{% include figure.html src="/assets/images/posts/visual-servoing/previews/feature-binning.webp" original="/assets/images/posts/visual-servoing/feature-binning.png" alt="原笔记分箱示意图存档。ViT-L/14 为图中示例，正文典型实验配置为 ViT-S/14" caption="原笔记分箱示意图存档。ViT-L/14 为图中示例，正文典型实验配置为 ViT-S/14；比较时须先对齐配置。" size="full" width="1280" height="960" source="原笔记存档" %}
+</details>
 
 ### 7.4 交互演示
 
@@ -1374,8 +1387,7 @@ $$
 
 这是理解滤波滞后的一种近似指标，不是完整闭环的总延迟。相机曝光、推理、通信与执行还各自占用时间。
 
-![不同 EMA 权重对轨迹与终点误差的影响]({{ '/assets/images/posts/visual-servoing/vit-vs-ema.png' | relative_url }})
-_原材料中的 EMA 对比。读图时同时看平滑程度、轨迹与最终误差，不能只挑一个指标。_
+{% include figure.html src="/assets/images/posts/visual-servoing/previews/vit-vs-ema.webp" original="/assets/images/posts/visual-servoing/vit-vs-ema.png" alt="EMA 新值权重 α 的对比：左轴为位置误差（mm），右轴为路径长度比" caption="EMA 新值权重 α 的对比：左轴为位置误差（mm），右轴为路径长度比；两条曲线应结合阅读。" size="full" width="1280" height="832" source_url="https://arxiv.org/html/2503.04545v1" source="原论文" %}
 
 ### 8.4 配置应该放在任务条件中理解
 
@@ -1399,8 +1411,7 @@ _原材料中的 EMA 对比。读图时同时看平滑程度、轨迹与最终�
 
 原扰动包括亮度、对比度、随机擦除和模糊。“随机擦除概率 0.5”表示应用该扰动的概率，**不等于每张图遮挡 50% 面积**。
 
-![仿真中的图像扰动示例]({{ '/assets/images/posts/visual-servoing/vit-vs-perturbations.png' | relative_url }})
-_原材料的扰动示例；扰动概率、强度与面积应分别记录。_
+{% include figure.html src="/assets/images/posts/visual-servoing/previews/vit-vs-perturbations.webp" original="/assets/images/posts/visual-servoing/vit-vs-perturbations.png" alt="ViT-VS 原论文图 3：期望图像与受扰动当前图像之间的特征对应" caption="ViT-VS 原论文图 3：期望图像与受扰动当前图像之间的特征对应；图像扰动概率不等于遮挡面积比例。" size="full" width="821" height="476" source_url="https://arxiv.org/html/2503.04545v1" source="原论文" %}
 
 ### 9.2 关键结果摘录与单位纠正
 
@@ -1426,8 +1437,10 @@ $$
 
 这两个说法不可互换。跨方法还应核对误差统计是否只包含成功轨迹，以及失败轨迹如何计入。
 
-![ViT-VS 论文完整实验表]({{ '/assets/images/posts/visual-servoing/vit-vs-results-table.png' | relative_url }})
-_原材料保存的完整表格，保留用于核对单位、方法与指标。DMLVS 一行沿用文献结果，复现实验应进一步核对其设置一致性。_
+<details class="media-archive">
+<summary>展开论文完整实验表，核对单位与方法设置</summary>
+{% include figure.html src="/assets/images/posts/visual-servoing/previews/vit-vs-results-table.webp" original="/assets/images/posts/visual-servoing/vit-vs-results-table.png" alt="ViT-VS 完整 Table I：终点位置误差为 mm，APE 平移为 cm" caption="ViT-VS 完整 Table I：终点位置误差为 mm，APE 平移为 cm；带星号的文献结果需核对实验设置。" size="full" width="1280" height="517" source_url="https://arxiv.org/html/2503.04545v1" source="原论文" %}
+</details>
 
 ### 9.3 终点好，不代表过程好
 
@@ -1440,16 +1453,13 @@ _原材料保存的完整表格，保留用于核对单位、方法与指标。D
 
 ViT-VS 表中的 APE 以论文采用的理想 PBVS 轨迹为参照；它不是终点误差，也不能把厘米与角度直接相加。路径长度比接近 1 表示接近所选参考路径，并不意味着在障碍和动力学约束下全局最优。
 
-![不同方法的收敛表现]({{ '/assets/images/posts/visual-servoing/vit-vs-convergence.png' | relative_url }})
-_原材料中的收敛对比。_
+{% include figure.html src="/assets/images/posts/visual-servoing/previews/vit-vs-convergence.webp" original="/assets/images/posts/visual-servoing/vit-vs-convergence.png" alt="六维速度随迭代变化的收敛曲线：左轴为线速度（cm/s），右轴为角速度（deg/s）" caption="六维速度随迭代变化的收敛曲线：左轴为线速度（cm/s），右轴为角速度（deg/s）；该图不是不同方法的成功率比较。" size="full" width="1152" height="701" source_url="https://arxiv.org/html/2503.04545v1" source="原论文" %}
 
-![不同方法的终点误差分布]({{ '/assets/images/posts/visual-servoing/vit-vs-final-error.png' | relative_url }})
-_原材料中的终点误差对比，和成功率图配合阅读。_
+{% include figure.html src="/assets/images/posts/visual-servoing/previews/vit-vs-final-error.webp" original="/assets/images/posts/visual-servoing/vit-vs-final-error.png" alt="位置与旋转误差随迭代变化：左轴为位置误差（cm），右轴为旋转误差（deg）" caption="位置与旋转误差随迭代变化：左轴为位置误差（cm），右轴为旋转误差（deg）；该图不是跨试验的终点误差分布。" size="full" width="1090" height="691" source_url="https://arxiv.org/html/2503.04545v1" source="原论文" %}
 
 ### 9.4 实时性不能只报告 backbone 推理时间
 
-![模型、分辨率和分箱层级的运行时间对比]({{ '/assets/images/posts/visual-servoing/vit-vs-runtime.png' | relative_url }})
-_原材料中的运行时间图。硬件、输入大小、backbone 与分箱层级必须一起说明。_
+{% include figure.html src="/assets/images/posts/visual-servoing/previews/vit-vs-runtime.webp" original="/assets/images/posts/visual-servoing/vit-vs-runtime.png" alt="模型、输入分辨率与分箱层级对应的帧率（Hz）" caption="模型、输入分辨率与分箱层级对应的帧率（Hz）；吞吐率不等于图像采集到命令执行的端到端时延。" size="full" width="1280" height="833" source_url="https://arxiv.org/html/2503.04545v1" source="原论文" %}
 
 可把一帧总时延分解为：
 
@@ -1474,8 +1484,7 @@ $$
 
 这支持“在作者选定场景中，可以借助参考图完成语义对齐”的结论。它没有证明任意类别、任意实例和任意遮挡下都能成功，也不能将感知对齐成功与接触后的夹持稳定性混为一谈。
 
-![工业抓取系统与实验场景]({{ '/assets/images/posts/visual-servoing/vit-vs-industrial-setup.png' | relative_url }})
-_原材料中的工业系统示意；工业夹具与类别级抓取夹爪应区分。_
+{% include figure.html src="/assets/images/posts/visual-servoing/previews/vit-vs-industrial-setup.webp" original="/assets/images/posts/visual-servoing/vit-vs-industrial-setup.png" alt="ViT-VS 原论文图 7(d)：不同初始位置的工具中心点三维轨迹对齐到目标" caption="ViT-VS 原论文图 7(d)：不同初始位置的工具中心点三维轨迹对齐到目标；当前素材未包含设备场景图 7(a–c)。" size="medium" width="810" height="779" source_url="https://arxiv.org/html/2503.04545v1" source="原论文" %}
 
 ## 10. CNS：保留显式对应，学习从对应到动作的映射
 
@@ -1485,8 +1494,7 @@ _原材料中的工业系统示意；工业夹具与类别级抓取夹爪应区�
 
 这样，控制器面对的是“哪些位置应该移动到哪里”的结构信息，较少直接依赖纹理与颜色。对应点数量可以变化，也可能暂时缺失；用图表示，比把固定数量坐标拼成固定长度向量更自然。[作者项目页][cns-project]展示了这一设计及静态、动态场景案例。
 
-![经典视觉伺服、图像端到端控制与 CNS 的结构对照]({{ '/assets/images/posts/visual-servoing/cns-comparison.png' | relative_url }})
-_原材料收录的 CNS 方法对照。图中的优劣概括是论文的设计动机，实际结果还依赖前端、训练和任务设置。_
+{% include figure.html src="/assets/images/posts/visual-servoing/previews/cns-comparison.webp" original="/assets/images/posts/visual-servoing/cns-comparison.png" alt="经典对应求解、图像端到端控制与 CNS 对应编码控制的结构比较" caption="经典对应求解、图像端到端控制与 CNS 对应编码控制的结构比较；底部优劣概括是论文的设计动机，结果仍取决于具体设置。" size="full" width="808" height="552" source_url="https://arxiv.org/html/2309.09047v1" source="原论文" %}
 
 ### 10.2 对应图如何组织空间信息？
 
@@ -1752,6 +1760,8 @@ $$
 
 ## 11. 两篇论文放在同一张系统图里
 
+<figure class="article-figure mermaid-figure" data-mermaid-figure markdown="1">
+
 ```mermaid
 flowchart TD
     A["参考图像与当前图像"] --> B["传统或学习特征"]
@@ -1765,6 +1775,9 @@ flowchart TD
     G --> H["坐标变换与机器人执行"]
 ```
 
+
+<figcaption><span class="figure-number" aria-hidden="true"></span>ViT-VS 与 CNS 在视觉对应及控制映射中的分工；两者不是必须串联的模块。</figcaption>
+</figure>
 | 比较维度 | 传统特征 + IBVS | ViT-VS | CNS |
 | --- | --- | --- | --- |
 | 核心改进位置 | 几何反馈基线 | 感知前端与初始化 | 从对应到动作的控制器 |
@@ -2063,8 +2076,8 @@ if __name__ == "__main__":
 
 <details>
   <summary>展开：点运动与投影求导手写笔记</summary>
-  <p><img src="{{ '/assets/images/posts/visual-servoing/ibvs-handwritten-1.jpg' | relative_url }}" alt="手写推导第一页：相机坐标下的点运动和归一化投影求导" loading="lazy" width="3840" height="2768"></p>
-  <p><img src="{{ '/assets/images/posts/visual-servoing/ibvs-handwritten-2.jpg' | relative_url }}" alt="手写推导第二页：整理得到六自由度图像交互矩阵" loading="lazy" width="3700" height="2844"></p>
+{% include figure.html src="/assets/images/posts/visual-servoing/previews/ibvs-handwritten-1.webp" original="/assets/images/posts/visual-servoing/ibvs-handwritten-1.jpg" alt="相机坐标下的点运动与归一化投影求导手写存档" caption="相机坐标下的点运动与归一化投影求导手写存档；统一符号及可复制公式以正文第 2 节为准。" size="full" width="1280" height="923" source="原笔记存档" deferred="true" archive="A1" %}
+{% include figure.html src="/assets/images/posts/visual-servoing/previews/ibvs-handwritten-2.webp" original="/assets/images/posts/visual-servoing/ibvs-handwritten-2.jpg" alt="整理六自由度图像交互矩阵的手写存档" caption="整理六自由度图像交互矩阵的手写存档；阅读时与正文第 2 节的矩阵列顺序对应。" size="full" width="1280" height="984" source="原笔记存档" deferred="true" archive="A2" %}
 </details>
 
 ### 14.3 用这些问题检查是否真正理解

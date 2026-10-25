@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+<title id="title"></title><desc id="desc">。根据文章整理的教学示意。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="context-stroke"/></marker></defs>
+<style>text{font-family:'Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Arial,sans-serif}</style>
+<rect width="100%" height="100%" fill="white"/>
+<rect x="0" y="0" width="1200" height="630" rx="0" fill="#f7f9fc" stroke="none" stroke-width="2"/>
+<rect x="48" y="65" width="8" height="500" rx="4" fill="#5268b0" stroke="none" stroke-width="2"/>
+<text x="86" y="115" font-size="20" fill="#5268b0" text-anchor="start" font-weight="700">CODEJIE  /  RESEARCH NOTES</text>
+<text x="86" y="185" font-size="25" fill="#64748b" text-anchor="start" font-weight="400">机器人学习与 VLA</text>
+<text x="86" y="285" font-size="61" fill="#253247" text-anchor="start" font-weight="700">机器人操作路线</text>
+<text x="88" y="425" font-size="24" fill="#637084" text-anchor="start" font-weight="400">七条路线 · 数据</text>
+<text x="88" y="463" font-size="24" fill="#637084" text-anchor="start" font-weight="400">泛化 · 闭环</text>
+<rect x="705" y="145" width="455" height="360" rx="14" fill="#fff" stroke="#e0e6ee" stroke-width="2"/>
+<g transform="translate(710 175) scale(0.35294117647058826)"><rect width="1000" height="850" fill="white"/>
+<text x="40" y="52" font-size="30" fill="#253247" text-anchor="start" font-weight="700">机器人操作：七条互相关联的研究路线</text>
+<text x="40" y="88" font-size="19" fill="#637084" text-anchor="start" font-weight="400">路线名称与站内 ROADMAP 共享数据；按研究问题选择阅读入口</text>
+<rect x="320" y="125" width="360" height="85" rx="12" fill="#f8fafc" stroke="#4264ad" stroke-width="2"/>
+<text x="500.0" y="175.5" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">感知 · 决策 · 真实执行</text>
+<path d="M500,215 L500,668" fill="none" stroke="#a9b4c2" stroke-width="2"/>
+<rect x="45" y="265" width="425" height="85" rx="12" fill="#f8fafc" stroke="#4d6bd8" stroke-width="2"/>
+<text x="257.5" y="315.5" font-size="24" fill="#4d6bd8" text-anchor="middle" font-weight="400">01  三维与生成策略</text>
+<path d="M500,307 L470,307" fill="none" stroke="#4d6bd8" stroke-width="2"/>
+<rect x="530" y="265" width="425" height="85" rx="12" fill="#f8fafc" stroke="#8060ba" stroke-width="2"/>
+<text x="742.5" y="315.5" font-size="24" fill="#8060ba" text-anchor="middle" font-weight="400">02  VLA 与通用策略</text>
+<path d="M500,307 L530,307" fill="none" stroke="#8060ba" stroke-width="2"/>
+<rect x="45" y="385" width="425" height="85" rx="12" fill="#f8fafc" stroke="#178578" stroke-width="2"/>
+<text x="257.5" y="435.5" font-size="24" fill="#178578" text-anchor="middle" font-weight="400">03  规划与世界模型</text>
+<path d="M500,427 L470,427" fill="none" stroke="#178578" stroke-width="2"/>
+<rect x="530" y="385" width="425" height="85" rx="12" fill="#f8fafc" stroke="#b8762e" stroke-width="2"/>
+<text x="742.5" y="435.5" font-size="24" fill="#b8762e" text-anchor="middle" font-weight="400">04  双臂与人形操作</text>
+<path d="M500,427 L530,427" fill="none" stroke="#b8762e" stroke-width="2"/>
+<rect x="45" y="505" width="425" height="85" rx="12" fill="#f8fafc" stroke="#bd647c" stroke-width="2"/>
+<text x="257.5" y="555.5" font-size="24" fill="#bd647c" text-anchor="middle" font-weight="400">05  灵巧手与触觉</text>
+<path d="M500,547 L470,547" fill="none" stroke="#bd647c" stroke-width="2"/>
+<rect x="530" y="505" width="425" height="85" rx="12" fill="#f8fafc" stroke="#688638" stroke-width="2"/>
+<text x="742.5" y="555.5" font-size="24" fill="#688638" text-anchor="middle" font-weight="400">06  强化学习与纠错</text>
+<path d="M500,547 L530,547" fill="none" stroke="#688638" stroke-width="2"/>
+<rect x="45" y="625" width="425" height="85" rx="12" fill="#f8fafc" stroke="#51809c" stroke-width="2"/>
+<text x="257.5" y="675.5" font-size="24" fill="#51809c" text-anchor="middle" font-weight="400">07  数据与评测基准</text>
+<path d="M500,667 L470,667" fill="none" stroke="#51809c" stroke-width="2"/>
+<path d="M40,794 L960,794" fill="none" stroke="#e2e7ef" stroke-width="1"/>
+<text x="40" y="826" font-size="18" fill="#69778a" text-anchor="start" font-weight="400">各路线的代表论文、代码与首个实验建议见正文和 ROADMAP；此图不作性能排名。</text>
+</g>
+<text x="88" y="565" font-size="19" fill="#5268b0" text-anchor="start" font-weight="400">方法理解  /  公式推导  /  工程笔记</text>
+</svg>

@@ -1,15 +1,13 @@
 {% assign frame_height = include.height | default: '520px' %}
-{% assign frame_title = include.title | default: 'Interactive demo' %}
-
-<div class="demo-frame" style="--demo-height: {{ frame_height }};">
-  <iframe
-    src="{{ include.src | relative_url }}"
-    title="{{ frame_title | escape }}"
-    loading="lazy"
-    allowfullscreen
-  ></iframe>
-  <p class="demo-frame__caption">
-    {% if include.caption %}{{ include.caption }}{% else %}交互式演示{% endif %}
-    <a href="{{ include.src | relative_url }}" rel="noopener noreferrer" target="_blank">独立打开</a>
-  </p>
-</div>
+{% assign frame_title = include.title | default: '交互演示' %}
+{% assign demo_name = include.src | split: '/' | last | replace: '.html', '' %}
+{% capture default_poster %}/assets/images/demos/{{ demo_name }}.jpg{% endcapture %}
+{% assign frame_poster = include.poster | default: default_poster %}
+<figure id="demo-{{ demo_name }}" class="demo-frame" data-demo-frame data-src="{{ include.src | relative_url }}" data-title="{{ frame_title | escape }}" style="--demo-height-desktop: {{ frame_height }};">
+  <a class="demo-frame__preview" href="{{ include.src | relative_url }}" target="_blank" rel="noopener noreferrer">
+    <img data-managed-image src="{{ frame_poster | relative_url }}" alt="{{ frame_title | escape }}的交互界面预览" width="1200" height="750" loading="lazy" decoding="async">
+    <span class="demo-frame__open">打开交互演示 ↗</span>
+  </a>
+  <div class="demo-frame__mount"></div>
+  <figcaption class="demo-frame__caption"><span class="demo-number" aria-hidden="true"></span>{{ include.caption | default: frame_title }} <a href="{{ include.src | relative_url }}" rel="noopener noreferrer" target="_blank">独立打开 ↗</a></figcaption>
+</figure>

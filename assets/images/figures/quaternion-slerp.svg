@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="780" height="600" viewBox="0 0 780 600" role="img" aria-labelledby="title desc">
+<title id="title">SLERP：单位四元数与较短球面弧</title><desc id="desc">低维球面截面，不把四元数当成三维位置。根据文章整理的教学示意。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="context-stroke"/></marker></defs>
+<style>text{font-family:'Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Arial,sans-serif}</style>
+<rect width="100%" height="100%" fill="white"/>
+<text x="40" y="52" font-size="30" fill="#253247" text-anchor="start" font-weight="700">SLERP：单位四元数与较短球面弧</text>
+<text x="40" y="88" font-size="19" fill="#637084" text-anchor="start" font-weight="400">低维球面截面，不把四元数当成三维位置</text>
+<circle cx="290" cy="310" r="170" fill="none" stroke="#d5dee9" stroke-width="3"/>
+<circle cx="159.77244466977376" cy="200.7261063532883" r="8" fill="#4264ad" stroke="none" stroke-width="3"/>
+<text x="174.77244466977376" y="205.7261063532883" font-size="26" fill="#4264ad" text-anchor="start" font-weight="400">q₀</text>
+<circle cx="399.2738936467117" cy="179.77244466977373" r="8" fill="#198477" stroke="none" stroke-width="3"/>
+<text x="414.2738936467117" y="184.77244466977373" font-size="26" fill="#198477" text-anchor="start" font-weight="400">q₁</text>
+<circle cx="180.7261063532883" cy="440.22755533022627" r="8" fill="#b15e7b" stroke="none" stroke-width="3"/>
+<text x="195.7261063532883" y="445.22755533022627" font-size="26" fill="#b15e7b" text-anchor="start" font-weight="400">−q₁</text>
+<path d="M159.77,200.73 L161.70,198.47 L163.67,196.25 L165.67,194.06 L167.71,191.91 L169.79,189.79 L171.91,187.71 L174.06,185.67 L176.25,183.67 L178.47,181.70 L180.73,179.77 L183.02,177.89 L185.34,176.04 L187.69,174.23 L190.08,172.47 L192.49,170.74 L194.94,169.06 L197.41,167.43 L199.91,165.83 L202.44,164.28 L205.00,162.78 L207.58,161.31 L210.19,159.90 L212.82,158.53 L215.48,157.21 L218.15,155.93 L220.85,154.70 L223.58,153.51 L226.32,152.38 L229.08,151.29 L231.86,150.25 L234.65,149.26 L237.47,148.32 L240.30,147.43 L243.14,146.59 L246.00,145.79 L248.87,145.05 L251.76,144.36 L254.66,143.71 L257.56,143.12 L260.48,142.58 L263.41,142.09 L266.34,141.65 L269.28,141.27 L272.23,140.93 L275.18,140.65 L278.14,140.41 L281.10,140.23 L284.07,140.10 L287.03,140.03 L290.00,140.00 L292.97,140.03 L295.93,140.10 L298.90,140.23 L301.86,140.41 L304.82,140.65 L307.77,140.93 L310.72,141.27 L313.66,141.65 L316.59,142.09 L319.52,142.58 L322.44,143.12 L325.34,143.71 L328.24,144.36 L331.13,145.05 L334.00,145.79 L336.86,146.59 L339.70,147.43 L342.53,148.32 L345.35,149.26 L348.14,150.25 L350.92,151.29 L353.68,152.38 L356.42,153.51 L359.15,154.70 L361.85,155.93 L364.52,157.21 L367.18,158.53 L369.81,159.90 L372.42,161.31 L375.00,162.78 L377.56,164.28 L380.09,165.83 L382.59,167.43 L385.06,169.06 L387.51,170.74 L389.92,172.47 L392.31,174.23 L394.66,176.04 L396.98,177.89 L399.27,179.77" fill="none" stroke="#198477" stroke-width="6"/>
+<text x="605" y="240" font-size="23" fill="#253247" text-anchor="middle" font-weight="400">q 与 −q：同一旋转</text>
+<text x="605" y="274" font-size="23" fill="#253247" text-anchor="middle" font-weight="400">若点积为负，先变号</text>
+<text x="605" y="308" font-size="23" fill="#253247" text-anchor="middle" font-weight="400">再沿较短球面弧插值</text>
+<path d="M40,544 L740,544" fill="none" stroke="#e2e7ef" stroke-width="1"/>
+<text x="40" y="576" font-size="18" fill="#69778a" text-anchor="start" font-weight="400">SLERP 中使用的夹角位于四维单位球面；图只呈现其二维截面直觉。</text>
+</svg>

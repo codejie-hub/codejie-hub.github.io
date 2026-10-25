@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="600" viewBox="0 0 1000 600" role="img" aria-labelledby="title desc">
+<title id="title">异步 Actor–Learner：执行不等于训练</title><desc id="desc">环境交互、经验传输和参数更新具有不同节奏。根据文章整理的教学示意。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="context-stroke"/></marker></defs>
+<style>text{font-family:'Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Arial,sans-serif}</style>
+<rect width="100%" height="100%" fill="white"/>
+<text x="40" y="52" font-size="30" fill="#253247" text-anchor="start" font-weight="700">异步 Actor–Learner：执行不等于训练</text>
+<text x="40" y="88" font-size="19" fill="#637084" text-anchor="start" font-weight="400">环境交互、经验传输和参数更新具有不同节奏</text>
+<rect x="45" y="160" width="265" height="120" rx="12" fill="#f8fafc" stroke="#4264ad" stroke-width="2"/>
+<text x="177.5" y="196.0" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">Actor + 机器人</text>
+<text x="177.5" y="230.0" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">观测 → 策略 / 人工接管</text>
+<text x="177.5" y="264.0" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">执行 → 新经验</text>
+<rect x="380" y="160" width="250" height="120" rx="12" fill="#f8fafc" stroke="#b57836" stroke-width="2"/>
+<text x="505.0" y="196.0" font-size="24" fill="#b57836" text-anchor="middle" font-weight="400">双回放池</text>
+<text x="505.0" y="230.0" font-size="24" fill="#b57836" text-anchor="middle" font-weight="400">示范 + 在线交互</text>
+<text x="505.0" y="264.0" font-size="24" fill="#b57836" text-anchor="middle" font-weight="400">采样训练 batch</text>
+<rect x="700" y="160" width="255" height="120" rx="12" fill="#f8fafc" stroke="#198477" stroke-width="2"/>
+<text x="827.5" y="196.0" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">Learner</text>
+<text x="827.5" y="230.0" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">更新 Critic / Actor</text>
+<text x="827.5" y="264.0" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">与 Actor 同步参数</text>
+<path d="M310,220 L375,220" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M630,220 L695,220" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M825,285 L825,410" fill="none" stroke="#198477" stroke-width="3"/>
+<path d="M825,410 L175,410" fill="none" stroke="#198477" stroke-width="3"/>
+<path d="M175,410 L175,290" fill="none" stroke="#198477" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="500" y="455" font-size="25" fill="#198477" text-anchor="middle" font-weight="400">参数同步：不要求每个控制周期都阻塞等待训练</text>
+<path d="M40,544 L960,544" fill="none" stroke="#e2e7ef" stroke-width="1"/>
+<text x="40" y="576" font-size="18" fill="#69778a" text-anchor="start" font-weight="400">具体同步频率、队列延迟与控制频率由实现及设备预算决定。</text>
+</svg>

@@ -1,12 +1,28 @@
-- name: VLA
+- name: 机器人学习与 VLA
   slug: vla
+  description: 从示范学习到视觉语言动作模型与真实机器人操作。
+  color: "#5268b0"
 - name: 视觉伺服
   slug: visual-servoing
-- name: 控制
+  description: 从图像对应、交互矩阵到闭环视觉反馈。
+  color: "#218578"
+- name: 运动学与控制
   slug: control
+  description: 坐标变换、机器人运动学与反馈控制。
+  color: "#b77533"
 - name: 强化学习
   slug: reinforcement-learning
-- name: 多模态模型
+  description: 价值、策略优化与人在回路的机器人学习。
+  color: "#6f8844"
+- name: 三维视觉
+  slug: 3d-vision
+  description: 度量深度、多视图几何与三维场景表示。
+  color: "#8064a8"
+- name: 大模型基础
   slug: multimodal-models
-- name: 世界模型
-  slug: world-models
+  description: Transformer、语言模型模块与高效微调。
+  color: "#367d9d"
+- name: 生成模型
+  slug: generative-models
+  description: 概率输运、速度场与连续生成建模。
+  color: "#ac647c"

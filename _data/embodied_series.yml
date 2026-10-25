@@ -1,0 +1,15 @@
+- slug: embodied-imitation-learning
+  title: 模仿学习：数据、动作与闭环
+  question: 为什么验证损失很低，机器人仍会失败？
+- slug: embodied-grasp-geometry
+  title: 三维抓取：从深度到可执行位姿
+  question: 一个抓取候选还要通过哪些几何与物理检查？
+- slug: embodied-contact-control
+  title: 接触控制：阻抗、导纳与力反馈
+  question: 怎样让机器人既到达目标，又合理地接触环境？
+- slug: embodied-world-models
+  title: 世界模型：状态估计、想象与规划
+  question: 怎样把预测未来变成选择动作的依据？
+- slug: embodied-offline-rl
+  title: 离线强化学习：从数据支持到策略改进
+  question: 怎样从固定经验中学习，又不相信虚高的价值？

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="780" height="620" viewBox="0 0 780 620" role="img" aria-labelledby="title desc">
+<title id="title">RoPE：每对分量做位置相关旋转</title><desc id="desc">二维平面示意；旋转前后向量范数相同。根据文章整理的教学示意。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="context-stroke"/></marker></defs>
+<style>text{font-family:'Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Arial,sans-serif}</style>
+<rect width="100%" height="100%" fill="white"/>
+<text x="40" y="52" font-size="30" fill="#253247" text-anchor="start" font-weight="700">RoPE：每对分量做位置相关旋转</text>
+<text x="40" y="88" font-size="19" fill="#637084" text-anchor="start" font-weight="400">二维平面示意；旋转前后向量范数相同</text>
+<path d="M240,340 L445,340" fill="none" stroke="#8b97a7" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M240,340 L240,150" fill="none" stroke="#8b97a7" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="441" y="373" font-size="20" fill="#253247" text-anchor="end" font-weight="400">分量 1</text>
+<text x="243" y="138" font-size="20" fill="#253247" text-anchor="start" font-weight="400">分量 2</text>
+<circle cx="240" cy="340" r="150" fill="none" stroke="#dbe3ed" stroke-width="3"/>
+<path d="M240,340 L385,301" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="400" y="302" font-size="26" fill="#4264ad" text-anchor="start" font-weight="400">q</text>
+<path d="M240,340 L303,204" fill="none" stroke="#198477" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="315" y="185" font-size="26" fill="#198477" text-anchor="start" font-weight="400">R(mθ)q</text>
+<text x="615" y="255" font-size="22" fill="#253247" text-anchor="middle" font-weight="400">成对旋转，范数不变</text>
+<text x="615" y="297" font-size="22" fill="#253247" text-anchor="middle" font-weight="400">Q/K 的相对相位</text>
+<text x="615" y="339" font-size="22" fill="#253247" text-anchor="middle" font-weight="400">随相对位置变化</text>
+<text x="615" y="435" font-size="21" fill="#253247" text-anchor="middle" font-weight="400">相邻配对 / 半区配对</text>
+<text x="615" y="471" font-size="21" fill="#253247" text-anchor="middle" font-weight="400">由实现约定决定</text>
+<path d="M40,564 L740,564" fill="none" stroke="#e2e7ef" stroke-width="1"/>
+<text x="40" y="596" font-size="18" fill="#69778a" text-anchor="start" font-weight="400">图中圆为单位圆缩放示意；高维向量由多对旋转平面组成。</text>
+</svg>

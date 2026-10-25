@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="680" viewBox="0 0 1000 680" role="img" aria-labelledby="title desc">
+<title id="title">π₀：训练与执行使用不同的数据路径</title><desc id="desc">训练不需要每次积分；推理从新噪声逐步生成。根据文章整理的教学示意。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="context-stroke"/></marker></defs>
+<style>text{font-family:'Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Arial,sans-serif}</style>
+<rect width="100%" height="100%" fill="white"/>
+<text x="40" y="52" font-size="30" fill="#253247" text-anchor="start" font-weight="700">π₀：训练与执行使用不同的数据路径</text>
+<text x="40" y="88" font-size="19" fill="#637084" text-anchor="start" font-weight="400">训练不需要每次积分；推理从新噪声逐步生成</text>
+<text x="40" y="145" font-size="25" fill="#4264ad" text-anchor="start" font-weight="700">A · 训练</text>
+<rect x="40.0" y="175" width="283.3333333333333" height="105" rx="12" fill="#f8fafc" stroke="#4264ad" stroke-width="2"/>
+<text x="181.66666666666666" y="219.5" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">示范动作 + 噪声</text>
+<text x="181.66666666666666" y="253.5" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">采样时间 t</text>
+<rect x="358.3333333333333" y="175" width="283.3333333333333" height="105" rx="12" fill="#f8fafc" stroke="#198477" stroke-width="2"/>
+<text x="500.0" y="219.5" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">构造加噪动作</text>
+<text x="500.0" y="253.5" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">计算速度标签</text>
+<path d="M328.3333333333333,227 L350.3333333333333,227" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="676.6666666666666" y="175" width="283.3333333333333" height="105" rx="12" fill="#f8fafc" stroke="#b57836" stroke-width="2"/>
+<text x="818.3333333333333" y="219.5" font-size="24" fill="#b57836" text-anchor="middle" font-weight="400">条件速度回归</text>
+<text x="818.3333333333333" y="253.5" font-size="24" fill="#b57836" text-anchor="middle" font-weight="400">最小化预测误差</text>
+<path d="M646.6666666666666,227 L668.6666666666666,227" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="40" y="360" font-size="25" fill="#198477" text-anchor="start" font-weight="700">B · 运行</text>
+<rect x="40.0" y="395" width="283.3333333333333" height="105" rx="12" fill="#f8fafc" stroke="#4264ad" stroke-width="2"/>
+<text x="181.66666666666666" y="439.5" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">新观测 + 新噪声</text>
+<text x="181.66666666666666" y="473.5" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">固定当前条件</text>
+<rect x="358.3333333333333" y="395" width="283.3333333333333" height="105" rx="12" fill="#f8fafc" stroke="#198477" stroke-width="2"/>
+<text x="500.0" y="439.5" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">多步速度积分</text>
+<text x="500.0" y="473.5" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">生成动作块</text>
+<path d="M328.3333333333333,447 L350.3333333333333,447" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="676.6666666666666" y="395" width="283.3333333333333" height="105" rx="12" fill="#f8fafc" stroke="#b57836" stroke-width="2"/>
+<text x="818.3333333333333" y="439.5" font-size="24" fill="#b57836" text-anchor="middle" font-weight="400">执行短片段</text>
+<text x="818.3333333333333" y="473.5" font-size="24" fill="#b57836" text-anchor="middle" font-weight="400">获取新观测</text>
+<path d="M646.6666666666666,447 L668.6666666666666,447" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M920,515 L920,565" fill="none" stroke="#198477" stroke-width="3"/>
+<path d="M920,565 L90,565" fill="none" stroke="#198477" stroke-width="3"/>
+<path d="M90,565 L90,510" fill="none" stroke="#198477" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M40,624 L960,624" fill="none" stroke="#e2e7ef" stroke-width="1"/>
+<text x="40" y="656" font-size="18" fill="#69778a" text-anchor="start" font-weight="400">采样内部循环与真实机器人反馈循环分开；图省略数据归一化等工程步骤。</text>
+</svg>

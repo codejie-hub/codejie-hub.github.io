@@ -1,7 +1,6 @@
 # Bundler cache
 .bundle
 vendor
-Gemfile.lock
 
 # Jekyll cache
 .jekyll-cache
@@ -15,6 +14,9 @@ docs/
 # NPM dependencies
 node_modules
 package-lock.json
+.qa/
+__pycache__/
+*.py[cod]
 
 # IDE configurations
 .idea

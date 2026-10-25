@@ -1,4 +1,10 @@
-# 文章封面图片目录
+# 文章原始图片与预览
+
+当前主分类来自 `_data/domains.yml`。本目录保留既有封面、论文原图及手写存档；新增专属封面在 `assets/images/covers/`，可编辑教学 SVG 在 `assets/images/figures/`，演示实际截图在 `assets/images/demos/`。
+
+视觉伺服原图的轻量预览位于 `visual-servoing/previews/`；原图按需打开，保留原始文件。正文统一使用 `_includes/figure.html`，不要将正文图固定高度裁切。完整清单见 `reports/blog-organization.md`。
+
+以下为原有封面目录与 front matter 用法，路径仍然有效。
 
 ## 目录结构
 

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="600" viewBox="0 0 1000 600" role="img" aria-labelledby="title desc">
+<title id="title">PriorDA：结构与尺度在不同阶段汇合</title><desc id="desc">单目相对结构 + 任意可用的度量先验。根据文章整理的教学示意。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="context-stroke"/></marker></defs>
+<style>text{font-family:'Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Arial,sans-serif}</style>
+<rect width="100%" height="100%" fill="white"/>
+<text x="40" y="52" font-size="30" fill="#253247" text-anchor="start" font-weight="700">PriorDA：结构与尺度在不同阶段汇合</text>
+<text x="40" y="88" font-size="19" fill="#637084" text-anchor="start" font-weight="400">单目相对结构 + 任意可用的度量先验</text>
+<rect x="40" y="140" width="250" height="90" rx="12" fill="#f8fafc" stroke="#4264ad" stroke-width="2"/>
+<text x="165.0" y="177.0" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">单目图像</text>
+<text x="165.0" y="211.0" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">稠密相对深度</text>
+<rect x="40" y="340" width="250" height="90" rx="12" fill="#f8fafc" stroke="#198477" stroke-width="2"/>
+<text x="165.0" y="377.0" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">度量先验</text>
+<text x="165.0" y="411.0" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">可能稀疏 / 不完整</text>
+<rect x="390" y="235" width="230" height="110" rx="12" fill="#f8fafc" stroke="#b57836" stroke-width="2"/>
+<text x="505.0" y="282.0" font-size="24" fill="#b57836" text-anchor="middle" font-weight="400">粗度量对齐</text>
+<text x="505.0" y="316.0" font-size="24" fill="#b57836" text-anchor="middle" font-weight="400">kNN / 标定 / 重加权</text>
+<rect x="710" y="235" width="250" height="110" rx="12" fill="#f8fafc" stroke="#b15e7b" stroke-width="2"/>
+<text x="835.0" y="282.0" font-size="24" fill="#b15e7b" text-anchor="middle" font-weight="400">条件细化</text>
+<text x="835.0" y="316.0" font-size="24" fill="#b15e7b" text-anchor="middle" font-weight="400">输出稠密度量深度</text>
+<path d="M290,185 L390,260" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M290,385 L390,320" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M620,290 L705,290" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="500" y="485" font-size="27" fill="#253247" text-anchor="middle" font-weight="400">几何条件保留结构，度量条件约束尺度</text>
+<path d="M40,544 L960,544" fill="none" stroke="#e2e7ef" stroke-width="1"/>
+<text x="40" y="576" font-size="18" fill="#69778a" text-anchor="start" font-weight="400">条件分支与主干的具体连接方式见正文第 4–5 节。</text>
+</svg>

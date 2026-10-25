@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="790" viewBox="0 0 1000 790" role="img" aria-labelledby="title desc">
+<title id="title">特征分箱：先聚合，再按顺序拼接</title><desc id="desc">中心保留细节；外围粗区域先池化为摘要，再参与描述子构造。根据文章整理的教学示意。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="context-stroke"/></marker></defs>
+<style>text{font-family:'Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Arial,sans-serif}</style>
+<rect width="100%" height="100%" fill="white"/>
+<text x="40" y="52" font-size="30" fill="#253247" text-anchor="start" font-weight="700">特征分箱：先聚合，再按顺序拼接</text>
+<text x="40" y="88" font-size="19" fill="#637084" text-anchor="start" font-weight="400">中心保留细节；外围粗区域先池化为摘要，再参与描述子构造</text>
+<text x="45" y="145" font-size="26" fill="#4264ad" text-anchor="start" font-weight="700">A · 邻域构造</text>
+<rect x="100" y="190" width="56" height="56" rx="4" fill="#e9f2fa" stroke="#4264ad" stroke-width="2"/>
+<text x="128" y="225" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">f</text>
+<rect x="162" y="190" width="56" height="56" rx="4" fill="#e9f2fa" stroke="#4264ad" stroke-width="2"/>
+<text x="190" y="225" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">f</text>
+<rect x="224" y="190" width="56" height="56" rx="4" fill="#e9f2fa" stroke="#4264ad" stroke-width="2"/>
+<text x="252" y="225" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">f</text>
+<rect x="100" y="252" width="56" height="56" rx="4" fill="#e9f2fa" stroke="#4264ad" stroke-width="2"/>
+<text x="128" y="287" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">f</text>
+<rect x="162" y="252" width="56" height="56" rx="4" fill="#e9f2fa" stroke="#4264ad" stroke-width="2"/>
+<text x="190" y="287" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">X</text>
+<rect x="224" y="252" width="56" height="56" rx="4" fill="#e9f2fa" stroke="#4264ad" stroke-width="2"/>
+<text x="252" y="287" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">f</text>
+<rect x="100" y="314" width="56" height="56" rx="4" fill="#e9f2fa" stroke="#4264ad" stroke-width="2"/>
+<text x="128" y="349" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">f</text>
+<rect x="162" y="314" width="56" height="56" rx="4" fill="#e9f2fa" stroke="#4264ad" stroke-width="2"/>
+<text x="190" y="349" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">f</text>
+<rect x="224" y="314" width="56" height="56" rx="4" fill="#e9f2fa" stroke="#4264ad" stroke-width="2"/>
+<text x="252" y="349" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">f</text>
+<rect x="520" y="160" width="70" height="70" rx="5" fill="#e8f3ef" stroke="#198477" stroke-width="2"/>
+<text x="555" y="203" font-size="19" fill="#198477" text-anchor="middle" font-weight="400">Avg</text>
+<rect x="610" y="160" width="70" height="70" rx="5" fill="#e8f3ef" stroke="#198477" stroke-width="2"/>
+<text x="645" y="203" font-size="19" fill="#198477" text-anchor="middle" font-weight="400">Avg</text>
+<rect x="700" y="160" width="70" height="70" rx="5" fill="#e8f3ef" stroke="#198477" stroke-width="2"/>
+<text x="735" y="203" font-size="19" fill="#198477" text-anchor="middle" font-weight="400">Avg</text>
+<rect x="520" y="250" width="70" height="70" rx="5" fill="#e8f3ef" stroke="#198477" stroke-width="2"/>
+<text x="555" y="293" font-size="19" fill="#198477" text-anchor="middle" font-weight="400">Avg</text>
+<rect x="700" y="250" width="70" height="70" rx="5" fill="#e8f3ef" stroke="#198477" stroke-width="2"/>
+<text x="735" y="293" font-size="19" fill="#198477" text-anchor="middle" font-weight="400">Avg</text>
+<rect x="520" y="340" width="70" height="70" rx="5" fill="#e8f3ef" stroke="#198477" stroke-width="2"/>
+<text x="555" y="383" font-size="19" fill="#198477" text-anchor="middle" font-weight="400">Avg</text>
+<rect x="610" y="340" width="70" height="70" rx="5" fill="#e8f3ef" stroke="#198477" stroke-width="2"/>
+<text x="645" y="383" font-size="19" fill="#198477" text-anchor="middle" font-weight="400">Avg</text>
+<rect x="700" y="340" width="70" height="70" rx="5" fill="#e8f3ef" stroke="#198477" stroke-width="2"/>
+<text x="735" y="383" font-size="19" fill="#198477" text-anchor="middle" font-weight="400">Avg</text>
+<text x="190" y="425" font-size="23" fill="#4264ad" text-anchor="middle" font-weight="400">中心细邻域：按序保留</text>
+<text x="645" y="465" font-size="23" fill="#198477" text-anchor="middle" font-weight="400">外围粗区域：每区先平均池化</text>
+<text x="45" y="530" font-size="26" fill="#4264ad" text-anchor="start" font-weight="700">B · 构造描述子</text>
+<rect x="65" y="570" width="870" height="100" rx="12" fill="#f8fafc" stroke="#198477" stroke-width="2"/>
+<text x="500.0" y="612.0" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">中心 + 每层 8 个邻域摘要 → 固定顺序拼接</text>
+<text x="500.0" y="646.0" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">Dβ = (1 + 8β)D；β=0 时仅保留中心</text>
+<path d="M40,734 L960,734" fill="none" stroke="#e2e7ef" stroke-width="1"/>
+<text x="40" y="766" font-size="18" fill="#69778a" text-anchor="start" font-weight="400">第 1 层包含中心周围 8 个细摘要；更外层追加 8 个粗区域摘要，不能重复计入内部向量。</text>
+</svg>

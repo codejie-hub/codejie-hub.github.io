@@ -1,0 +1,6 @@
+{% assign article_topic = site.data.domains | where: 'name', page.categories[0] | first %}
+<nav class="post-classification" aria-label="文章分类与类型">
+  <a href="{{ '/blog/' | relative_url }}#blog-domain-{{ article_topic.slug }}">{{ article_topic.name }}</a>
+  <span aria-hidden="true">·</span>
+  <a href="{{ '/blog/' | relative_url }}#type={{ page.content_type }}">{{ site.data.content_types[page.content_type].label }}</a>
+</nav>

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="780" height="600" viewBox="0 0 780 600" role="img" aria-labelledby="title desc">
+<title id="title">一个高斯：位置、形状与方向</title><desc id="desc">协方差的二维截面示意，不代表完整三维投影。根据文章整理的教学示意。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="context-stroke"/></marker></defs>
+<style>text{font-family:'Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Arial,sans-serif}</style>
+<rect width="100%" height="100%" fill="white"/>
+<text x="40" y="52" font-size="30" fill="#253247" text-anchor="start" font-weight="700">一个高斯：位置、形状与方向</text>
+<text x="40" y="88" font-size="19" fill="#637084" text-anchor="start" font-weight="400">协方差的二维截面示意，不代表完整三维投影</text>
+<path d="M140,430 L610,430" fill="none" stroke="#8b97a7" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M140,430 L140,160" fill="none" stroke="#8b97a7" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="606" y="463" font-size="20" fill="#253247" text-anchor="end" font-weight="400">x</text>
+<text x="143" y="148" font-size="20" fill="#253247" text-anchor="start" font-weight="400">y</text>
+<ellipse cx="370" cy="300" rx="170" ry="65" transform="rotate(-28 370 300)" fill="#4264ad" fill-opacity=".10" stroke="#4264ad" stroke-width="3"/>
+<circle cx="370" cy="300" r="7" fill="#198477" stroke="none" stroke-width="3"/>
+<text x="385" y="330" font-size="24" fill="#198477" text-anchor="start" font-weight="400">中心 μ</text>
+<path d="M370,300 L515,222" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M370,300 L333,241" fill="none" stroke="#b57836" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="460" y="185" font-size="24" fill="#253247" text-anchor="start" font-weight="400">尺度 + 旋转 → Σ</text>
+<text x="390" y="495" font-size="22" fill="#253247" text-anchor="middle" font-weight="400">透明度 α 与颜色在渲染阶段参与合成</text>
+<path d="M40,544 L740,544" fill="none" stroke="#e2e7ef" stroke-width="1"/>
+<text x="40" y="576" font-size="18" fill="#69778a" text-anchor="start" font-weight="400">三维协方差 Σ = R diag(s²) Rᵀ；椭圆展示其中一个平面截面。</text>
+</svg>

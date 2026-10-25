@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="600" viewBox="0 0 1000 600" role="img" aria-labelledby="title desc">
+<title id="title">QLoRA：存储、计算、更新分开理解</title><desc id="desc">量化基础权重保持冻结，适配器参与梯度更新。根据文章整理的教学示意。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="context-stroke"/></marker></defs>
+<style>text{font-family:'Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Arial,sans-serif}</style>
+<rect width="100%" height="100%" fill="white"/>
+<text x="40" y="52" font-size="30" fill="#253247" text-anchor="start" font-weight="700">QLoRA：存储、计算、更新分开理解</text>
+<text x="40" y="88" font-size="19" fill="#637084" text-anchor="start" font-weight="400">量化基础权重保持冻结，适配器参与梯度更新</text>
+<rect x="40.0" y="170" width="283.3333333333333" height="105" rx="12" fill="#f8fafc" stroke="#4264ad" stroke-width="2"/>
+<text x="181.66666666666666" y="214.5" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">4-bit 存储</text>
+<text x="181.66666666666666" y="248.5" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">量化基础权重</text>
+<rect x="358.3333333333333" y="170" width="283.3333333333333" height="105" rx="12" fill="#f8fafc" stroke="#198477" stroke-width="2"/>
+<text x="500.0" y="214.5" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">反量化</text>
+<text x="500.0" y="248.5" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">进入计算格式</text>
+<path d="M328.3333333333333,222 L350.3333333333333,222" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="676.6666666666666" y="170" width="283.3333333333333" height="105" rx="12" fill="#f8fafc" stroke="#b57836" stroke-width="2"/>
+<text x="818.3333333333333" y="214.5" font-size="24" fill="#b57836" text-anchor="middle" font-weight="400">矩阵乘法</text>
+<text x="818.3333333333333" y="248.5" font-size="24" fill="#b57836" text-anchor="middle" font-weight="400">如 BF16 计算</text>
+<path d="M646.6666666666666,222 L668.6666666666666,222" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="330" y="355" width="340" height="100" rx="12" fill="#f8fafc" stroke="#198477" stroke-width="2"/>
+<text x="500.0" y="397.0" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">LoRA 适配器（输入 x）</text>
+<text x="500.0" y="431.0" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">浮点参数与梯度</text>
+<circle cx="865" cy="405" r="30" fill="#fff" stroke="#b57836" stroke-width="3"/>
+<text x="865" y="415" font-size="30" fill="#b57836" text-anchor="middle" font-weight="400">+</text>
+<path d="M820,280 L855,370" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M670,405 L830,405" fill="none" stroke="#198477" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="500" y="510" font-size="28" fill="#253247" text-anchor="middle" font-weight="400">低比特存储 ≠ 所有运算都使用 4-bit</text>
+<path d="M40,544 L960,544" fill="none" stroke="#e2e7ef" stroke-width="1"/>
+<text x="40" y="576" font-size="18" fill="#69778a" text-anchor="start" font-weight="400">具体计算格式、优化器状态与量化方案由实现配置决定。</text>
+</svg>

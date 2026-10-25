@@ -2,7 +2,8 @@
 title: 【机器人运动学】从坐标变换、四元数到七自由度机械臂的正逆运动学
 date: 2026-04-17 10:00:00 +0800
 last_modified_at: 2026-09-24
-categories: [控制]
+categories: [运动学与控制]
+content_type: tutorial
 tags: [kinematics, robotics, quaternion, euler-angles, coordinate-transform, 7dof]
 description: 从统一坐标约定出发，详细推导齐次变换、欧拉角与万向锁、四元数与 SLERP、DH 正运动学、雅可比与奇异性，以及七自由度机械臂的阻尼逆运动学和零空间控制，配合算例、可运行代码与三维交互演示。
 image:
@@ -49,6 +50,8 @@ $$
 
 IK 求出的是一个几何上合适的构型。要从当前构型运动到该构型，还需要轨迹规划安排路径与时间，并由控制器跟踪。质量、惯性、重力和力矩属于动力学问题，不能仅由运动学方程确定。
 
+<figure class="article-figure mermaid-figure" data-mermaid-figure markdown="1">
+
 ```mermaid
 flowchart TB
     A[感知或任务指令] --> B[统一坐标系的目标位姿]
@@ -59,6 +62,9 @@ flowchart TB
     F --> C
 ```
 
+
+<figcaption><span class="figure-number" aria-hidden="true"></span>运动学在感知、轨迹与闭环执行中的位置。</figcaption>
+</figure>
 ### 1.2 六维任务不等于六个位置坐标
 
 空间刚体的位置需要三个数描述；姿态还有三个独立自由度。因此，完整的末端位姿任务通常具有六个局部独立约束。但姿态的三个自由度不意味着任意三个数都能在所有姿态下构成唯一、连续且无奇异的表示。
@@ -222,6 +228,10 @@ $$
 
 这里应使用与图像采集时刻对应的关节状态。即使每一项标定都正确，用不同时刻的图像与机械臂状态拼接，也会产生抓取位置误差。
 
+{% include figure.html src="/assets/images/figures/coordinate-chain.svg" id="fig-coordinate-chain" alt="上标表示目标坐标系：将相机中的目标经手眼关系与当前末端位姿变换到基座系" caption="上标表示目标坐标系：将相机中的目标经手眼关系与当前末端位姿变换到基座系；乘法次序与正文约定一致。" size="full" width="1000" height="600" source="根据正文整理的教学示意" %}
+
+{% include demo-frame.html src="/assets/demos/robot-kinematics-transform.html" title="坐标系变换可视化" height="500px" caption="调整平移与旋转，观察局部点、坐标轴和齐次变换矩阵；本演示采用 Three.js 内禀 XYZ 欧拉角。" %}
+
 ## 3. 欧拉角与万向锁：问题出在什么地方？
 {: #euler-and-gimbal-lock }
 
@@ -319,6 +329,8 @@ $$
 当 $\beta=\pi/2$ 时，第一列与第三列反向共线；当 $\beta=-\pi/2$ 时，它们同向共线。接近这些位置时，为了描述一个正常大小的角速度，欧拉角变化率可能变得很大。因此，**欧拉角导数通常不等于角速度的三个分量**。
 
 还要区分两种情况：如果欧拉角只是软件中的姿态表示，改用四元数可以绕开这种参数退化；如果真实机构就是三个嵌套转轴，轴线重合会让机构的瞬时运动能力下降，换一种数学表示并不能恢复硬件能力。后文讨论的机械臂雅可比奇异性属于机构与任务之间的关系。
+
+{% include demo-frame.html src="/assets/demos/robot-kinematics-gimbal.html" title="欧拉角与万向锁演示" height="500px" caption="使用 ZYX 顺序，观察 Pitch 为正负 90 度时 Roll 与 Yaw 瞬时轴的重合，以及同一姿态的四元数表示。" %}
 
 ## 4. 轴角、旋转向量与四元数
 {: #quaternions }
@@ -485,6 +497,8 @@ def quaternion_slerp(q0, q1, s):
 
 例如，将单位姿态与绕 $z$ 轴旋转 $90^\circ$ 的姿态在 $s=0.5$ 处插值，应该得到绕 $z$ 轴旋转 $45^\circ$，而不是某个四维向量的任意中点。
 
+{% include figure.html src="/assets/images/figures/quaternion-slerp.svg" id="fig-quaternion-slerp" alt="单位四元数的 q 与 −q 表示同一旋转" caption="单位四元数的 q 与 −q 表示同一旋转；SLERP 前选择符号以沿较短球面弧插值。图为低维球面截面示意。" size="medium" width="780" height="600" source="根据正文整理的教学示意" %}
+
 ## 5. 正运动学：把局部关节运动连接起来
 {: #forward-kinematics }
 
@@ -562,6 +576,8 @@ ${}^B T_0$ 表示建模坐标系与实际基座之间的固定关系，${}^7T_G$
 
 DH 只是组织几何关系的一种方法。URDF 通过关节的固定安装变换、运动轴和父子关系描述机构；指数积方法则用关节螺旋轴组织运动。它们的共同要求都是：建系、零位、轴方向和工具偏置应对应同一个物理模型。
 
+{% include demo-frame.html src="/assets/demos/robot-kinematics-7dof.html" title="七自由度机械臂正运动学" height="600px" caption="改变七个关节，观察末端位置、四元数、轨迹，以及位置雅可比 J_v 的条件数与可操作度。" %}
+
 ## 6. 雅可比与奇异性：关节转一点，末端怎样动？
 {: #velocity-kinematics }
 
@@ -632,6 +648,8 @@ $$
 这并不意味着机械臂被永久固定在那里。它仍可以先弯曲，再获得新的运动方向；但“在当前构型下，立即实现任意指定速度”的能力已经下降。奇异性描述的是这种**瞬时、局部的能力变化**。
 
 对于一般机器人，更准确的定义是：在某个构型下，雅可比的秩低于该机构对当前任务通常能达到的最大秩。对通常可达到秩 6 的七自由度完整位姿任务，奇异构型满足 $\operatorname{rank}J<6$。[Modern Robotics：奇异性][mr-singular]
+
+{% include figure.html src="/assets/images/figures/jacobian-singularity.svg" id="fig-jacobian-singularity" alt="单位关节速度球经位置雅可比映射为末端速度椭球" caption="单位关节速度球经位置雅可比映射为末端速度椭球；接近奇异位形时，某些方向的可达瞬时速度收缩。" size="full" width="1000" height="600" source="根据正文整理的教学示意" %}
 
 ### 6.4 奇异值比直接计算行列式更有解释力
 
@@ -1080,7 +1098,7 @@ Eigen::Quaterniond rotationMatrixToQuaternion(const Eigen::Matrix3d& R) {
 
 ### 10.1 坐标变换：先单轴，再复合
 
-{% include demo-frame.html src="/assets/demos/robot-kinematics-transform.html" title="坐标系变换可视化" height="500px" caption="调整平移与旋转，观察局部点、坐标轴和齐次变换矩阵；本演示采用 Three.js 内禀 XYZ 欧拉角。" %}
+[跳转到本篇演示：robot-kinematics-transform](#demo-robot-kinematics-transform)
 
 建议先把旋转全部设为零，只改变平移，观察变换矩阵最后一列与子坐标系原点的关系。然后只保留绕 $z$ 轴的 $90^\circ$ 旋转，观察子坐标系的 $x$ 轴如何指向父坐标系的 $+y$ 方向。最后同时改变两个旋转角，比较此时的三个矩阵列向量与画面中的三根轴。
 
@@ -1088,7 +1106,7 @@ Eigen::Quaterniond rotationMatrixToQuaternion(const Eigen::Matrix3d& R) {
 
 ### 10.2 万向锁：让两组不同角度得到同一姿态
 
-{% include demo-frame.html src="/assets/demos/robot-kinematics-gimbal.html" title="欧拉角与万向锁演示" height="500px" caption="使用 ZYX 顺序，观察 Pitch 为正负 90 度时 Roll 与 Yaw 瞬时轴的重合，以及同一姿态的四元数表示。" %}
+[跳转到本篇演示：robot-kinematics-gimbal](#demo-robot-kinematics-gimbal)
 
 这个演示与正文的 $R_z(\psi)R_y(\beta)R_x(\phi)$ 一致。先关闭自动演示，把 Pitch 固定为 $90^\circ$，将 Roll、Yaw 分别设为 $10^\circ$、$30^\circ$；再改成 $40^\circ$、$60^\circ$。两组角度之差相同，最终姿态也应相同。
 
@@ -1098,7 +1116,7 @@ Eigen::Quaterniond rotationMatrixToQuaternion(const Eigen::Matrix3d& R) {
 
 ### 10.3 七自由度：区分末端位置、姿态与奇异性指标
 
-{% include demo-frame.html src="/assets/demos/robot-kinematics-7dof.html" title="七自由度机械臂正运动学" height="600px" caption="改变七个关节，观察末端位置、四元数、轨迹，以及位置雅可比 J_v 的条件数与可操作度。" %}
+[跳转到本篇演示：robot-kinematics-7dof](#demo-robot-kinematics-7dof)
 
 可以先固定其他关节，只调整一个关节，观察工具位置和姿态是否同时变化；再比较折叠与接近伸展的构型，观察位置条件数如何变化。这对应“每一列雅可比代表一个关节的瞬时贡献”的解释。
 

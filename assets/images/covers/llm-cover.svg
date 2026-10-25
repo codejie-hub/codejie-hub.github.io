@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+<title id="title"></title><desc id="desc">。根据文章整理的教学示意。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="context-stroke"/></marker></defs>
+<style>text{font-family:'Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Arial,sans-serif}</style>
+<rect width="100%" height="100%" fill="white"/>
+<rect x="0" y="0" width="1200" height="630" rx="0" fill="#f7f9fc" stroke="none" stroke-width="2"/>
+<rect x="48" y="65" width="8" height="500" rx="4" fill="#367d9d" stroke="none" stroke-width="2"/>
+<text x="86" y="115" font-size="20" fill="#367d9d" text-anchor="start" font-weight="700">CODEJIE  /  RESEARCH NOTES</text>
+<text x="86" y="185" font-size="25" fill="#64748b" text-anchor="start" font-weight="400">大模型基础</text>
+<text x="86" y="285" font-size="61" fill="#253247" text-anchor="start" font-weight="700">LoRA / QLoRA</text>
+<text x="88" y="425" font-size="24" fill="#637084" text-anchor="start" font-weight="400">低秩更新 · 参数效率</text>
+<text x="88" y="463" font-size="24" fill="#637084" text-anchor="start" font-weight="400">存储与计算</text>
+<rect x="705" y="145" width="455" height="360" rx="14" fill="#fff" stroke="#e0e6ee" stroke-width="2"/>
+<g transform="translate(710 175) scale(0.43)"><rect width="1000" height="600" fill="white"/>
+<text x="40" y="52" font-size="30" fill="#253247" text-anchor="start" font-weight="700">LoRA：冻结主路，学习低秩更新</text>
+<text x="40" y="88" font-size="19" fill="#637084" text-anchor="start" font-weight="400">列向量约定：x∈Rⁿ，W∈Rᵐˣⁿ，A∈Rʳˣⁿ，B∈Rᵐˣʳ</text>
+<rect x="45" y="255" width="130" height="85" rx="12" fill="#f8fafc" stroke="#4264ad" stroke-width="2"/>
+<text x="110.0" y="305.5" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">输入 x</text>
+<rect x="300" y="140" width="310" height="100" rx="12" fill="#f8fafc" stroke="#4264ad" stroke-width="2"/>
+<text x="455.0" y="182.0" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">W · x</text>
+<text x="455.0" y="216.0" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">冻结 W</text>
+<rect x="270" y="355" width="160" height="100" rx="12" fill="#f8fafc" stroke="#198477" stroke-width="2"/>
+<text x="350.0" y="397.0" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">A · x</text>
+<text x="350.0" y="431.0" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">n → r</text>
+<rect x="500" y="355" width="160" height="100" rx="12" fill="#f8fafc" stroke="#198477" stroke-width="2"/>
+<text x="580.0" y="397.0" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">B · Ax</text>
+<text x="580.0" y="431.0" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">r → m</text>
+<circle cx="780" cy="295" r="34" fill="#fff" stroke="#b57836" stroke-width="3"/>
+<text x="780" y="305" font-size="32" fill="#b57836" text-anchor="middle" font-weight="400">+</text>
+<path d="M175,280 L300,190" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M175,315 L270,405" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M430,405 L495,405" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M610,190 L745,280" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M660,405 L755,325" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M815,295 L945,295" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="935" y="260" font-size="24" fill="#253247" text-anchor="end" font-weight="400">输出 y</text>
+<text x="500" y="515" font-size="27" fill="#253247" text-anchor="middle" font-weight="400">y = Wx + (α/r) BAx     ·     参数量：mn → r(n+m)</text>
+<path d="M40,544 L960,544" fill="none" stroke="#e2e7ef" stroke-width="1"/>
+<text x="40" y="576" font-size="18" fill="#69778a" text-anchor="start" font-weight="400">低秩分支学习的是权重更新量；合并推理时 W′ = W + (α/r)BA。</text>
+</g>
+<text x="88" y="565" font-size="19" fill="#367d9d" text-anchor="start" font-weight="400">方法理解  /  公式推导  /  工程笔记</text>
+</svg>

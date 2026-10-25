@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="440" viewBox="0 0 960 440" role="img" aria-labelledby="title desc">
+<title id="title">Expectile 不等于相同百分位的 Quantile</title><desc id="desc">教学分布：P(X=0)=P(X=2)=0.5；τ=0.7 时最优不对称平方拟合值为 1.4。。根据文章整理的教学示意。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="context-stroke"/></marker></defs>
+<style>text{font-family:'Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Arial,sans-serif}</style>
+<rect width="100%" height="100%" fill="white"/>
+<text x="40" y="52" font-size="30" fill="#253247" text-anchor="start" font-weight="700">Expectile 不等于相同百分位的 Quantile</text>
+<text x="40" y="88" font-size="19" fill="#637084" text-anchor="start" font-weight="400">教学分布：P(X=0)=P(X=2)=0.5；τ=0.7 时最优不对称平方拟合值为 1.4。</text>
+<path d="M110,250 L855,250" fill="none" stroke="#7c899a" stroke-width="3" marker-end="url(#arrow)"/>
+<circle cx="150" cy="250" r="8" fill="#4264ad" stroke="none" stroke-width="3"/>
+<path d="M150,250 L150,272" fill="none" stroke="#4264ad" stroke-width="2"/>
+<text x="150" y="300" font-size="23" fill="#4264ad" text-anchor="middle" font-weight="700">X = 0</text>
+<circle cx="450" cy="250" r="8" fill="#198477" stroke="none" stroke-width="3"/>
+<path d="M450,250 L450,220" fill="none" stroke="#198477" stroke-width="2"/>
+<text x="450" y="205" font-size="23" fill="#198477" text-anchor="middle" font-weight="700">均值 1.0</text>
+<circle cx="570" cy="250" r="8" fill="#8064a8" stroke="none" stroke-width="3"/>
+<path d="M570,250 L570,322" fill="none" stroke="#8064a8" stroke-width="2"/>
+<text x="570" y="350" font-size="23" fill="#8064a8" text-anchor="middle" font-weight="700">Expectile 1.4</text>
+<circle cx="750" cy="250" r="8" fill="#b15e7b" stroke="none" stroke-width="3"/>
+<path d="M750,250 L750,195" fill="none" stroke="#b15e7b" stroke-width="2"/>
+<text x="750" y="180" font-size="23" fill="#b15e7b" text-anchor="middle" font-weight="700">70% 分位数 2.0</text>
+<text x="750" y="300" font-size="23" fill="#4264ad" text-anchor="middle" font-weight="400">X = 2</text>
+<path d="M40,384 L920,384" fill="none" stroke="#e2e7ef" stroke-width="1"/>
+<text x="40" y="416" font-size="18" fill="#69778a" text-anchor="start" font-weight="400">一阶条件：(1−τ)v − τ(2−v) = 0，所以 v = 2τ；此例取 v = 1.4。</text>
+</svg>

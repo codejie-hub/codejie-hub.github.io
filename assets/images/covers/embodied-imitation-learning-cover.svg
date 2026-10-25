@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+<title id="title">模仿学习</title><desc id="desc">数据、动作与闭环。根据文章整理的教学示意。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="context-stroke"/></marker></defs>
+<style>text{font-family:'Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Arial,sans-serif}</style>
+<rect width="100%" height="100%" fill="white"/>
+<rect x="0" y="0" width="1200" height="630" rx="0" fill="#f5f7fb" stroke="none" stroke-width="2"/>
+<rect x="0" y="0" width="22" height="630" rx="0" fill="#4264ad" stroke="none" stroke-width="2"/>
+<text x="80" y="95" font-size="22" fill="#4264ad" text-anchor="start" font-weight="700">CODEJIE  /  EMBODIED INTELLIGENCE</text>
+<text x="80" y="174" font-size="25" fill="#637084" text-anchor="start" font-weight="400">具身学习系列  01  /  机器人学习与 VLA</text>
+<text x="76" y="290" font-size="58" fill="#253247" text-anchor="start" font-weight="700">模仿学习</text>
+<text x="80" y="360" font-size="32" fill="#637084" text-anchor="start" font-weight="400">数据、动作与闭环</text>
+<path d="M80,425 L620,425" fill="none" stroke="#d7dfe9" stroke-width="2"/>
+<text x="80" y="480" font-size="25" fill="#4264ad" text-anchor="start" font-weight="400">原理推导  ·  数值算例  ·  学习实验</text>
+<text x="80" y="566" font-size="19" fill="#748196" text-anchor="start" font-weight="400">LEARN  /  REASON  /  BUILD</text>
+<rect x="735" y="160" width="395" height="340" rx="24" fill="white" stroke="#dce3ee" stroke-width="2"/>
+<text x="1090" y="215" font-size="32" fill="#4264ad" text-anchor="end" font-weight="700">01</text>
+<path d="M780.00,335.00 L845.00,335.00 L910.00,300.00 L975.00,300.00 L1060.00,300.00" fill="none" stroke="#4264ad" stroke-width="5"/>
+<path d="M780.00,335.00 L845.00,335.00 L910.00,370.00 L975.00,370.00 L1060.00,370.00" fill="none" stroke="#b15e7b" stroke-width="5" stroke-dasharray="8 6"/>
+<path d="M910,365 L910,310" fill="none" stroke="#198477" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M975,365 L975,310" fill="none" stroke="#198477" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M1060,365 L1060,310" fill="none" stroke="#198477" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="930" y="450" font-size="18" fill="#4264ad" text-anchor="middle" font-weight="400">DEMONSTRATE → RECOVER</text>
+</svg>

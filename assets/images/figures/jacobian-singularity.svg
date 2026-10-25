@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="600" viewBox="0 0 1000 600" role="img" aria-labelledby="title desc">
+<title id="title">雅可比与奇异性：球如何变成椭球</title><desc id="desc">位置雅可比 J_v 把关节速度映射到末端线速度。根据文章整理的教学示意。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="context-stroke"/></marker></defs>
+<style>text{font-family:'Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Arial,sans-serif}</style>
+<rect width="100%" height="100%" fill="white"/>
+<text x="40" y="52" font-size="30" fill="#253247" text-anchor="start" font-weight="700">雅可比与奇异性：球如何变成椭球</text>
+<text x="40" y="88" font-size="19" fill="#637084" text-anchor="start" font-weight="400">位置雅可比 J_v 把关节速度映射到末端线速度</text>
+<circle cx="170" cy="290" r="105" fill="#f4f7fb" stroke="#4264ad" stroke-width="3"/>
+<text x="170" y="445" font-size="23" fill="#253247" text-anchor="middle" font-weight="400">单位关节速度球</text>
+<path d="M295,290 L400,290" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="350" y="255" font-size="26" fill="#253247" text-anchor="middle" font-weight="400">J_v</text>
+<ellipse cx="535" cy="290" rx="115" ry="72" transform="rotate(-25 535 290)" fill="#198477" fill-opacity=".10" stroke="#198477" stroke-width="3"/>
+<text x="535" y="445" font-size="23" fill="#253247" text-anchor="middle" font-weight="400">良好位形</text>
+<ellipse cx="830" cy="290" rx="115" ry="9" transform="rotate(-25 830 290)" fill="#b15e7b" fill-opacity=".10" stroke="#b15e7b" stroke-width="3"/>
+<text x="830" y="445" font-size="23" fill="#253247" text-anchor="middle" font-weight="400">接近奇异位形</text>
+<text x="680" y="505" font-size="25" fill="#253247" text-anchor="middle" font-weight="400">小奇异值对应速度能力收缩的方向</text>
+<path d="M40,544 L960,544" fill="none" stroke="#e2e7ef" stroke-width="1"/>
+<text x="40" y="576" font-size="18" fill="#69778a" text-anchor="start" font-weight="400">二维截面示意；位置雅可比与包含旋转的完整任务雅可比应分别解释。</text>
+</svg>

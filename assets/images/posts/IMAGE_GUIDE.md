@@ -1,8 +1,10 @@
 # 📸 文章封面图使用指南
 
+> 当前实施规范：七个主分类、四种内容类型；封面使用文章专属主题。新增封面源文件位于 `assets/images/covers/`，正文可编辑 SVG 位于 `assets/images/figures/`，演示预览位于 `assets/images/demos/`。正文小图 / 中图 / 全宽图上限分别为 320 / 520 / 740px，采用 `figure.html` 统一管理图注、来源及放大入口。下面的历史素材建议保留供参考；当前文章和布局清单以 `reports/blog-organization.md` 为准。
+
 ## 已配置的文章
 
-以下文章已添加封面图配置，需要你添加对应的图片文件：
+以下为已保留的四张原有专属封面：
 
 ### 🤖 机器人抓取
 - `robotics/pi0-cover.jpg` - π₀ VLA 模型文章封面
@@ -88,7 +90,7 @@ image:
 
 ## 📝 分类占位封面
 
-以下文章已先使用分类占位图，后续如果有更贴合内容的真封面，可以直接替换 `image.path`：
+以下为历史占位图映射。当前 18 篇文章均已使用专属封面；原占位文件保留用于回溯，不作为新增文章的默认封面：
 
 - `2025-09-11-llm.md`、`2025-12-03-llms.md`、`2025-12-08-quiz.md`：`placeholders/llm.svg`
 - `2025-12-14-roboLLM.md`：`placeholders/robotics.svg`

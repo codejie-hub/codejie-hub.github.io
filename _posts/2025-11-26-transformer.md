@@ -1,7 +1,8 @@
 ---
 title: 【Transformer】Attention Is All You Need：从注意力机制到手写实现
 date: 2025-11-26 14:00:00 +0800
-categories: [多模态模型]
+categories: [大模型基础]
+content_type: tutorial
 tags: [transformer, attention]
 description: 系统梳理 Transformer 的核心思想、整体架构、位置编码、Scaled Dot-Product Attention、Multi-Head Attention、Encoder/Decoder、Mask 机制、复杂度优势，并附 PyTorch 手写实现。
 image:
@@ -59,6 +60,14 @@ Transformer 的核心判断是：
 
 整体结构如下：
 
+
+{% include figure.html src="/assets/images/llm/transform_architecture.png" original="/assets/images/llm/transform_architecture.png" alt="原始 Transformer 的 Encoder–Decoder 架构：左侧编码源序列，右侧通过因果自注意力和交叉注意力逐步生成目标序列。" caption="原始 Transformer 的 Encoder–Decoder 架构：左侧编码源序列，右侧通过因果自注意力和交叉注意力逐步生成目标序列。" size="full" width="513" height="661" source_url="https://arxiv.org/abs/1706.03762" source="原论文" max_width="513" %}
+
+<details class="media-archive" markdown="1">
+<summary>展开：Encoder–Decoder 的简化流程</summary>
+
+<figure class="article-figure mermaid-figure" data-mermaid-figure markdown="1">
+
 ```mermaid
 graph TD
     subgraph Encoder
@@ -84,7 +93,11 @@ graph TD
     end
 ```
 
-![Transformer architecture](/assets/images/llm/transform_architecture.png)
+
+<figcaption><span class="figure-number" aria-hidden="true"></span>Encoder–Decoder 的简化计算路径；与上方论文架构图对应阅读。</figcaption>
+</figure>
+
+</details>
 
 原论文的 base 配置中，Encoder 和 Decoder 都堆叠 $N=6$ 层，隐藏维度 $d_{\text{model}}=512$，多头注意力头数 $h=8$，前馈网络中间维度 $d_{\text{ff}}=2048$。
 
@@ -154,7 +167,7 @@ Attention 可以用查字典类比：
 
 模型先计算 Query 和各个 Key 的相似度，再用相似度作为权重，对 Value 加权求和。
 
-![Scaled dot-product attention](/assets/images/llm/dot-product-attention.png)
+{% include figure.html src="/assets/images/llm/dot-product-attention.png" original="/assets/images/llm/dot-product-attention.png" alt="缩放点积注意力：Q 与 K 计算分数，缩放并施加掩码后经 softmax，再对 V 加权求和。" caption="缩放点积注意力：Q 与 K 计算分数，缩放并施加掩码后经 softmax，再对 V 加权求和。" size="small" width="279" height="328" source_url="https://arxiv.org/abs/1706.03762" source="原论文" max_width="279" %}
 
 公式是：
 
@@ -218,7 +231,7 @@ $$
 \text{Concat}(\text{head}_1,\ldots,\text{head}_h)W^O
 $$
 
-![Multi-head attention](/assets/images/llm/MHA.png)
+{% include figure.html src="/assets/images/llm/MHA.png" original="/assets/images/llm/MHA.png" alt="多头注意力：各头在投影空间计算注意力，拼接后通过输出投影" caption="多头注意力：各头在投影空间计算注意力，拼接后通过输出投影；图中的各头不是人工指定的语义角色。" size="small" width="269" height="355" source_url="https://arxiv.org/abs/1706.03762" source="原论文" max_width="269" %}
 
 在原论文 base 配置中：
 
@@ -383,6 +396,8 @@ $$
 $$
 
 ---
+
+{% include figure.html src="/assets/images/figures/attention-masks.svg" id="fig-attention-masks" alt="三种掩码的允许位置示意。行是 Query，列是 Key" caption="三种掩码的允许位置示意。行是 Query，列是 Key；组合掩码同时排除未来位置和填充 Key。" size="full" width="1000" height="480" source="根据正文整理的教学示意" %}
 
 ## 10. 为什么 Self-Attention 有优势
 

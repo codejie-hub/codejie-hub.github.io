@@ -1,0 +1,211 @@
+- post: llm
+  section: '2.'
+  asset: lora-branches
+  size: full
+  caption: 原权重 W 保持冻结，输入同时经过低秩分支 A、B；两路相加得到输出，矩阵形状沿用正文约定。
+- post: llm
+  section: '7.'
+  asset: qlora-precision
+  size: full
+  caption: QLoRA 将量化权重存储、计算精度与适配器更新分开；图为数据流示意，不代表全部张量都以 4-bit 计算。
+- post: transformer
+  section: '9.'
+  asset: attention-masks
+  size: full
+  caption: 三种掩码的允许位置示意。行是 Query，列是 Key；组合掩码同时排除未来位置和填充 Key。
+- post: llms
+  section: '2.'
+  asset: token-pipeline
+  size: full
+  caption: 文本、Token、整数 ID 与 Embedding 是不同层次；图中的切分与 ID 仅作教学示例，不对应某个真实 tokenizer。
+- post: llms
+  section: '5.'
+  asset: rope-rotation
+  size: medium
+  caption: RoPE 对成对分量施加位置相关旋转，保留每对向量的范数；维度如何配对必须与实现保持一致。
+- post: llms
+  section: '6.'
+  asset: swiglu-gate
+  size: full
+  caption: SwiGLU 的 gate 与 up 分支先逐元素相乘，再经 down 投影回到模型宽度。
+- post: roboLLM
+  section: '1.'
+  asset: robot-llm-loop
+  size: full
+  caption: 感知、语义接地、高层规划、动作生成与真实反馈构成研究问题链；各方法可能只覆盖其中一部分。
+- post: priorDA
+  section: '2.'
+  asset: prior-depth-pipeline
+  size: full
+  caption: 相对深度提供稠密几何结构，度量先验提供尺度约束；粗对齐、重加权和条件细化将两者结合。
+- post: 3DGSS
+  section: '2.'
+  asset: gaussian-parameters
+  size: medium
+  caption: 二维截面示意：高斯中心决定位置，尺度与旋转共同决定协方差；透明度参与后续合成。
+- post: 3DGSS
+  section: '3.'
+  asset: gaussian-projection
+  size: full
+  caption: 三维高斯投影为屏幕空间椭圆，并沿深度顺序进行透明度合成；图为表示与渲染流程示意。
+- post: flowmatching
+  section: '3.'
+  asset: conditional-marginal
+  size: full
+  caption: 不同条件路径可以在相同时间、相同位置提供不同速度标签；平方损失回归到它们的条件平均，而非记住单条配对路径。
+- post: flowmatching
+  section: '6.'
+  asset: gaussian-flow-example
+  size: full
+  caption: 正文独立高斯算例的解析计算：方差先缩小再增大，真实 ODE 轨迹随时间变速；一步 Euler 将所有起点送到均值 2。
+- post: VGGT
+  section: '2.'
+  asset: vggt-heads
+  size: full
+  caption: 多视图输入经过共享表征与跨视图信息交互，连接相机、深度、点图与跟踪等输出；示意图省略具体网络层。
+- post: pi0
+  section: '4.'
+  asset: pi0-architecture
+  size: full
+  caption: 视觉语言骨干提供条件表征，动作 expert 在观测与流时间条件下预测动作速度场；此图为正文方法整理。
+- post: pi0
+  section: '5.'
+  asset: pi0-training-inference
+  size: full
+  caption: 训练时采样加噪动作与速度标签；推理时从新噪声积分生成动作块，只执行一段，再用新观测重新规划。
+- post: robot-kinematics
+  section: '2.6'
+  asset: coordinate-chain
+  size: full
+  caption: 上标表示目标坐标系：将相机中的目标经手眼关系与当前末端位姿变换到基座系；乘法次序与正文约定一致。
+- post: robot-kinematics
+  section: '4.5'
+  asset: quaternion-slerp
+  size: medium
+  caption: 单位四元数的 q 与 −q 表示同一旋转；SLERP 前选择符号以沿较短球面弧插值。图为低维球面截面示意。
+- post: robot-kinematics
+  section: '6.3'
+  asset: jacobian-singularity
+  size: full
+  caption: 单位关节速度球经位置雅可比映射为末端速度椭球；接近奇异位形时，某些方向的可达瞬时速度收缩。
+- post: pid-mpc-control
+  section: '4.'
+  asset: pid-responses
+  size: full
+  caption: '统一一阶对象上的教学仿真：G(s)=1/(s+1)，单位阶跃；P: Kp=2，PI: Kp=2、Ki=1，PID 另取 Kd=0.2 并对测量求导。未加入饱和与噪声，不代表普遍整定结论。'
+- post: pid-mpc-control
+  section: '7.'
+  asset: mpc-horizon
+  size: full
+  caption: 每次根据当前状态优化预测窗口内的控制，只执行第一个控制量；下一次收到新测量后重新求解。
+- post: diffusion-policy
+  section: '6.'
+  asset: action-modes
+  size: full
+  caption: 定性示意：左右两种可行绕行策略形成多峰分布，直接回归的均值可能落在障碍上；曲线不表示论文实验统计。
+- post: diffusion-policy
+  section: '8.'
+  asset: action-windows
+  size: full
+  caption: 观测窗口 To、预测动作窗口 Tp 与实际执行窗口 Ta 分工不同；执行一段后获取新观测，闭环发生在再次生成动作块时。
+- post: rl-base
+  section: '2.'
+  asset: bellman-backup
+  size: full
+  caption: 给定策略下，对动作与后继状态按概率加权，得到即时奖励加折扣后续价值；最优方程才对动作取最大值。
+- post: rl-base
+  section: '6.'
+  asset: mc-td-timeline
+  size: full
+  caption: MC 等待整段回报，TD(0) 用一步奖励与后继价值自举；二者使用的目标与更新时间不同。
+- post: visual-servoing-survey
+  section: '2.'
+  asset: camera-projection
+  size: medium
+  caption: 静止三维点在针孔模型下投影到归一化像平面；相机沿 +X 平移时，相机系的 X 与归一化像坐标 x 减小。图中 X 轴画为竖直方向。
+- post: visual-servoing-survey
+  section: '4.'
+  asset: servo-velocity-chain
+  size: full
+  caption: 特征误差先映射为相机速度，再按坐标系与参考点约定转换到机器人执行量；速度变换是否需要杠杆臂项取决于参考点。
+- post: hilserl
+  section: '6.'
+  asset: hil-actor-critic
+  size: full
+  caption: Critic 用终止掩码、奖励和目标网络构造 Bellman 目标；Actor 在熵正则目标下利用当前 Critic 的价值与动作梯度。示意图省略双
+    Critic 等实现细节。
+- post: hilserl
+  section: '8.'
+  asset: hil-asynchronous
+  size: full
+  caption: Actor 持续与机器人交互，Learner 从示范和在线回放采样更新；参数同步与经验传输并非每个控制时刻都阻塞执行。
+- post: pi0.5
+  section: '3.'
+  asset: pi05-data
+  size: full
+  caption: 六类数据提供不同监督，图文样本没有动作标签；HL 可来自机器人数据再标注，六类并非互斥小时数。VI 用于聚焦后的高层学习。
+- post: pi0.5
+  section: '5.'
+  asset: fast-encoding
+  size: full
+  caption: FAST 将动作块按时间维做 DCT、量化并编码为离散序列；推理连续动作时仍使用动作 expert，不能把两种输出路径混为一谈。
+- post: pi0.5
+  section: '7.'
+  asset: pi05-attention-mask
+  size: full
+  caption: 行是 Query，列是 Key：前缀不看动作，离散输出保持因果，连续动作不看真实 FAST 标签；这是防止答案泄漏的可见性结构。
+- post: robot-manipulation-survey
+  section: '@before:1.'
+  asset: research-routes
+  size: full
+  caption: 七条路线按核心研究问题组织，名称与站内路线图共享数据；箭头表示阅读关联，不表示方法之间的性能排名。
+- post: embodied-imitation-learning
+  section: '2.'
+  asset: embodied-distribution
+  size: full
+  caption: 专家状态分布、学习者偏离与恢复标签；概念示意。
+- post: embodied-imitation-learning
+  section: '5.'
+  asset: embodied-action-timing
+  size: full
+  caption: 预测四步、执行两步的动作时间轴；概念示意。
+- post: embodied-grasp-geometry
+  section: '3.'
+  asset: embodied-grasp-chain
+  size: full
+  caption: 像素、相机系抓取、基座目标与工具偏置的转换链。
+- post: embodied-grasp-geometry
+  section: '6.'
+  asset: embodied-grasp-contact
+  size: full
+  caption: 平面摩擦夹持与空间双点接触的力矩限制。
+- post: embodied-contact-control
+  section: '2.'
+  asset: embodied-impedance
+  size: full
+  caption: 虚拟弹簧阻尼与外部接触力的一维模型。
+- post: embodied-contact-control
+  section: '4.'
+  asset: embodied-control-interfaces
+  size: full
+  caption: 阻抗与导纳的计算接口；不表示性能排名。
+- post: embodied-world-models
+  section: '3.'
+  asset: embodied-latent-model
+  size: full
+  caption: 真实观测后验更新与想象先验递推的区别。
+- post: embodied-world-models
+  section: '5.'
+  asset: embodied-planning-loop
+  size: full
+  caption: 候选评分、短前缀执行与新观测修正的滚动规划。
+- post: embodied-offline-rl
+  section: '2.'
+  asset: embodied-offline-support
+  size: full
+  caption: 未见动作的虚高价值进入 Bellman 目标的教学 MDP。
+- post: embodied-offline-rl
+  section: '5.'
+  asset: embodied-expectile
+  size: full
+  caption: 等概率零和二的均值、expectile 与分位数手算对照。

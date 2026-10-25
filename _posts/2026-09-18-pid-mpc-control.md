@@ -1,11 +1,12 @@
 ---
 title: "【控制器】从 P、PI、PID 到 MPC：原理、公式推导与工程实践"
 date: 2026-09-18 00:00:00 +0800
-categories: [控制]
+categories: [运动学与控制]
+content_type: tutorial
 tags: [control, p-controller, pi-controller, pid, mpc, state-space, optimization]
 description: 从闭环反馈的统一框架出发，推导 P、PI、PID 与模型预测控制 MPC 的控制律、闭环特性、离散实现、约束优化和参数整定方法，并比较它们各自适用的工程场景。
 image:
-  path: /assets/images/posts/placeholders/robotics.svg
+  path: /assets/images/covers/pid-mpc-control-cover.jpg
   alt: P、PI、PID 与模型预测控制原理及公式推导
 math: true
 mermaid: true
@@ -34,6 +35,8 @@ $$
 
 控制器根据误差产生控制量，驱动被控对象改变输出：
 
+<figure class="article-figure mermaid-figure" data-mermaid-figure markdown="1">
+
 ```mermaid
 flowchart LR
     R["参考值 r"] --> S(("Σ"))
@@ -43,6 +46,9 @@ flowchart LR
     P --> Y
 ```
 
+
+<figcaption><span class="figure-number" aria-hidden="true"></span>参考值、误差、控制器与对象组成负反馈闭环。</figcaption>
+</figure>
 对于线性时不变系统，令被控对象和控制器的传递函数分别为 $G(s)$ 与 $C(s)$。在零初始条件下，
 
 $$
@@ -620,6 +626,8 @@ $$
 
 ---
 
+{% include figure.html src="/assets/images/figures/pid-responses.svg" id="fig-pid-responses" alt="统一一阶对象上的教学仿真：G(s)=1/(s+1)，单位阶跃" caption="统一一阶对象上的教学仿真：G(s)=1/(s+1)，单位阶跃；P: Kp=2，PI: Kp=2、Ki=1，PID 另取 Kd=0.2 并对测量求导。未加入饱和与噪声，不代表普遍整定结论。" size="full" width="1000" height="600" source="根据正文整理的教学示意" %}
+
 ## 5. 从连续 PID 到离散控制程序
 
 数字控制器每隔 $T_s$ 秒运行一次。设
@@ -788,6 +796,8 @@ MPC 的基本思想是：
 3. 只执行其中第一个动作；
 4. 下一时刻获取新测量，再重新预测和优化。
 
+<figure class="article-figure mermaid-figure" data-mermaid-figure markdown="1">
+
 ```mermaid
 flowchart LR
     X["状态估计 x(k)"] --> M["模型预测"]
@@ -799,6 +809,9 @@ flowchart LR
     Y --> X
 ```
 
+
+<figcaption><span class="figure-number" aria-hidden="true"></span>MPC 用模型预测与带约束优化生成当前执行量，再根据新测量重新求解。</figcaption>
+</figure>
 这称为**滚动时域（receding horizon）**策略。虽然每次优化得到整段序列，真正执行的只有第一项，因此下一次求解能利用最新反馈纠正模型误差和扰动。
 
 ### 7.2 离散状态空间模型
@@ -846,6 +859,8 @@ $$
 作一阶近似，但正式设计通常应使用精确离散化。
 
 ---
+
+{% include figure.html src="/assets/images/figures/mpc-horizon.svg" id="fig-mpc-horizon" alt="每次根据当前状态优化预测窗口内的控制，只执行第一个控制量" caption="每次根据当前状态优化预测窗口内的控制，只执行第一个控制量；下一次收到新测量后重新求解。" size="full" width="1000" height="600" source="根据正文整理的教学示意" %}
 
 ## 8. MPC 预测方程的矩阵推导
 

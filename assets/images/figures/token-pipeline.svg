@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="600" viewBox="0 0 1000 600" role="img" aria-labelledby="title desc">
+<title id="title">从文本到 Embedding</title><desc id="desc">切分粒度、Token ID、向量维度是三个不同问题。根据文章整理的教学示意。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="context-stroke"/></marker></defs>
+<style>text{font-family:'Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Arial,sans-serif}</style>
+<rect width="100%" height="100%" fill="white"/>
+<text x="40" y="52" font-size="30" fill="#253247" text-anchor="start" font-weight="700">从文本到 Embedding</text>
+<text x="40" y="88" font-size="19" fill="#637084" text-anchor="start" font-weight="400">切分粒度、Token ID、向量维度是三个不同问题</text>
+<rect x="40.0" y="160" width="283.3333333333333" height="105" rx="12" fill="#f8fafc" stroke="#4264ad" stroke-width="2"/>
+<text x="181.66666666666666" y="204.5" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">文本</text>
+<text x="181.66666666666666" y="238.5" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">机器人学习</text>
+<rect x="358.3333333333333" y="160" width="283.3333333333333" height="105" rx="12" fill="#f8fafc" stroke="#198477" stroke-width="2"/>
+<text x="500.0" y="204.5" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">Token</text>
+<text x="500.0" y="238.5" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">机器人 / 学习</text>
+<path d="M328.3333333333333,212 L350.3333333333333,212" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="676.6666666666666" y="160" width="283.3333333333333" height="105" rx="12" fill="#f8fafc" stroke="#b57836" stroke-width="2"/>
+<text x="818.3333333333333" y="204.5" font-size="24" fill="#b57836" text-anchor="middle" font-weight="400">整数 ID</text>
+<text x="818.3333333333333" y="238.5" font-size="24" fill="#b57836" text-anchor="middle" font-weight="400">例如 42 / 87</text>
+<path d="M646.6666666666666,212 L668.6666666666666,212" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="335" y="350" width="330" height="105" rx="12" fill="#f8fafc" stroke="#198477" stroke-width="2"/>
+<text x="500.0" y="394.5" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">Embedding 查表</text>
+<text x="500.0" y="428.5" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">[T, d_model]</text>
+<path d="M810,265 L665,380" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="100" y="360" width="19" height="80" rx="2" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="124" y="360" width="19" height="80" rx="2" fill="#198477" stroke="none" stroke-width="2"/>
+<rect x="148" y="360" width="19" height="80" rx="2" fill="#b57836" stroke="none" stroke-width="2"/>
+<rect x="172" y="360" width="19" height="80" rx="2" fill="#b15e7b" stroke="none" stroke-width="2"/>
+<rect x="196" y="360" width="19" height="80" rx="2" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="220" y="360" width="19" height="80" rx="2" fill="#198477" stroke="none" stroke-width="2"/>
+<text x="110" y="485" font-size="22" fill="#253247" text-anchor="start" font-weight="400">每个 Token 对应向量</text>
+<path d="M40,544 L960,544" fill="none" stroke="#e2e7ef" stroke-width="1"/>
+<text x="40" y="576" font-size="18" fill="#69778a" text-anchor="start" font-weight="400">图中切分与 ID 是解释格式的例子，不是某个真实模型的 tokenizer 输出。</text>
+</svg>

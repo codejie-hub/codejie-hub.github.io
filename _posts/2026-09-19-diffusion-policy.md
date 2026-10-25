@@ -1,11 +1,12 @@
 ---
 title: "【机器人学习】Diffusion Policy：从条件去噪到闭环动作生成的原理与推导"
 date: 2026-09-19 00:00:00 +0800
-categories: [机器人学习]
+categories: [机器人学习与 VLA]
+content_type: paper
 tags: [diffusion-policy, imitation-learning, diffusion, robotics, visuomotor-policy, action-chunking]
 description: 从多模态行为克隆出发，推导 Diffusion Policy 的前向加噪、反向后验、噪声预测目标与条件 score；结合手算例子、官方代码和 PyTorch 实现，解释视觉条件、动作序列、滚动执行、DDIM 加速及其与 MPC、Flow Matching 的关系。
 image:
-  path: /assets/images/posts/placeholders/robotics.svg
+  path: /assets/images/covers/diffusion-policy-cover.jpg
   alt: Diffusion Policy 条件扩散与机器人闭环动作生成学习笔记
 math: true
 mermaid: true
@@ -166,6 +167,8 @@ $$
 
 网络看到的是 $$A^k,k,O$$，监督标签是已知的 $$\epsilon$$。
 
+<figure class="article-figure mermaid-figure" data-mermaid-figure markdown="1">
+
 ~~~mermaid
 flowchart LR
     O["观测窗口 O"] --> E["观测编码器"]
@@ -179,6 +182,9 @@ flowchart LR
     M --> L["预测噪声与 ε 的 MSE"]
 ~~~
 
+
+<figcaption><span class="figure-number" aria-hidden="true"></span>训练流程：观测条件固定后，采样噪声等级并回归噪声。</figcaption>
+</figure>
 一次训练更新通常只采样一个噪声等级，不需要把完整的 $$K$$ 步反向生成过程展开后再反向传播。
 
 ### 2.2 执行：内部生成一个动作块，外部执行一段
@@ -197,6 +203,8 @@ $$
 
 提取其中接下来可执行的 $$T_a$$ 个动作，交给机器人控制器，再读取新观测重新生成。
 
+<figure class="article-figure mermaid-figure" data-mermaid-figure markdown="1">
+
 ~~~mermaid
 flowchart TD
     O["读取最近 To 帧观测"] --> E["编码一次，得到条件 c"]
@@ -207,6 +215,9 @@ flowchart TD
     R --> O
 ~~~
 
+
+<figcaption><span class="figure-number" aria-hidden="true"></span>运行流程：内部多步去噪与外部滚动观测是两个时间层级。</figcaption>
+</figure>
 这里有三个完全不同的轴：
 
 | 轴 | 含义 | 一个例子 |
@@ -787,6 +798,8 @@ $$
 
 “沿高密度方向去噪”意味着向示范分布中的动作靠近，不能直接解释为“在线求解最优控制”。[Diffusion Policy 第 4.4—4.5 节][dp]
 
+{% include figure.html src="/assets/images/figures/action-modes.svg" id="fig-action-modes" alt="定性示意：左右两种可行绕行策略形成多峰分布，直接回归的均值可能落在障碍上" caption="定性示意：左右两种可行绕行策略形成多峰分布，直接回归的均值可能落在障碍上；曲线不表示论文实验统计。" size="full" width="1000" height="600" source="根据正文整理的教学示意" %}
+
 ## 7. 网络如何同时理解观测、时间和动作
 
 ### 7.1 视觉条件只需在一轮生成开始时编码
@@ -962,6 +975,8 @@ $$
 | 优化目标 | 拟合示范动作分布 | 最小化给定控制代价 |
 
 两者共享滚动时域的执行思想，内部求解的问题却不同。可以结合 [PID 与 MPC 笔记]({% post_url 2026-09-18-pid-mpc-control %})理解策略生成、轨迹规划与底层跟踪各自承担的职责。
+
+{% include figure.html src="/assets/images/figures/action-windows.svg" id="fig-action-windows" alt="观测窗口 To、预测动作窗口 Tp 与实际执行窗口 Ta 分工不同" caption="观测窗口 To、预测动作窗口 Tp 与实际执行窗口 Ta 分工不同；执行一段后获取新观测，闭环发生在再次生成动作块时。" size="full" width="1000" height="600" source="根据正文整理的教学示意" %}
 
 ## 9. DDIM 加速：不能把完整反向链简单跳着执行
 

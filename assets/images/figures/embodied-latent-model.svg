@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="520" viewBox="0 0 960 520" role="img" aria-labelledby="title desc">
+<title id="title">潜状态：真实观测更新，先验预测未来</title><desc id="desc">确定性记忆 h 与随机潜变量 z 联合表示历史；此图省略解码器细节。。根据文章整理的教学示意。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="context-stroke"/></marker></defs>
+<style>text{font-family:'Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Arial,sans-serif}</style>
+<rect width="100%" height="100%" fill="white"/>
+<text x="40" y="52" font-size="30" fill="#253247" text-anchor="start" font-weight="700">潜状态：真实观测更新，先验预测未来</text>
+<text x="40" y="88" font-size="19" fill="#637084" text-anchor="start" font-weight="400">确定性记忆 h 与随机潜变量 z 联合表示历史；此图省略解码器细节。</text>
+<text x="40" y="145" font-size="24" fill="#198477" text-anchor="start" font-weight="700">观测阶段</text>
+<rect x="210" y="110" width="185" height="80" rx="12" fill="#f8fafc" stroke="#4264ad" stroke-width="2"/>
+<text x="302.5" y="142.0" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">历史 + 动作</text>
+<text x="302.5" y="176.0" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">更新 hₜ</text>
+<rect x="470" y="110" width="185" height="80" rx="12" fill="#f8fafc" stroke="#198477" stroke-width="2"/>
+<text x="562.5" y="142.0" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">后验 q</text>
+<text x="562.5" y="176.0" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">zₜ | hₜ, oₜ</text>
+<rect x="730" y="110" width="185" height="80" rx="12" fill="#f8fafc" stroke="#4264ad" stroke-width="2"/>
+<text x="822.5" y="142.0" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">表示 (hₜ,zₜ)</text>
+<text x="822.5" y="176.0" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">评估 / 行动</text>
+<path d="M400,150 L460,150" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M660,150 L720,150" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="475" y="218" width="175" height="55" rx="12" fill="#f8fafc" stroke="#198477" stroke-width="2"/>
+<text x="562.5" y="253.5" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">真实观测 oₜ</text>
+<path d="M562,214 L562,197" fill="none" stroke="#198477" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M40,295 L920,295" fill="none" stroke="#d7dfe9" stroke-width="1"/>
+<text x="40" y="355" font-size="24" fill="#8064a8" text-anchor="start" font-weight="700">想象阶段</text>
+<rect x="210" y="320" width="185" height="90" rx="12" fill="#f8fafc" stroke="#8064a8" stroke-width="2"/>
+<text x="302.5" y="357.0" font-size="24" fill="#8064a8" text-anchor="middle" font-weight="400">当前潜状态</text>
+<text x="302.5" y="391.0" font-size="24" fill="#8064a8" text-anchor="middle" font-weight="400">+ 候选动作</text>
+<rect x="470" y="320" width="185" height="90" rx="12" fill="#f8fafc" stroke="#8064a8" stroke-width="2"/>
+<text x="562.5" y="357.0" font-size="24" fill="#8064a8" text-anchor="middle" font-weight="400">转移先验 p</text>
+<text x="562.5" y="391.0" font-size="24" fill="#8064a8" text-anchor="middle" font-weight="400">采样下个 z</text>
+<path d="M405,365 L460,365" fill="none" stroke="#8064a8" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="730" y="320" width="185" height="90" rx="12" fill="#f8fafc" stroke="#8064a8" stroke-width="2"/>
+<text x="822.5" y="357.0" font-size="24" fill="#8064a8" text-anchor="middle" font-weight="400">预测后果</text>
+<text x="822.5" y="391.0" font-size="24" fill="#8064a8" text-anchor="middle" font-weight="400">奖励 / 继续</text>
+<path d="M665,365 L720,365" fill="none" stroke="#8064a8" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="565" y="445" font-size="22" fill="#b15e7b" text-anchor="middle" font-weight="400">未来观测尚未发生，不能用未来图像纠正模型</text>
+<path d="M40,464 L920,464" fill="none" stroke="#e2e7ef" stroke-width="1"/>
+<text x="40" y="496" font-size="18" fill="#69778a" text-anchor="start" font-weight="400">想象能力需用多步开环和任务相关误差评估，不能只看后验重建质量。</text>
+</svg>

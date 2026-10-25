@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+<title id="title"></title><desc id="desc">。根据文章整理的教学示意。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="context-stroke"/></marker></defs>
+<style>text{font-family:'Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Arial,sans-serif}</style>
+<rect width="100%" height="100%" fill="white"/>
+<rect x="0" y="0" width="1200" height="630" rx="0" fill="#f7f9fc" stroke="none" stroke-width="2"/>
+<rect x="48" y="65" width="8" height="500" rx="4" fill="#8064a8" stroke="none" stroke-width="2"/>
+<text x="86" y="115" font-size="20" fill="#8064a8" text-anchor="start" font-weight="700">CODEJIE  /  RESEARCH NOTES</text>
+<text x="86" y="185" font-size="25" fill="#64748b" text-anchor="start" font-weight="400">三维视觉</text>
+<text x="86" y="285" font-size="61" fill="#253247" text-anchor="start" font-weight="700">VGGT</text>
+<text x="88" y="425" font-size="24" fill="#637084" text-anchor="start" font-weight="400">多视图输入 · 前馈几何预测</text>
+<rect x="705" y="145" width="455" height="360" rx="14" fill="#fff" stroke="#e0e6ee" stroke-width="2"/>
+<g transform="translate(710 175) scale(0.43)"><rect width="1000" height="600" fill="white"/>
+<text x="40" y="52" font-size="30" fill="#253247" text-anchor="start" font-weight="700">VGGT：多视图到统一几何预测</text>
+<text x="40" y="88" font-size="19" fill="#637084" text-anchor="start" font-weight="400">此图概括输入输出，省略具体 token 与网络层实现</text>
+<rect x="55" y="160" width="170" height="110" rx="12" fill="#f3f6fa" stroke="#4264ad" stroke-width="2"/>
+<rect x="78" y="183" width="170" height="110" rx="12" fill="#f3f6fa" stroke="#198477" stroke-width="2"/>
+<rect x="101" y="206" width="170" height="110" rx="12" fill="#f3f6fa" stroke="#b57836" stroke-width="2"/>
+<text x="155" y="370" font-size="24" fill="#253247" text-anchor="middle" font-weight="400">多视图图像</text>
+<rect x="340" y="230" width="285" height="125" rx="12" fill="#f8fafc" stroke="#4264ad" stroke-width="2"/>
+<text x="482.5" y="284.5" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">共享表征</text>
+<text x="482.5" y="318.5" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">跨视图信息交互</text>
+<path d="M260,270 L335,285" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="765" y="130" width="195" height="65" rx="12" fill="#f8fafc" stroke="#4264ad" stroke-width="2"/>
+<text x="862.5" y="170.5" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">相机参数</text>
+<path d="M625,290 L760,162" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="765" y="220" width="195" height="65" rx="12" fill="#f8fafc" stroke="#198477" stroke-width="2"/>
+<text x="862.5" y="260.5" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">深度</text>
+<path d="M625,290 L760,252" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="765" y="310" width="195" height="65" rx="12" fill="#f8fafc" stroke="#b57836" stroke-width="2"/>
+<text x="862.5" y="350.5" font-size="24" fill="#b57836" text-anchor="middle" font-weight="400">三维点图</text>
+<path d="M625,290 L760,342" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="765" y="400" width="195" height="65" rx="12" fill="#f8fafc" stroke="#b15e7b" stroke-width="2"/>
+<text x="862.5" y="440.5" font-size="24" fill="#b15e7b" text-anchor="middle" font-weight="400">点跟踪</text>
+<path d="M625,290 L760,432" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M40,544 L960,544" fill="none" stroke="#e2e7ef" stroke-width="1"/>
+<text x="40" y="576" font-size="18" fill="#69778a" text-anchor="start" font-weight="400">下游语义高斯抓取演示属于应用扩展，不是 VGGT 原始网络的一部分。</text>
+</g>
+<text x="88" y="565" font-size="19" fill="#8064a8" text-anchor="start" font-weight="400">方法理解  /  公式推导  /  工程笔记</text>
+</svg>

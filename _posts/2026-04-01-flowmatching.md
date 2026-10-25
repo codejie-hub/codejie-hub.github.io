@@ -1,11 +1,12 @@
 ---
 title: "【生成模型】Flow Matching：从连续性方程到条件流匹配的原理与推导"
 date: 2026-04-01 16:00:00 +0800
-categories: [多模态模型]
+categories: [生成模型]
+content_type: tutorial
 tags: [flow-matching, diffusion, generative-model, rectified-flow, optimal-transport, ode]
 description: 从概率输运与连续性方程出发，推导边际速度场、条件流匹配的等价目标和高斯概率路径；用可手算例子解释直线插值与生成轨迹的区别，并梳理最优传输、Rectified Flow、扩散及训练采样实现。
 image:
-  path: /assets/images/posts/placeholders/paper-note.svg
+  path: /assets/images/covers/flowmatching-cover.jpg
   alt: Flow Matching 的概率输运、速度场与条件回归
 mermaid: true
 math: true
@@ -57,6 +58,8 @@ $$
 
 特意用 $$X_t$$ 和 $$Z_t$$ 区分**训练插值**与**生成轨迹**。理想情况下，两者在每个时刻的分布相同，但逐条轨迹和端点配对不必相同。
 
+<figure class="article-figure mermaid-figure" data-mermaid-figure markdown="1">
+
 ~~~mermaid
 flowchart TD
     A["选择源分布、数据分布与端点耦合"] --> B["构造可采样的插值 X_t"]
@@ -68,6 +71,9 @@ flowchart TD
     F --> G
 ~~~
 
+
+<figcaption><span class="figure-number" aria-hidden="true"></span>从端点耦合、条件速度回归到网络 ODE 的理论主线。</figcaption>
+</figure>
 第 1—4 节给出理论主线，第 5—6 节把它落实到高斯路径和手算例子，第 7—8 节梳理 OT、Rectified Flow 与扩散，第 9—11 节讨论数值采样、实现和交互演示。首次阅读可以先读第 3、4、6 节，再回看连续性方程。
 
 ## 1. 从生成模型到连续概率输运
@@ -229,6 +235,8 @@ $$
 
 这就是训练所需的标签。它只是**这对端点的插值速度**，还不能直接写成整个分布在位置 $$x$$ 的速度 $$u_t(x)$$。
 
+{% include demo-frame.html src="/assets/demos/flow-matching-ot.html" title="Flow Matching 条件线性插值演示" height="620px" caption="随机配对的条件插值：拖动时间观察训练状态与速度标签；不代表 OT 解或模型生成轨迹。" %}
+
 ### 3.2 为什么需要条件平均
 
 同一个时刻、同一个位置附近，可能有许多不同端点配对产生的训练样本，它们的速度标签不一样。网络只看到 $$t,x$$，无法知道标签来自哪一对端点。
@@ -306,6 +314,8 @@ $$
 这个结论保证的是**每个时刻的边际分布**，不是整个随机过程完全相同。训练插值需要预先知道两个端点；生成 ODE 只需要当前状态，却能在分布层面复现同一演化。
 
 这也解释了一个看似矛盾的现象：训练插值可以在同一时刻交叉，并携带不同速度；具有唯一解的 ODE 不能在同一时刻、同一位置给出两个不同方向。它通过条件平均重新组织轨迹，而不必保留原配对。
+
+{% include figure.html src="/assets/images/figures/conditional-marginal.svg" id="fig-conditional-marginal" alt="不同条件路径可以在相同时间、相同位置提供不同速度标签" caption="不同条件路径可以在相同时间、相同位置提供不同速度标签；平方损失回归到它们的条件平均，而非记住单条配对路径。" size="full" width="1000" height="600" source="根据正文整理的教学示意" %}
 
 ## 4. CFM 损失为何等价于 FM 损失
 
@@ -678,6 +688,8 @@ $$
 $$
 
 在 $$t=1/2$$ 时，最优预测对所有位置都是 $$2$$，但标签仍有方差 $$2$$。这是条件不确定性，不是网络“还没学好”。
+
+{% include figure.html src="/assets/images/figures/gaussian-flow-example.svg" id="fig-gaussian-flow-example" alt="正文独立高斯算例的解析计算：方差先缩小再增大，真实 ODE 轨迹随时间变速" caption="正文独立高斯算例的解析计算：方差先缩小再增大，真实 ODE 轨迹随时间变速；一步 Euler 将所有起点送到均值 2。" size="full" width="1000" height="650" source="根据正文整理的教学示意" %}
 
 ## 7. Flow Matching、最优传输与 Rectified Flow
 
@@ -1227,7 +1239,7 @@ $$
 
 **这个演示没有训练神经网络，没有求解 OT 配对，也没有积分学到的边际速度场。** 它展示的是构造训练样本时使用的条件插值；动画中的高斯尺度与曲线大小为了显示效果进行了调整。
 
-{% include demo-frame.html src="/assets/demos/flow-matching-ot.html" title="Flow Matching 条件线性插值演示" height="620px" caption="随机配对的条件插值：拖动时间观察训练状态与速度标签；不代表 OT 解或模型生成轨迹。" %}
+[跳转到本篇演示：flow-matching-ot](#demo-flow-matching-ot)
 
 可以按下面的顺序观察：
 

@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="500" viewBox="0 0 960 500" role="img" aria-labelledby="title desc">
+<title id="title">阻抗与导纳：看清控制接口</title><desc id="desc">两种路径都需要处理反馈、采样和真实机器人动力学。。根据文章整理的教学示意。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="context-stroke"/></marker></defs>
+<style>text{font-family:'Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Arial,sans-serif}</style>
+<rect width="100%" height="100%" fill="white"/>
+<text x="40" y="52" font-size="30" fill="#253247" text-anchor="start" font-weight="700">阻抗与导纳：看清控制接口</text>
+<text x="40" y="88" font-size="19" fill="#637084" text-anchor="start" font-weight="400">两种路径都需要处理反馈、采样和真实机器人动力学。</text>
+<text x="40" y="195" font-size="25" fill="#4264ad" text-anchor="start" font-weight="700">阻抗实现</text>
+<rect x="210" y="150" width="205" height="90" rx="12" fill="#f8fafc" stroke="#4264ad" stroke-width="2"/>
+<text x="312.5" y="187.0" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">运动参考</text>
+<text x="312.5" y="221.0" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">误差 e</text>
+<rect x="450" y="150" width="205" height="90" rx="12" fill="#f8fafc" stroke="#4264ad" stroke-width="2"/>
+<text x="552.5" y="187.0" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">动力学 / 反馈</text>
+<text x="552.5" y="221.0" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">计算力或力矩</text>
+<path d="M420,195 L442,195" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="690" y="150" width="205" height="90" rx="12" fill="#f8fafc" stroke="#4264ad" stroke-width="2"/>
+<text x="792.5" y="187.0" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">机器人</text>
+<text x="792.5" y="221.0" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">产生运动</text>
+<path d="M660,195 L682,195" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="40" y="360" font-size="25" fill="#198477" text-anchor="start" font-weight="700">导纳实现</text>
+<rect x="210" y="315" width="205" height="90" rx="12" fill="#f8fafc" stroke="#198477" stroke-width="2"/>
+<text x="312.5" y="352.0" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">测量外力</text>
+<text x="312.5" y="386.0" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">力误差</text>
+<rect x="450" y="315" width="205" height="90" rx="12" fill="#f8fafc" stroke="#198477" stroke-width="2"/>
+<text x="552.5" y="352.0" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">虚拟动态</text>
+<text x="552.5" y="386.0" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">运动参考</text>
+<path d="M420,360 L442,360" fill="none" stroke="#198477" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="690" y="315" width="205" height="90" rx="12" fill="#f8fafc" stroke="#198477" stroke-width="2"/>
+<text x="792.5" y="352.0" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">位置内环</text>
+<text x="792.5" y="386.0" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">真实机器人</text>
+<path d="M660,360 L682,360" fill="none" stroke="#198477" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M40,444 L920,444" fill="none" stroke="#e2e7ef" stroke-width="1"/>
+<text x="40" y="476" font-size="18" fill="#69778a" text-anchor="start" font-weight="400">导纳外环输出的是参考，实际运动还由位置内环决定；参数单位与符号需一致。</text>
+</svg>

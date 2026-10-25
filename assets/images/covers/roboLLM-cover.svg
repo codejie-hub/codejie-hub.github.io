@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+<title id="title"></title><desc id="desc">。根据文章整理的教学示意。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="context-stroke"/></marker></defs>
+<style>text{font-family:'Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Arial,sans-serif}</style>
+<rect width="100%" height="100%" fill="white"/>
+<rect x="0" y="0" width="1200" height="630" rx="0" fill="#f7f9fc" stroke="none" stroke-width="2"/>
+<rect x="48" y="65" width="8" height="500" rx="4" fill="#5268b0" stroke="none" stroke-width="2"/>
+<text x="86" y="115" font-size="20" fill="#5268b0" text-anchor="start" font-weight="700">CODEJIE  /  RESEARCH NOTES</text>
+<text x="86" y="185" font-size="25" fill="#64748b" text-anchor="start" font-weight="400">机器人学习与 VLA</text>
+<text x="86" y="285" font-size="61" fill="#253247" text-anchor="start" font-weight="700">Robot + LLM</text>
+<text x="88" y="425" font-size="24" fill="#637084" text-anchor="start" font-weight="400">从视觉语言理解到机器人执行</text>
+<rect x="705" y="145" width="455" height="360" rx="14" fill="#fff" stroke="#e0e6ee" stroke-width="2"/>
+<g transform="translate(710 175) scale(0.43)"><rect width="1000" height="600" fill="white"/>
+<text x="40" y="52" font-size="30" fill="#253247" text-anchor="start" font-weight="700">Robot + LLM：把语义连接到执行</text>
+<text x="40" y="88" font-size="19" fill="#637084" text-anchor="start" font-weight="400">方法家族围绕同一条问题链展开</text>
+<rect x="40.0" y="155" width="283.3333333333333" height="105" rx="12" fill="#f8fafc" stroke="#4264ad" stroke-width="2"/>
+<text x="181.66666666666666" y="199.5" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">视觉感知</text>
+<text x="181.66666666666666" y="233.5" font-size="24" fill="#4264ad" text-anchor="middle" font-weight="400">几何 / 物体</text>
+<rect x="358.3333333333333" y="155" width="283.3333333333333" height="105" rx="12" fill="#f8fafc" stroke="#198477" stroke-width="2"/>
+<text x="500.0" y="199.5" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">语义接地</text>
+<text x="500.0" y="233.5" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">可供性 / 部件</text>
+<path d="M328.3333333333333,207 L350.3333333333333,207" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="676.6666666666666" y="155" width="283.3333333333333" height="105" rx="12" fill="#f8fafc" stroke="#b57836" stroke-width="2"/>
+<text x="818.3333333333333" y="199.5" font-size="24" fill="#b57836" text-anchor="middle" font-weight="400">高层规划</text>
+<text x="818.3333333333333" y="233.5" font-size="24" fill="#b57836" text-anchor="middle" font-weight="400">子任务 / 监控</text>
+<path d="M646.6666666666666,207 L668.6666666666666,207" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="330" y="350" width="320" height="110" rx="12" fill="#f8fafc" stroke="#198477" stroke-width="2"/>
+<text x="490.0" y="397.0" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">动作生成与机器人执行</text>
+<text x="490.0" y="431.0" font-size="24" fill="#198477" text-anchor="middle" font-weight="400">VLA / 生成式策略</text>
+<path d="M820,260 L650,380" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M330,405 L80,300" fill="none" stroke="#4264ad" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="140" y="365" font-size="22" fill="#198477" text-anchor="start" font-weight="400">新观测 / 执行反馈</text>
+<path d="M40,544 L960,544" fill="none" stroke="#e2e7ef" stroke-width="1"/>
+<text x="40" y="576" font-size="18" fill="#69778a" text-anchor="start" font-weight="400">模型名称及方法分支见正文；总览图不表示每个方法都覆盖完整闭环。</text>
+</g>
+<text x="88" y="565" font-size="19" fill="#5268b0" text-anchor="start" font-weight="400">方法理解  /  公式推导  /  工程笔记</text>
+</svg>

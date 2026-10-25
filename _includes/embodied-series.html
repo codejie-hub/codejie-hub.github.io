@@ -1,0 +1,10 @@
+<details class="embodied-series" markdown="1">
+<summary>具身智能学习系列 · 五篇阅读路线</summary>
+
+按“从示范出发 → 建立空间几何 → 理解接触 → 预测未来 → 改进决策”的顺序阅读，也可以按问题选读。
+
+{% for item in site.data.embodied_series %}{% assign series_url = '/posts/' | append: item.slug | append: '/' %}
+{{ forloop.index }}. {% if page.url == series_url %}**{{ item.title }}（本篇）**{% else %}[{{ item.title }}]({{ series_url | relative_url }}){% endif %}：{{ item.question }}
+{% endfor %}
+
+</details>

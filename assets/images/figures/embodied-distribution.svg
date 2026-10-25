@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="500" viewBox="0 0 960 500" role="img" aria-labelledby="title desc">
+<title id="title">模仿学习：训练分布与执行分布</title><desc id="desc">正常示范提供主路径；偏离状态上的标签提供恢复方向。。根据文章整理的教学示意。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="context-stroke"/></marker></defs>
+<style>text{font-family:'Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Arial,sans-serif}</style>
+<rect width="100%" height="100%" fill="white"/>
+<text x="40" y="52" font-size="30" fill="#253247" text-anchor="start" font-weight="700">模仿学习：训练分布与执行分布</text>
+<text x="40" y="88" font-size="19" fill="#637084" text-anchor="start" font-weight="400">正常示范提供主路径；偏离状态上的标签提供恢复方向。</text>
+<rect x="40" y="125" width="410" height="285" rx="12" fill="#f3f6fa" stroke="#d7dfe9" stroke-width="2"/>
+<text x="245" y="160" font-size="23" fill="#253247" text-anchor="middle" font-weight="700">只有专家示范</text>
+<path d="M80,355 L410,355" fill="none" stroke="#c5cfdc" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="75" y="390" font-size="19" fill="#637084" text-anchor="start" font-weight="400">任务进度</text>
+<path d="M80,265 L405,265" fill="none" stroke="#4264ad" stroke-width="4"/>
+<circle cx="100" cy="265" r="5" fill="#4264ad" stroke="none" stroke-width="3"/>
+<circle cx="148" cy="265" r="5" fill="#4264ad" stroke="none" stroke-width="3"/>
+<circle cx="196" cy="265" r="5" fill="#4264ad" stroke="none" stroke-width="3"/>
+<circle cx="244" cy="265" r="5" fill="#4264ad" stroke="none" stroke-width="3"/>
+<circle cx="292" cy="265" r="5" fill="#4264ad" stroke="none" stroke-width="3"/>
+<circle cx="340" cy="265" r="5" fill="#4264ad" stroke="none" stroke-width="3"/>
+<circle cx="388" cy="265" r="5" fill="#4264ad" stroke="none" stroke-width="3"/>
+<path d="M80.00,265.00 L180.00,267.00 L250.00,300.00 L320.00,330.00 L400.00,338.00" fill="none" stroke="#b15e7b" stroke-width="4" stroke-dasharray="8 6"/>
+<text x="235" y="220" font-size="20" fill="#b15e7b" text-anchor="middle" font-weight="400">未被数据约束的偏离</text>
+<rect x="510" y="125" width="410" height="285" rx="12" fill="#f3f6fa" stroke="#d7dfe9" stroke-width="2"/>
+<text x="715" y="160" font-size="23" fill="#253247" text-anchor="middle" font-weight="700">访问偏离状态，再查询专家</text>
+<path d="M550,355 L880,355" fill="none" stroke="#c5cfdc" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="545" y="390" font-size="19" fill="#637084" text-anchor="start" font-weight="400">任务进度</text>
+<path d="M550,265 L875,265" fill="none" stroke="#4264ad" stroke-width="4"/>
+<circle cx="570" cy="265" r="5" fill="#4264ad" stroke="none" stroke-width="3"/>
+<circle cx="618" cy="265" r="5" fill="#4264ad" stroke="none" stroke-width="3"/>
+<circle cx="666" cy="265" r="5" fill="#4264ad" stroke="none" stroke-width="3"/>
+<circle cx="714" cy="265" r="5" fill="#4264ad" stroke="none" stroke-width="3"/>
+<circle cx="762" cy="265" r="5" fill="#4264ad" stroke="none" stroke-width="3"/>
+<circle cx="810" cy="265" r="5" fill="#4264ad" stroke="none" stroke-width="3"/>
+<circle cx="858" cy="265" r="5" fill="#4264ad" stroke="none" stroke-width="3"/>
+<path d="M550.00,265.00 L650.00,267.00 L720.00,300.00 L790.00,330.00 L870.00,338.00" fill="none" stroke="#b15e7b" stroke-width="4" stroke-dasharray="8 6"/>
+<circle cx="720" cy="300" r="6" fill="#b15e7b" stroke="none" stroke-width="3"/>
+<path d="M720,292 L720,274" fill="none" stroke="#198477" stroke-width="3" marker-end="url(#arrow)"/>
+<circle cx="790" cy="330" r="6" fill="#b15e7b" stroke="none" stroke-width="3"/>
+<path d="M790,322 L790,274" fill="none" stroke="#198477" stroke-width="3" marker-end="url(#arrow)"/>
+<circle cx="870" cy="338" r="6" fill="#b15e7b" stroke="none" stroke-width="3"/>
+<path d="M870,330 L870,274" fill="none" stroke="#198477" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M40,444 L920,444" fill="none" stroke="#e2e7ef" stroke-width="1"/>
+<text x="40" y="476" font-size="18" fill="#69778a" text-anchor="start" font-weight="400">蓝：专家路径  ·  粉：学习者偏离  ·  绿：专家恢复标签  |  概念示意</text>
+</svg>

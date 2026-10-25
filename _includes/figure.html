@@ -1,0 +1,13 @@
+{% assign figure_size = include.size | default: 'full' %}
+{% assign figure_original = include.original | default: include.src %}
+<figure class="article-figure article-figure--{{ figure_size }}{% if include.archive %} article-figure--archive{% endif %}"{% if include.id %} id="{{ include.id }}"{% endif %} data-article-figure{% if include.archive %} data-appendix="{{ include.archive }}"{% endif %}{% if include.max_width %} style="--figure-natural-width: {{ include.max_width }}px"{% endif %}>
+  <a href="{{ figure_original | relative_url }}" class="popup article-figure__link" aria-label="放大查看：{{ include.alt | escape }}">
+    {% if include.deferred %}
+      <template data-deferred-image><img data-managed-image src="{{ include.src | relative_url }}" alt="{{ include.alt | escape }}" width="{{ include.width }}" height="{{ include.height }}" decoding="async"></template>
+    {% else %}
+      <img data-managed-image src="{{ include.src | relative_url }}" alt="{{ include.alt | escape }}" width="{{ include.width }}" height="{{ include.height }}" loading="lazy" decoding="async">
+    {% endif %}
+  </a>
+  <figcaption><span class="figure-number" aria-hidden="true"></span>{{ include.caption }}{% if include.source_url %} <a href="{{ include.source_url }}" target="_blank" rel="noopener noreferrer">{{ include.source | default: '来源' }}</a>{% elsif include.source %} <span class="figure-source">{{ include.source }}</span>{% endif %}</figcaption>
+  {% if include.deferred %}<noscript><p><a href="{{ figure_original | relative_url }}">查看{{ include.alt }}</a></p></noscript>{% endif %}
+</figure>

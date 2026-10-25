@@ -31,7 +31,7 @@ Check out the [theme's docs](https://github.com/cotes2020/jekyll-theme-chirpy/wi
 
 ## 本地预览
 
-本项目使用 Jekyll 和 Chirpy 7.x。Chirpy 要求 Ruby `>= 3.1, < 4.0`，系统自带的 Ruby 3.0.2 无法安装主题；本地使用 Ruby 3.3，与 GitHub Actions 的版本保持一致。
+本项目使用 Jekyll 和固定版本 Chirpy 7.3.1，提交 Gemfile.lock 以保持本地与 CI 一致。Chirpy 要求 Ruby `>= 3.1, < 4.0`，系统自带的 Ruby 3.0.2 无法安装主题；本地使用 Ruby 3.3，与 GitHub Actions 的版本保持一致。
 
 如果已安装 Conda，可以创建独立环境。编译工具用于安装含原生扩展的 Ruby gems：
 
@@ -95,3 +95,51 @@ This work is published under [MIT][mit] License.
 [chirpy]: https://github.com/cotes2020/jekyll-theme-chirpy/
 [CD]: https://en.wikipedia.org/wiki/Continuous_deployment
 [mit]: https://github.com/cotes2020/chirpy-starter/blob/master/LICENSE
+
+## 内容与插图维护
+
+主分类来自 `_data/domains.yml`，每篇只设置一个 `categories`，并填写 `content_type: tutorial / paper / survey / qa`。博客展示全集，论文页展示 paper 与 survey。
+
+正文图片统一使用 `_includes/figure.html`，交互演示使用 `_includes/demo-frame.html`。SVG 为可编辑图源；不要用封面代替方法图。
+
+```powershell
+python tools/build-illustrations.py
+python tools/check-content.py
+bundle exec jekyll build
+bundle exec htmlproofer _site --disable-external
+```
+
+图文与分类清单见 `reports/blog-organization.md`。`tools/organize-content.py` 为本次幂等迁移脚本；新增文章通常只需编辑元数据与正文，无需重跑迁移。
+
+Windows 的 HTMLProofer 若找不到 libcurl，可复用 Git for Windows 提供的 DLL；以下设置只影响当前终端。将路径替换为自己的 Git 安装位置：
+
+```powershell
+$env:DEBUG=$null
+$env:BLOG_CURL_DLL='D:/Git/mingw64/bin/libcurl-4.dll'
+$env:RUBYOPT='-r./tools/windows-curl.rb'
+bundle exec htmlproofer _site --disable-external
+```
+
+GitHub Actions 的 Linux 环境使用普通 HTMLProofer 命令即可。
+
+## 具身智能学习系列
+
+2026-10-24 新增五篇基础教程，阅读顺序记录在 `_data/embodied_series.yml`，每篇顶部提供完整系列导航：模仿学习 → 三维抓取几何 → 接触与阻抗控制 → 世界模型与规划 → 离线强化学习。五篇均使用现有主题分类；博客合计 23 篇，论文页仍为 9 篇。目录与验证记录见 [学习系列交付记录](reports/embodied-learning.md)。
+
+```powershell
+python tools/build-embodied-figures.py
+python tools/check-embodied-examples.py  # 运行正文中的五个完整例子，需要 NumPy
+python tools/check-content.py
+bundle exec jekyll build --destination .qa/site
+python tools/preview-server.py --directory .qa/site --port 4174
+```
+
+预览服务将 SVG 明确设为 `image/svg+xml`，避免 Windows 注册表中的错误类型导致浏览器下载或空白显示。在另一个终端检查五篇文章的三种宽度和明暗主题：
+
+```powershell
+node tools/browser-audit.mjs series http://127.0.0.1:4174
+```
+
+封面 JPEG 由 SVG 图源渲染。若修改新系列图源，先运行生成脚本，再用 `python tools/preview-server.py --directory . --port 4173` 服务仓库根目录；另一个终端运行 `node tools/browser-audit.mjs series-assets http://127.0.0.1:4173`，之后重新构建站点。该模式只更新本系列封面，图源和原有图片均保留。
+
+`check-content.py --baseline` 针对上一轮 18 篇的历史验收快照；新增文章后使用默认检查。两轮验收记录分别保留，避免把历史数量当作当前整站数量。

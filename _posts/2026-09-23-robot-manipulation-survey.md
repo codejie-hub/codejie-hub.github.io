@@ -1,11 +1,12 @@
 ---
 title: "【研究综述】机器人操作的七条研究路线：方法演进、关键瓶颈与复现入口"
 date: 2026-09-23 10:00:00 +0800
-categories: [VLA]
-tags: [paper-survey, robotics, vla, imitation-learning, diffusion-policy, world-model, reinforcement-learning, bimanual-manipulation]
+categories: [机器人学习与 VLA]
+content_type: survey
+tags: [robotics, vla, imitation-learning, diffusion-policy, world-model, reinforcement-learning, bimanual-manipulation]
 description: 围绕 24 篇代表论文，综述机器人操作在生成式策略与三维泛化、VLA、约束规划与世界模型、双臂与人形操作、灵巧手与触觉、强化学习及数据基准七条路线上的方法演进，比较泛化、闭环时延和数据成本的共同瓶颈，并整理官方代码与复现入口。
 image:
-  path: /assets/images/posts/placeholders/robotics.svg
+  path: /assets/images/covers/robot-manipulation-survey-cover.jpg
   alt: 机器人操作的七条研究路线与论文阅读指南
 ---
 
@@ -16,6 +17,8 @@ image:
 以 Diffusion Policy 和 ACT 为代表的工作，将动作序列建模确立为视觉模仿学习的重要切入口；三维策略进一步关注几何变化下的泛化，VLA 则引入视觉语言预训练所提供的知识。与此同时，约束规划与世界模型研究动作的可行性及后果，触觉与强化学习关注执行过程中的反馈，而数据接口和仿真基准决定了这些能力能够如何被训练和检验。本文以这些问题为线索，将 24 篇代表工作组织为七条相互关联的研究路线。[Diffusion Policy][paper-1]、[ACT][paper-2]、[OpenVLA-OFT][paper-7]。
 
 本文是一篇围绕所选文献展开的主题式综述，主体覆盖 2024—2026 年，并保留两篇 2023 年的基础工作。各节先讨论研究动机、方法差异和适用边界，再用表格汇总论文与官方代码。阅读时可以沿 [七条研究路线](#robot-learning-routes) 展开，结合 [跨方向比较](#cross-direction-discussion) 理解它们的联系，再参考 [实验建议](#research-starting-points) 和 [复现条件](#reproduction-notes) 选择切入口。
+
+{% include figure.html src="/assets/images/figures/research-routes.svg" id="fig-research-routes" alt="七条路线按核心研究问题组织，名称与站内路线图共享数据" caption="七条路线按核心研究问题组织，名称与站内路线图共享数据；箭头表示阅读关联，不表示方法之间的性能排名。" size="full" width="1000" height="850" source="根据正文整理的教学示意" %}
 
 ## 1. 七条研究路线：问题设定、方法演进与代表工作
 {: #robot-learning-routes }

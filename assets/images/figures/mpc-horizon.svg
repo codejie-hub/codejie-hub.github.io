@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="600" viewBox="0 0 1000 600" role="img" aria-labelledby="title desc">
+<title id="title">MPC：优化一个窗口，只执行第一步</title><desc id="desc">每次收到新测量后，把优化问题向前滚动。根据文章整理的教学示意。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="context-stroke"/></marker></defs>
+<style>text{font-family:'Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Arial,sans-serif}</style>
+<rect width="100%" height="100%" fill="white"/>
+<text x="40" y="52" font-size="30" fill="#253247" text-anchor="start" font-weight="700">MPC：优化一个窗口，只执行第一步</text>
+<text x="40" y="88" font-size="19" fill="#637084" text-anchor="start" font-weight="400">每次收到新测量后，把优化问题向前滚动</text>
+<path d="M85,430 L905,430" fill="none" stroke="#8b97a7" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M85,430 L85,150" fill="none" stroke="#8b97a7" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="901" y="463" font-size="20" fill="#253247" text-anchor="end" font-weight="400">离散时刻</text>
+<text x="88" y="138" font-size="20" fill="#253247" text-anchor="start" font-weight="400">预测状态 / 约束</text>
+<path d="M85,195 L890,195" fill="none" stroke="#b57836" stroke-width="2" stroke-dasharray="8 6"/>
+<path d="M85,355 L890,355" fill="none" stroke="#b57836" stroke-width="2" stroke-dasharray="8 6"/>
+<text x="840" y="180" font-size="22" fill="#b57836" text-anchor="start" font-weight="400">约束边界</text>
+<path d="M100.00,380.00 L230.00,315.00 L360.00,270.00 L490.00,242.00 L620.00,225.00 L750.00,217.00 L880.00,214.00" fill="none" stroke="#4264ad" stroke-width="4"/>
+<circle cx="100" cy="380" r="6" fill="#4264ad" stroke="none" stroke-width="3"/>
+<circle cx="230" cy="315" r="6" fill="#4264ad" stroke="none" stroke-width="3"/>
+<circle cx="360" cy="270" r="6" fill="#4264ad" stroke="none" stroke-width="3"/>
+<circle cx="490" cy="242" r="6" fill="#4264ad" stroke="none" stroke-width="3"/>
+<circle cx="620" cy="225" r="6" fill="#4264ad" stroke="none" stroke-width="3"/>
+<circle cx="750" cy="217" r="6" fill="#4264ad" stroke="none" stroke-width="3"/>
+<circle cx="880" cy="214" r="6" fill="#4264ad" stroke="none" stroke-width="3"/>
+<rect x="100" y="455" width="115" height="45" rx="4" fill="#198477" stroke="none" stroke-width="2"/>
+<rect x="230" y="455" width="115" height="45" rx="4" fill="#e7eef8" stroke="#4264ad" stroke-width="2"/>
+<rect x="360" y="455" width="115" height="45" rx="4" fill="#e7eef8" stroke="#4264ad" stroke-width="2"/>
+<rect x="490" y="455" width="115" height="45" rx="4" fill="#e7eef8" stroke="#4264ad" stroke-width="2"/>
+<rect x="620" y="455" width="115" height="45" rx="4" fill="#e7eef8" stroke="#4264ad" stroke-width="2"/>
+<rect x="750" y="455" width="115" height="45" rx="4" fill="#e7eef8" stroke="#4264ad" stroke-width="2"/>
+<text x="155" y="528" font-size="22" fill="#198477" text-anchor="middle" font-weight="400">执行 u(k)</text>
+<text x="630" y="528" font-size="23" fill="#253247" text-anchor="middle" font-weight="400">其余计划在下一时刻重新优化</text>
+<path d="M40,544 L960,544" fill="none" stroke="#e2e7ef" stroke-width="1"/>
+<text x="40" y="576" font-size="18" fill="#69778a" text-anchor="start" font-weight="400">轨迹为定性示意；实际可行性与稳定性还取决于模型、约束及终端设计。</text>
+</svg>

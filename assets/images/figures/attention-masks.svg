@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="480" viewBox="0 0 1000 480" role="img" aria-labelledby="title desc">
+<title id="title">Attention Mask：行是 Query，列是 Key</title><desc id="desc">蓝色允许注意；浅灰色屏蔽。示例最后两列为 Padding Key。。根据文章整理的教学示意。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="context-stroke"/></marker></defs>
+<style>text{font-family:'Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Arial,sans-serif}</style>
+<rect width="100%" height="100%" fill="white"/>
+<text x="40" y="52" font-size="30" fill="#253247" text-anchor="start" font-weight="700">Attention Mask：行是 Query，列是 Key</text>
+<text x="40" y="88" font-size="19" fill="#637084" text-anchor="start" font-weight="400">蓝色允许注意；浅灰色屏蔽。示例最后两列为 Padding Key。</text>
+<rect x="65" y="145" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="101" y="145" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="137" y="145" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="173" y="145" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="209" y="145" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="245" y="145" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="65" y="181" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="101" y="181" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="137" y="181" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="173" y="181" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="209" y="181" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="245" y="181" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="65" y="217" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="101" y="217" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="137" y="217" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="173" y="217" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="209" y="217" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="245" y="217" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="65" y="253" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="101" y="253" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="137" y="253" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="173" y="253" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="209" y="253" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="245" y="253" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="65" y="289" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="101" y="289" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="137" y="289" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="173" y="289" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="209" y="289" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="245" y="289" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="65" y="325" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="101" y="325" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="137" y="325" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="173" y="325" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="209" y="325" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="245" y="325" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<text x="173.0" y="397" font-size="22" fill="#253247" text-anchor="middle" font-weight="400">Padding</text>
+<rect x="390" y="145" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="426" y="145" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="462" y="145" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="498" y="145" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="534" y="145" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="570" y="145" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="390" y="181" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="426" y="181" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="462" y="181" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="498" y="181" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="534" y="181" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="570" y="181" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="390" y="217" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="426" y="217" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="462" y="217" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="498" y="217" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="534" y="217" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="570" y="217" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="390" y="253" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="426" y="253" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="462" y="253" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="498" y="253" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="534" y="253" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="570" y="253" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="390" y="289" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="426" y="289" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="462" y="289" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="498" y="289" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="534" y="289" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="570" y="289" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="390" y="325" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="426" y="325" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="462" y="325" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="498" y="325" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="534" y="325" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="570" y="325" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<text x="498.0" y="397" font-size="22" fill="#253247" text-anchor="middle" font-weight="400">Causal</text>
+<rect x="715" y="145" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="751" y="145" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="787" y="145" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="823" y="145" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="859" y="145" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="895" y="145" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="715" y="181" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="751" y="181" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="787" y="181" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="823" y="181" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="859" y="181" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="895" y="181" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="715" y="217" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="751" y="217" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="787" y="217" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="823" y="217" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="859" y="217" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="895" y="217" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="715" y="253" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="751" y="253" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="787" y="253" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="823" y="253" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="859" y="253" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="895" y="253" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="715" y="289" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="751" y="289" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="787" y="289" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="823" y="289" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="859" y="289" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="895" y="289" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="715" y="325" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="751" y="325" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="787" y="325" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="823" y="325" width="33" height="33" rx="3" fill="#4264ad" stroke="none" stroke-width="2"/>
+<rect x="859" y="325" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<rect x="895" y="325" width="33" height="33" rx="3" fill="#edf0f5" stroke="none" stroke-width="2"/>
+<text x="823.0" y="397" font-size="22" fill="#253247" text-anchor="middle" font-weight="400">组合：取交集</text>
+<path d="M40,424 L960,424" fill="none" stroke="#e2e7ef" stroke-width="1"/>
+<text x="40" y="456" font-size="18" fill="#69778a" text-anchor="start" font-weight="400">图仅展示 Key 可见性；实际实现还应正确处理 Padding Query 与全屏蔽行。</text>
+</svg>
